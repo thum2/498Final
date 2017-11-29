@@ -23,6 +23,11 @@ class Home extends Component {
                                 Register
                             </Button>
                         </Link>
+                        <Link to="/lostpage">
+                            <Button>
+                                Lostpage
+                            </Button>
+                        </Link>
                     </span>
 
                     <br />
