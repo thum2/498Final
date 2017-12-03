@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 
-import styles from './LostPage.scss'
+import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
 
-class LostPage extends Component {
+class FoundPage extends Component {
     constructor (props) {
     super(props)
     this.state = {
@@ -23,12 +23,12 @@ class LostPage extends Component {
   }
     render() {
         return(
-            <div className="LostPage">
-                <div className="LostPage_Header">
+            <div className="FoundPage">
+                <div className="FoundPage_Header">
                     <span className="GroupTitle">
                         <h1><Icon name="paw" />Pet Finder</h1>
                     </span>
-                    <div className="LostPage_Navi">
+                    <div className="FoundPage_Navi">
                         <Breadcrumb.Section>
                             <Link to={'/notification'}>
                                 Notification
@@ -42,7 +42,7 @@ class LostPage extends Component {
                         </Breadcrumb.Section>
                     </div>
                 </div>
-                <div className="LostPage_Body">
+                <div className="FoundPage_Body">
                     <table>
                         <tbody>
                             <tr>
@@ -54,7 +54,7 @@ class LostPage extends Component {
                                 <td><input></input></td>
                             </tr>
                             <tr>
-                                <th>Lost Date</th>
+                                <th>Found Date</th>
                                 <td>
                                     <div className="ui calendar" id="example2">
                                         <div className="ui input left icon">
@@ -68,7 +68,7 @@ class LostPage extends Component {
                                 </td>
                             </tr>
                             <tr>
-                                <th>Lost location</th>
+                                <th>Found location</th>
                                 <td><input></input></td>
                             </tr>
                             <tr>
@@ -99,7 +99,7 @@ class LostPage extends Component {
 
                     <div className="submitButton">
                           <Link to={'/'}>
-                                Report Lost Pet
+                                Report Found Pet
                           </Link>
                     </div>
                 </div>
@@ -108,4 +108,4 @@ class LostPage extends Component {
     }
 }
 
-export default LostPage
+export default FoundPage
