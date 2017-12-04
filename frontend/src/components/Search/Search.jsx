@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import { sortOptions } from '../../assets/options.js'
+import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions, eyeColorOptions } from '../../assets/options.js'
 
 import styles from './Search.scss'
 
@@ -9,13 +9,19 @@ class Search extends Component {
     constructor(){
         super();
         this.state = {
-            sortValue: ''
+            sortValue: '',
+            genderValue: '',
+            breedValue: '',
+            colorValue: '',
+            eyeColorValue: '',
+            petValue: ''
         }
 
         this.baseUrl = "http://pokeapi.co/api/v2/";
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.typeChangeHandler = this.typeChangeHandler.bind(this);
         this.sortChangeHandler = this.sortChangeHandler.bind(this);
+        this.searchChangeHandler = this.searchChangeHandler.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
     }
 
@@ -67,6 +73,10 @@ class Search extends Component {
         }
     }
 
+    searchChangeHandler(event,{value}){
+        console.log(event);
+    }
+
     sortChangeHandler(event,{value}){
         this.setState({
             sortValue: {value}.value
@@ -112,19 +122,49 @@ class Search extends Component {
                   <div className="Search_SearchBar">
                       <List horizontal relaxed>
                           <List.Item>
-                              <List.Header>Pet</List.Header>
+                              <Dropdown
+                                  onChange={this.searchChangeHandler}
+                                  placeholder="Pet"
+                                  options={petOptions}
+                                  selection
+                                  value={this.state.petValue}
+                              />
                           </List.Item>
                           <List.Item>
-                              <List.Header>Gender</List.Header>
+                              <Dropdown
+                                  onChange={this.searchChangeHandler}
+                                  placeholder="Gender"
+                                  options={genderOptions}
+                                  selection
+                                  value={this.state.genderValue}
+                              />
                           </List.Item>
                           <List.Item>
-                              <List.Header>Breed</List.Header>
+                              <Dropdown
+                                  onChange={this.searchChangeHandler}
+                                  placeholder="Breed"
+                                  options={dogBreedOptions}
+                                  selection
+                                  value={this.state.breedValue}
+                              />
                           </List.Item>
                           <List.Item>
-                              <List.Header>Color</List.Header>
+                              <Dropdown
+                                  onChange={this.searchChangeHandler}
+                                  placeholder="Color"
+                                  options={colorOptions}
+                                  selection
+                                  value={this.state.colorValue}
+                              />
                           </List.Item>
                           <List.Item>
-                              <List.Header>Eye Color</List.Header>
+                              <Dropdown
+                                  onChange={this.searchChangeHandler}
+                                  placeholder="Eye Color"
+                                  options={eyeColorOptions}
+                                  selection
+                                  value={this.state.eyeColorValue}
+                              />
                           </List.Item>
                       </List>
                   </div>
