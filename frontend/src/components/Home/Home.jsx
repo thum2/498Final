@@ -9,7 +9,7 @@ class Home extends Component {
         return(
             <div className="Home">
                 <Card>
-                    <h1>Welcome to MP2!...</h1>
+                    <h1>Welcome to MP2</h1>
 
                     <span>
                         <Link to="/login">
@@ -31,6 +31,11 @@ class Home extends Component {
                         <Link to="/foundpage">
                             <Button>
                                 Report Found Pet
+                            </Button>
+                        </Link>
+                        <Link to="/search">
+                            <Button>
+                                Look at Found Pet
                             </Button>
                         </Link>
                     </span>

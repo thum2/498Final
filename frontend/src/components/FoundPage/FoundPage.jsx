@@ -31,7 +31,7 @@ class FoundPage extends Component {
                     <div className="FoundPage_Navi">
                         <Breadcrumb.Section>
                             <Link to={'/notification'}>
-                                Notification
+                                Notifications
                             </Link>
                         </Breadcrumb.Section>
                         <Breadcrumb.Divider />

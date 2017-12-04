@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import Home from './components/Home/Home.jsx';
+import Search from './components/Search/Search.jsx';
 import LostPage from './components/LostPage/LostPage.jsx';
 import FoundPage from './components/FoundPage/FoundPage.jsx';
 import Register from './components/Register/Register.jsx';
@@ -15,11 +16,12 @@ ReactDom.render(
     <Router>
         <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/LostPage" component={LostPage}/>
-            <Route exact path="/FoundPage" component={FoundPage}/>
+            <Route exact path="/lostpage" component={LostPage}/>
+            <Route exact path="/foundpage" component={FoundPage}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
             <Route exact path="/dashboard" component={Dashboard}/>
+            <Route exact path="/search" component={Search}/>
         </Switch>
     </Router>,
     document.getElementById('react-app')

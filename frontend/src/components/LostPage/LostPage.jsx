@@ -31,7 +31,7 @@ class LostPage extends Component {
                     <div className="LostPage_Navi">
                         <Breadcrumb.Section>
                             <Link to={'/notification'}>
-                                Notification
+                                Notifications
                             </Link>
                         </Breadcrumb.Section>
                         <Breadcrumb.Divider />
