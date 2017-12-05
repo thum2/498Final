@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions, eyeColorOptions } from '../../assets/options.js'
+import SearchTag from './SearchTag/SearchTag.jsx'
 
 import styles from './Search.scss'
 
@@ -14,14 +15,14 @@ class Search extends Component {
             breedValue: '',
             colorValue: '',
             eyeColorValue: '',
-            petValue: ''
+            petValue: '',
+            resultCount: 0,
+            searchList:[]
         }
 
+        this.searchL = [];
         this.baseUrl = "http://pokeapi.co/api/v2/";
-        this.inputChangeHandler = this.inputChangeHandler.bind(this);
-        this.typeChangeHandler = this.typeChangeHandler.bind(this);
-        this.sortChangeHandler = this.sortChangeHandler.bind(this);
-        this.searchChangeHandler = this.searchChangeHandler.bind(this);
+        this.searchChangehandler = this.searchChangehandler.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
     }
 
@@ -43,44 +44,42 @@ class Search extends Component {
 
     }
 
-    inputChangeHandler(event){
-        let val = event.target.value.toLowerCase();
-        this.setState({
-            value: val
-        });
-    }
-
-    typeChangeHandler(event, {value}){
-        if({value}.value == "Name"){
+    searchChangehandler(event, val, type){
+        if(type=="pet"){
             this.setState({
-                query: 'pokemon',
-                value:'',
-                clicked:'',
-                pokemon:'',
-                placeholder:{value}.value + ' of Pokemon'
+                petValue: val
+            }, ()=> console.log(this.state.petValue));
+        }
+        else if(type=="gender"){
+            this.setState({
+                genderValue: val
             })
-            hideElement("Ordering");
+        }
+        else if(type=="breed"){
+            this.setState({
+                breedValue: val
+            })
+        }
+        else if(type=="color"){
+            this.setState({
+                colorValue: val
+            })
+        }
+        else if(type=="eyeColor"){
+            this.setState({
+                eyeColorValue: val
+            })
         }
         else{
             this.setState({
-                query: 'type',
-                value:"",
-                clicked:'',
-                pokemon:'',
-                placeholder:{value}.value + ' of Pokemon, i.e. ground, water',
+                sortValue: val
             })
-            showElement("Ordering");
         }
-    }
-
-    searchChangeHandler(event,{value}){
-        console.log(event);
-    }
-
-    sortChangeHandler(event,{value}){
+        this.searchL.push(val);
         this.setState({
-            sortValue: {value}.value
-        })
+            searchList: this.searchL
+        });
+        console.log(this.searchL)
     }
 
     render(){
@@ -111,11 +110,10 @@ class Search extends Component {
                       </span>
                       <span>
                           <Dropdown
-                              onChange={this.sortChangeHandler}
                               placeholder="SORT BY"
                               options={sortOptions}
                               selection
-                              value={this.state.sortValue}
+                              onChange={(event, {value}) => this.searchChangehandler(event, value, "sort")}
                           />
                       </span>
                   </div>
@@ -123,52 +121,48 @@ class Search extends Component {
                       <List horizontal relaxed>
                           <List.Item>
                               <Dropdown
-                                  onChange={this.searchChangeHandler}
                                   placeholder="Pet"
                                   options={petOptions}
                                   selection
-                                  value={this.state.petValue}
+                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "pet")}
                               />
                           </List.Item>
                           <List.Item>
                               <Dropdown
-                                  onChange={this.searchChangeHandler}
                                   placeholder="Gender"
                                   options={genderOptions}
                                   selection
-                                  value={this.state.genderValue}
+                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "gender")}
                               />
                           </List.Item>
                           <List.Item>
                               <Dropdown
-                                  onChange={this.searchChangeHandler}
                                   placeholder="Breed"
                                   options={dogBreedOptions}
                                   selection
-                                  value={this.state.breedValue}
+                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "breed")}
                               />
                           </List.Item>
                           <List.Item>
                               <Dropdown
-                                  onChange={this.searchChangeHandler}
                                   placeholder="Color"
                                   options={colorOptions}
                                   selection
-                                  value={this.state.colorValue}
+                                 onChange={(event, {value}) => this.searchChangehandler(event, value, "color")}
                               />
                           </List.Item>
                           <List.Item>
                               <Dropdown
-                                  onChange={this.searchChangeHandler}
                                   placeholder="Eye Color"
                                   options={eyeColorOptions}
                                   selection
-                                  value={this.state.eyeColorValue}
+                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "eyeColor")}
                               />
                           </List.Item>
                       </List>
                   </div>
                   <div className="Search_ResultsBar">
+                      {<SearchTag searchList={this.state.searchList}/>}
                   </div>
               </div>
               <div className="Search_Gallery">
