@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Button, Card, Icon, Grid } from 'semantic-ui-react'
+import { Button, Card, Grid, Image, Reveal, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from './styles.scss'
 
-class Dashboard extends Component {
-
-    constructor() {
+class Notifications extends Component {
+	constructor() {
         super();
         this.state = {
             isLoggedIn: false
@@ -40,7 +39,7 @@ class Dashboard extends Component {
 
         if (this.state.isLoggedIn) {
             return(
-                <div className="Dashboard">
+                <div className="Notifications">
 
                     <div className="navbar">
                         <span>
@@ -115,7 +114,7 @@ class Dashboard extends Component {
             )
         } else {
             return(
-                <div className="Dashboard">
+                <div className="Notifications">
                     <Card>
                         <h1>You must log in before you can see this page.</h1>
                         <Link to="/">
@@ -128,4 +127,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard
+export default Notifications

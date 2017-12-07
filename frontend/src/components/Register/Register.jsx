@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, Card } from 'semantic-ui-react'
+import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -74,6 +74,10 @@ class Register extends Component {
             <form className="Register" action="/" onSubmit={this.onSubmit}>
                 <Card className="Register__content">
                     <div>
+                        <h1>
+                            <Icon name='paw' size='big' />
+                            PetFinder
+                        </h1>
                         <h1>Register</h1>
                         <Input label="Email" onChange={this.onChangeEmail} />
                         <br/><br/>

@@ -1,3 +1,4 @@
 {
+  "dbUri": "mongodb://<user>:<pw>@YOUR MLAB URI HERE"
   "dbUri": "mongodb://daniel:aowp2017@ds123896.mlab.com:23896/petfinder"
 }
