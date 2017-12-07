@@ -16,8 +16,7 @@ class DetailView extends Component{
     }
 
     componentWillMount(){
-    	console.log('/api/pets/'+ this.state.pet_id)
-    	axios.get('/api/pets/'+ this.state.pet_id).then( (res) => {
+    	axios.get('/api/pets/'+ this.this.props.match.params.id).then( (res) => {
             console.log(res);
             
         })
@@ -26,7 +25,7 @@ class DetailView extends Component{
 	render(){
 		return(
 			<div className="DetailView">
-
+				<h1>Hello</h1>
 				<div className="PetInformation">
 					<PetInformation id={this.state.pet_id}/>
 				</div>
