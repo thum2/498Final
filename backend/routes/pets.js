@@ -5,6 +5,10 @@ var express = require('express'),
 router.get('/', function(req, res){
 	let query = pet.find({})
 
+	if(req.query.found == "true" || req.query.found == 1){
+		query = pet.find({found: true})
+	}
+
 	query.exec(function(err, pets){
 		if(err){
 			res.status(500).send({
@@ -43,6 +47,7 @@ router.post('/', function(req, res){
 		size: req.body.size,
 		gender: req.body.gender,
 		datefound: req.body.datefound,
+		found: req.body.found
 	}
 
 	pet.create(newPet, function(err, pet){
