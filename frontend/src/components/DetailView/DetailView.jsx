@@ -11,13 +11,16 @@ class DetailView extends Component{
       		pet_id: this.props.match.params.id,
       		pet_data: {}
     	};
+
+    	this.componentWillMount = this.componentWillMount.bind(this);
     }
 
     componentWillMount(){
-    	axios.get('/api/pets/'+ {this.props.match.params.id}).then( (res) => {
+    	console.log('/api/pets/'+ this.state.pet_id)
+    	axios.get('/api/pets/'+ this.state.pet_id).then( (res) => {
             console.log(res);
             
-        }
+        })
     }
 
 	render(){
@@ -41,14 +44,20 @@ class DetailView extends Component{
 class PetInformation extends Component{
 
 	render(){
-		return()
+		return(
+			<div>
+			</div>
+		)
 	}
 }
 
 class CommentList extends Component{
 
 	render(){
-		return()
+		return(
+			<div>
+			</div>
+		)
 	}
 }
 
