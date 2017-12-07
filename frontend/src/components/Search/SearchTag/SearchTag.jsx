@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Label, Card, Item, Image, List } from 'semantic-ui-react'
+import { Button, Label, Card, Item, Image, List , Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -8,89 +8,40 @@ import style from './SearchTag.scss'
 class SearchTag extends Component {
     constructor(){
         super();
-        this.baseUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
     }
 
     render(){
-        let noPokemon = (Object.keys(this.props.pokemon).length == 0);
-        let query = this.props.query;
-        if(noPokemon){
-            if(this.props.clicked=="true"){
-                return (
-                    <div className="SearchTagContainer">
-                        <Card className = "SearchTag">
-                            <h3>Searching for Pokemon...</h3>
-                        </Card>
-                    </div>
-                )
-            }
-            else{
-                return(
-                    <div className="SearchTagContainer">
-                    </div>
-                )
-            }
+        let noList = (Object.keys(this.props.searchList).length == 0);
+        if(noList){
+            return(
+                <div className="SearchTagContainer">
+                </div>
+            );
         }
         else{
-            if(query=="pokemon"){
-                let abilitiesView = this.props.pokemon.abilities.map((ability,idx) =>{
-                    return (
-                        <Label key={idx}>
-                            {ability.ability.name}
-                        </Label>
-                    )
-                });
+            let tags = this.props.searchList.map((searchList,idx) =>{
+                    return {index: idx, tagName:searchList};
+            });
+            // let tags = this.props.searchList;
+            // console.log("Tags: " + tags.value);
+            // console.log("Type of: " + typeof(tags));
 
-                let name = this.props.pokemon.name.charAt(0).toUpperCase() + this.props.pokemon.name.slice(1);
-                return(
-                    <div className="SearchTagContainer">
-                        <Card className="SearchTag">
-                            <Card.Content>
-                                <Card.Header>
-                                    {name}
-                                </Card.Header>
-                                <Card.Meta>
-                                    Pokedex #{this.props.pokemon.id}
-                                </Card.Meta>
-                                <img src={this.props.pokemon.sprites.front_default} />
-                                <h1>Abilities</h1>
-                                {abilitiesView}
-                            </Card.Content>
-                        </Card>
-                    </div>
-                );
-            }
-            else{
-
-                let pokemons = this.props.pokemon.pokemon.map((pokemon,idx) =>{
-                        return {index: idx, id:pokemon.pokemon.url.split("/")[6], name: pokemon.pokemon.name};
-                });
-
-                pokemons = sort(pokemons,this.props.order);
-                let SearchTag = pokemons.map((pokemon,idx) =>{
-                    let name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-                    return (
-                        <List.Item key={idx}>
-                            <Link to={"detail/" + pokemon.id}>
-                                <Image avatar alt={"X"} src={this.baseUrl+pokemon.id+".png"} />
-                                <List.Header className="Listheader">
-                                    {name}
-                                </List.Header>
-                            </Link>
-                        </List.Item>
-                    )
-                });
-                return(
-                    <List animated className="ListViewContainer">
-                        {SearchTag}
-                    </List>
-                );
-            }
-
+            let SearchTag = tags.map((tag,idx) =>{
+                let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
+                return (
+                    <Label key={idx}>
+                      {name}
+                      <Icon name='delete' />
+                    </Label>
+                )
+            });
+            return(
+                <List className="SearchTagContainer">
+                    {SearchTag}
+                </List>
+            );
         }
-
     }
-
 }
 
 function sort(array,order){
@@ -119,11 +70,10 @@ function sort(array,order){
 
 }
 
-SearchTag.propTypes = {
-    pokemon: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object
-    ])
-}
+// SearchTag.propTypes = {
+//     searchList: PropTypes.oneOfType([
+//         PropTypes.object
+//     ])
+// }
 
 export default SearchTag

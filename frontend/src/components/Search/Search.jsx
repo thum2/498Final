@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions, eyeColorOptions } from '../../assets/options.js'
 import SearchTag from './SearchTag/SearchTag.jsx'
+import SearchGallery from './SearchGallery/SearchGallery.jsx'
 
 import styles from './Search.scss'
 
@@ -17,11 +19,12 @@ class Search extends Component {
             eyeColorValue: '',
             petValue: '',
             resultCount: 0,
-            searchList:[]
+            searchList:[],
+            pets:[]
         }
 
         this.searchL = [];
-        this.baseUrl = "http://pokeapi.co/api/v2/";
+        this.baseUrl = "/api/pets";
         this.searchChangehandler = this.searchChangehandler.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
     }
@@ -44,11 +47,25 @@ class Search extends Component {
 
     }
 
+    componentWillMount(){
+        let url = this.baseUrl;
+        axios.get(url)
+            .then((response) =>{
+                this.setState({
+                    pets:response.data,
+                })
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     searchChangehandler(event, val, type){
         if(type=="pet"){
             this.setState({
                 petValue: val
-            }, ()=> console.log(this.state.petValue));
+            });
         }
         else if(type=="gender"){
             this.setState({
@@ -79,7 +96,6 @@ class Search extends Component {
         this.setState({
             searchList: this.searchL
         });
-        console.log(this.searchL)
     }
 
     render(){
@@ -166,6 +182,7 @@ class Search extends Component {
                   </div>
               </div>
               <div className="Search_Gallery">
+                  {<SearchGallery pets={this.state.pets} sortValue={this.state.sortValue}/>}
               </div>
           </div>
         );
