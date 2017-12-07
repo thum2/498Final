@@ -13,8 +13,8 @@ var PetSchema = new mongoose.Schema({
 	datefound: {type:Date, default:null},
 	date: {type:Date, default:Date.now},
 	found: {type:Boolean, default:null},
-	original_website{type:String,default:null},
-	img_url{type:String,default:null}
+	original_website: {type:String,default:null},
+	img_url: {type:String,default:null}
 })
 
 module.exports = mongoose.model('Pets', PetSchema)

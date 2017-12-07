@@ -47,7 +47,9 @@ router.post('/', function(req, res){
 		size: req.body.size,
 		gender: req.body.gender,
 		datefound: req.body.datefound,
-		found: req.body.found
+		found: req.body.found,
+		original_website: req.body.original_website,
+		img_url: req.body.img_url
 	}
 
 	pet.create(newPet, function(err, pet){
