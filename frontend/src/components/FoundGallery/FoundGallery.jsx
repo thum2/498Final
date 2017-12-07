@@ -31,7 +31,6 @@ class FoundGallery extends Component {
 	}
 	
     render() {
-    	console.log(this.state)
         return(
         	<div>
 	        	<span className="GroupTitle">
