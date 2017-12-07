@@ -7,6 +7,7 @@ import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login.jsx';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
 import DetailView from './components/DetailView/DetailView.jsx'
+import FoundGallery from './components/FoundGallery/FoundGallery.jsx'
 
 import styles from './styles/main.scss';
 
@@ -18,6 +19,7 @@ ReactDom.render(
             <Route exact path="/register" component={Register}/>
             <Route exact path="/dashboard" component={Dashboard}/>
             <Route exact path="/detailview/:id" component={DetailView}/>
+            <Route exact path="/petsfound" component={FoundGallery}/>
         </Switch>
     </Router>,
     document.getElementById('react-app')

@@ -5,6 +5,10 @@ var express = require('express'),
 router.get('/', function(req, res){
 	let query = pet.find({})
 
+	if(req.query.found == "true" || req.query.found == 1){
+		query = pet.find({found: true})
+	}
+
 	query.exec(function(err, pets){
 		if(err){
 			res.status(500).send({
@@ -30,6 +34,33 @@ router.get('/', function(req, res){
 	});
 });
 
+router.get('/:id', function(req,res){
+	
+	var query = pet.findById(req.params.id)
+
+	query.exec(function(err, onePet){
+		if(err){
+			res.status(500).send({
+				message: err,
+				data: []
+			})
+		}
+		else{
+			if(onePet === null){
+				res.status(404).send({
+					message: 'Resource not found',
+					data: []
+				})
+			}
+			else{
+				res.status(200).send({
+					message: 'User found',
+					data: onePet
+				});
+			}
+		}
+	})
+})
 
 
 router.post('/', function(req, res){
@@ -43,6 +74,9 @@ router.post('/', function(req, res){
 		size: req.body.size,
 		gender: req.body.gender,
 		datefound: req.body.datefound,
+		found: req.body.found,
+		original_website: req.body.original_website,
+		img_url: req.body.img_url
 	}
 
 	pet.create(newPet, function(err, pet){
