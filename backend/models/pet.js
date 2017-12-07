@@ -11,7 +11,8 @@ var PetSchema = new mongoose.Schema({
 	size: {type:String, default:null},
 	gender: {type:String, default:null},
 	datefound: {type:Date, default:null},
-	date: {type:Date, default:Date.now}
+	date: {type:Date, default:Date.now},
+	found: {type:Boolean, default:null}
 })
 
 module.exports = mongoose.model('Pets', PetSchema)
