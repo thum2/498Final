@@ -8,6 +8,8 @@ const User = require('./')
 const router = express.Router();
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
+const user = require('./backend/routes/users')
+const pet = require('./backend/routes/pets')
 
 app.use(express.static('./backend/static/'));
 app.use(express.static('./frontend/dist/'));
@@ -49,7 +51,8 @@ app.use(passport.session());
 
 // Get our routes
 app.use('/api', require('./backend/routes/api')(router, passport));
-
+app.use('/api/users', user);
+app.use('/api/pets', pet);
 /* =========================================================================== */
 
 // start the server
