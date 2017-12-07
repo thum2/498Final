@@ -34,6 +34,33 @@ router.get('/', function(req, res){
 	});
 });
 
+router.get('/:id', function(req,res){
+	
+	var query = pet.findById(req.params.id)
+
+	query.exec(function(err, onePet){
+		if(err){
+			res.status(500).send({
+				message: err,
+				data: []
+			})
+		}
+		else{
+			if(onePet === null){
+				res.status(404).send({
+					message: 'Resource not found',
+					data: []
+				})
+			}
+			else{
+				res.status(200).send({
+					message: 'User found',
+					data: onePet
+				});
+			}
+		}
+	})
+})
 
 
 router.post('/', function(req, res){
