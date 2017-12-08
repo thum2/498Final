@@ -25,7 +25,7 @@ class LostPage extends Component {
   }
   handleSubmit(){
     let info = {}
-    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url"]
+    let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -33,43 +33,38 @@ class LostPage extends Component {
         }
     }
     info["found"] = false;
-    info["original_website"] = "LOCAL";
-    info["description"] = null;
-    info["datefound"] = this.state.startDate.date; //lost date
-    axios.post('/api/pets',info).then((res)=>{
-        console.log(res);
-    }).catch((err)=>{
-        console.log(err);
-    });
+    info["date"] = this.state.startDate;
+    axios.post('/api/pets',info)
+    .then((res)=>{console.log(res)});
 
   }
     render() {
         return(
             <div className="LostPage">
-                <div className="LostPage_Header">
-                    <span className="GroupTitle">
-                        <h1><Icon name="paw" />Pet Finder</h1>
-                    </span>
-                    <div className="LostPage_Navi">
-                        <Breadcrumb.Section>
-                            <Link to={'/notifications'}>
+                <div className="navbar">
+                    <span>
+
+                        <Link to="/notifications">
+                            <Button basic color="black" size="huge">
                                 Notifications
-                            </Link>
-                        </Breadcrumb.Section>
-                        <Breadcrumb.Divider />
-                        <Breadcrumb.Section>
-                            <Link to={'/'}>
+                            </Button>
+                        </Link>
+
+                        <Link to="/" onClick={this.logOut}>
+                            <Button basic color="black" size="huge">
                                 Logout
-                            </Link>
-                        </Breadcrumb.Section>
-                    </div>
+                            </Button>
+                        </Link>
+
+                    </span>
                 </div>
+                    
                 <div className="LostPage_Body">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Pet Type</th>
-                                <td><input id="type"></input></td>
+                                <th>Pet's species</th>
+                                <td><input id="species"></input></td>
                             </tr>
                             <tr>
                                 <th>Pet's name</th>

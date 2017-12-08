@@ -3,7 +3,7 @@ import { Button, Card, Grid, Image, Reveal, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from './styles.scss'
+import styles from './Home.scss'
 
 class Home extends Component {
     constructor() {

@@ -3,7 +3,7 @@ import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
-import styles from './styles.scss'
+import styles from './Login.scss'
 
 class Login extends Component {
 
