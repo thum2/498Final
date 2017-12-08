@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Card, Icon, Grid } from 'semantic-ui-react'
+import { Button, Card, Icon, Grid, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from './styles.scss'
+import styles from './Dashboard.scss'
 
 class Dashboard extends Component {
 
@@ -45,76 +45,87 @@ class Dashboard extends Component {
             return(
                 <div className="Dashboard">
 
-                    <div className="navbar">
-                        <span>
-
-                            <Link to="/notifications">
-                                <Button basic color="black" size="huge">
-                                    Notifications
-                                </Button>
-                            </Link>
-
-                            <Link to="/" onClick={this.logOut}>
-                                <Button basic color="black" size="huge">
-                                    Logout
-                                </Button>
-                            </Link>
-
-                        </span>
-                    </div>
-
-                    <div className="optionHolder">
-                        <div className="centerer">
+                    <div className="header">
+                        <div className="navbar">
                             <h1>
-                                <Icon name='paw' size='big' />
-                                PetFinder
+                                <span>
+                                    <Icon link={true} to="/" name='paw' size='large'/>
+                                    Pet Finder
+                                    <Link to="/notifications" className="buttons">
+                                        <Button  size="huge">
+                                            Notifications
+                                        </Button>
+                                    </Link>
+                                    <Link to="/" onClick={this.logOut} className="buttons">
+                                        <Button  size="huge" >
+                                            Logout
+                                        </Button>
+                                    </Link>
+                                </span>
                             </h1>
-
-                            <h1>The Web App That Helps Find Lost Pets</h1>
-
-                            <br />
                         </div>
                     </div>
 
                     <div className="optionHolder">
-                        <Grid columns={3}>
-                            <Grid.Row>
+                    <div className="centerer">
+                        
 
-                              <Grid.Column>
-                                <div className="threeDivider">
-                                    <Link to="/foundpage">
-                                        <div className="threeDividerText">
-                                            <h1>I found a pet that'\''s not mine</h1>
-                                        </div>
-                                    </Link>
-                                </div>
-                              </Grid.Column>
+                        <h1>The Web App That Helps Find Lost Pets</h1>
+                        <h1>Register and Login to Access Posting Lost and Found Pets</h1>
 
-                              <Grid.Column>
-                                    <div className="threeDivider">
-                                        <Link to="/lostpage">
-                                            <div className="threeDividerText">
-                                                <h1>I lost a pet</h1>
-                                            </div>
-                                        </Link>
-                                    </div>
-                              </Grid.Column>
-
-                              <Grid.Column>
-                                <div className="threeDivider">
-                                    <Link to="/search">
-                                        <div className="threeDividerText">
-                                            <h1>Search lost and found pets</h1>
-                                        </div>
-                                    </Link>
-                                </div>
-                              </Grid.Column>
-
-                            </Grid.Row>
-                        </Grid>
+                        <br />
                     </div>
-
                 </div>
+
+                
+                <div className="optionHolder">
+                
+                    <Grid columns={3}>
+                        <Grid.Row>
+
+                          <Grid.Column>
+                            <Link to='/foundpage'>
+                            <div className="threeDivider">    
+                                <div className="threeDividerText">
+                                    <h1>I found a pet thats not mine</h1>
+                                </div>
+                                
+                            </div>
+                            </Link>
+                            <div>
+                                <Image src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX4279501.jpg" size="medium"/>
+                            </div>
+                          </Grid.Column>
+
+                          <Grid.Column>
+                                <Link to="/lostpage">
+                                <div className="threeDivider">
+                                        <div className="threeDividerText">
+                                            <h1>I lost a pet</h1>
+                                        </div>
+                                       
+                                </div>
+                                </Link>
+                          </Grid.Column>
+
+                          <Grid.Column>
+                            <Link to="/search">
+                            <div className="threeDivider">
+                                    <div className="threeDividerText">
+                                        <h1>Search lost and found pets</h1>
+                                    </div>
+                            </div>
+                            </Link>
+                            <div>
+                                <Image src="https://ak3.picdn.net/shutterstock/videos/16019503/thumb/1.jpg"size="medium"/>
+                            </div>
+                          </Grid.Column>
+
+                        </Grid.Row>
+                    </Grid>
+                </div>
+
+            </div>
             )
         } else {
             return(

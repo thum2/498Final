@@ -61,7 +61,7 @@ class FoundPage extends Component {
                     </span>
                     <div className="FoundPage_Navi">
                         <Breadcrumb.Section>
-                            <Link to={'/notification'}>
+                            <Link to={'/notifications'}>
                                 Notifications
                             </Link>
                         </Breadcrumb.Section>
