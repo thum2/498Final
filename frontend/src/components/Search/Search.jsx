@@ -19,13 +19,15 @@ class Search extends Component {
             petValue: '',
             resultCount: 0,
             searchList:[],
-            pets:[]
+            pets:[],
+            search:[]
         }
 
         this.searchL = [];
         this.baseUrl = "/api/pets";
         this.searchChangehandler = this.searchChangehandler.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
+        this.viewPets = this.viewPets.bind(this);
     }
 
     clickHandler(){
@@ -52,6 +54,7 @@ class Search extends Component {
             .then((response) =>{
                 this.setState({
                     pets: response.data,
+                    search: response.data,
                     resultCount: response.data.data.length
                 })
                 console.log(response.data);
@@ -61,8 +64,29 @@ class Search extends Component {
             })
     }
 
+
+    viewPets(type,val){
+      console.log(type);
+      console.log(val);
+      if(type != "sortby"){
+        let new_pets = [];
+        let all_pets = this.state.search.data;
+        for(let i=0;i<all_pets.length;i++){
+            //make sure pet has the type,if the values match add it
+            if(all_pets[i][type] && (all_pets[i][type]).toLowerCase() == (val).toLowerCase()){
+
+              new_pets.push(all_pets[i]);
+            }
+        }
+        //console.log(new_pets)
+        this.setState({pets: {data:new_pets}})
+      }
+    }
+
     searchChangehandler(event, val, type){
         if(type=="pet"){
+                      this.viewPets("type",val)
+
             this.setState({
                 petValue: val
             });
@@ -70,17 +94,20 @@ class Search extends Component {
         else if(type=="gender"){
             this.setState({
                 genderValue: val
-            })
+            });
+            this.viewPets(type,val)
         }
         else if(type=="breed"){
             this.setState({
                 breedValue: val
-            })
+            });
+            this.viewPets(type,val)
         }
         else if(type=="color"){
             this.setState({
                 colorValue: val
-            })
+            });
+            this.viewPets(type,val)
         }
         else{
             this.setState({
@@ -94,6 +121,7 @@ class Search extends Component {
     }
 
     render(){
+        console.log(this.state.pets)
         return(
           <div className="Search">
               <div className="Search_Header">
