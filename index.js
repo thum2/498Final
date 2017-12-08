@@ -24,21 +24,40 @@ app.use(bodyParser.json());
 app.route('/').get(function(req, res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 });
+
 app.route('/login').get(function(req, res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 });
+app.route('/lostpage').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
+
+app.route('/foundpage').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
+
+app.route('/search').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
+
 app.route('/register').get(function(req, res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 });
+
 app.route('/dashboard').get(function(req,res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 })
 app.route('/detailview/:id').get(function(req,res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 })
+
 app.route('/petsfound').get(function(req,res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
-})
+});
+
+app.route('/notifications').get(function(req, res) {
+	return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
 
 /* New things ================================================================ */
 

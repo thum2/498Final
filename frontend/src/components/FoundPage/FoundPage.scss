@@ -1,0 +1,38 @@
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin full {
+    width: 100%;
+    height: 100%;
+}
+
+.FoundPage{
+    position: relative;
+    @include full;
+}
+
+.FoundPage_Header{
+    position: relative;
+    height: 25%;
+    width: 100%;
+    @include center;
+    flex-direction: column;
+}
+
+.FoundPage_Navi{
+    position: relative;
+    height:5%;
+    float:right;
+    margin-right: 3%;
+    display: flex;
+    flex-direction: row;
+}
+
+.FoundPage_Body{
+    position: relative;
+    height: 70%;
+    width: 100%;
+}

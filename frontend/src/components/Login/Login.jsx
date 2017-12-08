@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, Card } from 'semantic-ui-react'
+import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
@@ -71,6 +71,10 @@ class Login extends Component {
             <form className="Login" action="/" onSubmit={this.onSubmit}>
             <Card className="Login__content">
                 <div>
+                    <h1>
+                        <Icon name='paw' size='big' />
+                        PetFinder
+                    </h1>
                     <h1>Login</h1>
                     <Input label="Email" onChange={this.onChangeEmail} />
                     <br/><br/>
