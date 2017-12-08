@@ -9,7 +9,9 @@ import FoundPage from './components/FoundPage/FoundPage.jsx';
 import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login.jsx';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
-
+import Notifications from './components/Notifications/Notifications.jsx';
+import DetailView from './components/DetailView/DetailView.jsx'
+import FoundGallery from './components/FoundGallery/FoundGallery.jsx'
 import styles from './styles/main.scss';
 
 ReactDom.render(
@@ -21,8 +23,10 @@ ReactDom.render(
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
             <Route exact path="/dashboard" component={Dashboard}/>
-            <Route exact path="/search" component={Search}/>
-        </Switch>
+			<Route exact path="/detailview/:id" component={DetailView}/>
+            <Route exact path="/petsfound" component={FoundGallery}/>
+			<Route exact path="/notifications" component={Notifications}/>
+        </Switch>    
     </Router>,
     document.getElementById('react-app')
 );

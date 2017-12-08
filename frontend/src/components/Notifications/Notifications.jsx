@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Button, Card, Icon, Grid } from 'semantic-ui-react'
+import { Button, Card, Grid, Image, Reveal, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from './styles.scss'
 
-class Dashboard extends Component {
-
-    constructor() {
+class Notifications extends Component {
+	constructor() {
         super();
         this.state = {
             isLoggedIn: false
@@ -40,7 +39,7 @@ class Dashboard extends Component {
 
         if (this.state.isLoggedIn) {
             return(
-                <div className="Dashboard">
+                <div className="Notifications">
 
                     <div className="navbar">
                         <span>
@@ -79,7 +78,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                 <div className="threeDivider">
-                                    <Link to="/foundpage">
+                                    <Link to="/FoundPet">
                                         <div className="threeDividerText">
                                             <h1>I found a pet that's not mine</h1>
                                         </div>
@@ -89,7 +88,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                     <div className="threeDivider">
-                                        <Link to="/lostpage">
+                                        <Link to="/LostPet">
                                             <div className="threeDividerText">
                                                 <h1>I lost a pet</h1>
                                             </div>
@@ -99,7 +98,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                 <div className="threeDivider">
-                                    <Link to="/search">
+                                    <Link to="/SearchPet">
                                         <div className="threeDividerText">
                                             <h1>Search lost and found pets</h1>
                                         </div>
@@ -115,7 +114,7 @@ class Dashboard extends Component {
             )
         } else {
             return(
-                <div className="Dashboard">
+                <div className="Notifications">
                     <Card>
                         <h1>You must log in before you can see this page.</h1>
                         <Link to="/">
@@ -128,4 +127,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard
+export default Notifications
