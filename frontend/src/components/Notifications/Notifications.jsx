@@ -50,7 +50,7 @@ class Notifications extends Component {
                                 </Button>
                             </Link>
 
-                            <Link to="/" onClick={this.logOut()}>
+                            <Link to="/" onClick={this.logOut}>
                                 <Button basic color="black" size="huge">
                                     Logout
                                 </Button>
@@ -78,9 +78,9 @@ class Notifications extends Component {
 
                               <Grid.Column>
                                 <div className="threeDivider">
-                                    <Link to="/FoundPet">
+                                    <Link to="/foundpage">
                                         <div className="threeDividerText">
-                                            <h1>I found a pet that's not mine</h1>
+                                            <h1>I found a pet that'\''s not mine</h1>
                                         </div>
                                     </Link>
                                 </div>
@@ -88,7 +88,7 @@ class Notifications extends Component {
 
                               <Grid.Column>
                                     <div className="threeDivider">
-                                        <Link to="/LostPet">
+                                        <Link to="/lostpage">
                                             <div className="threeDividerText">
                                                 <h1>I lost a pet</h1>
                                             </div>

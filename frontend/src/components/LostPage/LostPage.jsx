@@ -3,6 +3,7 @@ import { Button, Input, Breadcrumb, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import axios from 'axios'
 
 import styles from './LostPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,12 +15,28 @@ class LostPage extends Component {
       startDate: moment()
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(date) {
     this.setState({
       startDate: date
     });
+  }
+  handleSubmit(){
+    let info = {}
+    let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
+    for(let i=0;i<entries.length;i++){
+        let val = document.getElementById(entries[i]).value;
+        if(val){
+            info[entries[i]] = val;
+        }
+    }
+    info["found"] = false;
+    info["date"] = this.state.startDate;
+    axios.post('/api/pets',info)
+    .then((res)=>{console.log(res)});
+
   }
     render() {
         return(
@@ -47,11 +64,11 @@ class LostPage extends Component {
                         <tbody>
                             <tr>
                                 <th>Pet's species</th>
-                                <td><input></input></td>
+                                <td><input id="species"></input></td>
                             </tr>
                             <tr>
                                 <th>Pet's name</th>
-                                <td><input></input></td>
+                                <td><input id="name"></input></td>
                             </tr>
                             <tr>
                                 <th>Lost Date</th>
@@ -69,38 +86,35 @@ class LostPage extends Component {
                             </tr>
                             <tr>
                                 <th>Lost location</th>
-                                <td><input></input></td>
+                                <td><input id="location"></input></td>
                             </tr>
                             <tr>
                                 <th cellspan="2">Description</th>
                             </tr>
                             <tr>
                                 <th>Breed</th>
-                                <td><input></input></td>
+                                <td><input id="breed"></input></td>
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td><input></input></td>
+                                <td><input id="gender"></input></td>
                             </tr>
-                            <tr>
-                                <th>Eye Color</th>
-                                <td><input></input></td>
-                            </tr>
+                            
                             <tr>
                                 <th>Hair Color</th>
-                                <td><input></input></td>
+                                <td><input id="color"></input></td>
                             </tr>
                             <tr>
                                 <th>Images</th>
-                                <td><input></input></td>
+                                <td><input id="img_url"></input></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div className="submitButton">
-                          <Link to={'/'}>
+                          <Button  onClick={this.handleSubmit}>
                                 Report Lost Pet
-                          </Link>
+                          </Button>
                     </div>
                 </div>
             </div>

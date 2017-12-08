@@ -30,8 +30,11 @@ class Dashboard extends Component {
         })
     }
 
-    logOut() {
+    logOut(e) {
+        console.log(e)
+        let self = this
         axios.get('/api/logout').then( (res) => {
+            console.log(self.state);
             console.log("Logged out");
         })
     }
@@ -51,7 +54,7 @@ class Dashboard extends Component {
                                 </Button>
                             </Link>
 
-                            <Link to="/" onClick={this.logOut()}>
+                            <Link to="/" onClick={this.logOut}>
                                 <Button basic color="black" size="huge">
                                     Logout
                                 </Button>
@@ -81,7 +84,7 @@ class Dashboard extends Component {
                                 <div className="threeDivider">
                                     <Link to="/foundpage">
                                         <div className="threeDividerText">
-                                            <h1>I found a pet that's not mine</h1>
+                                            <h1>I found a pet that'\''s not mine</h1>
                                         </div>
                                     </Link>
                                 </div>

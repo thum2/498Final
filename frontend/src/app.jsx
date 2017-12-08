@@ -27,6 +27,7 @@ ReactDom.render(
             <Route exact path="/petsfound" component={FoundGallery}/>
 			<Route exact path="/notifications" component={Notifications}/>
             <Route exact path="/search" component={Search} />
+
         </Switch>
     </Router>,
     document.getElementById('react-app')

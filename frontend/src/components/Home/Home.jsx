@@ -79,7 +79,7 @@ class Home extends Component {
                           <Grid.Column>
                             <div className="threeDivider">
                                 <div className="threeDividerText">
-                                    <h1>I found a pet that's not mine</h1>
+                                    <h1>I found a pet thats not mine</h1>
                                 </div>
                             </div>
                           </Grid.Column>

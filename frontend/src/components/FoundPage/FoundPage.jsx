@@ -3,6 +3,8 @@ import { Button, Input, Breadcrumb, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import axios from 'axios'
+
 
 import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,12 +16,41 @@ class FoundPage extends Component {
       startDate: moment()
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
+    componentDidMount() {
+        axios.get('/api/profile').then( (res) => {
+            console.log(res);
+            this.setState({
+                isLoggedIn: true
+            })
+        }).catch( (err) => {
+            this.setState({
+                isLoggedIn: false
+            })
+        })
+    }
 
   handleChange(date) {
     this.setState({
       startDate: date
     });
+  }
+  handleSubmit(){
+    let info = {}
+    let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
+    for(let i=0;i<entries.length;i++){
+        let val = document.getElementById(entries[i]).value;
+        if(val){
+            info[entries[i]] = val;
+        }
+    }
+    info["found"] = true;
+    info["datefound"] = this.state.startDate;
+    axios.post('/api/pets',info)
+    .then((res)=>{console.log(res)});
+
   }
     render() {
         return(
@@ -46,12 +77,12 @@ class FoundPage extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <th>Pet's species</th>
-                                <td><input></input></td>
+                                <th>Pets species</th>
+                                <td><input id="species"></input></td>
                             </tr>
                             <tr>
-                                <th>Pet's name</th>
-                                <td><input></input></td>
+                                <th>Pets name</th>
+                                <td><input id="name"></input></td>
                             </tr>
                             <tr>
                                 <th>Found Date</th>
@@ -60,8 +91,7 @@ class FoundPage extends Component {
                                         <div className="ui input left icon">
                                             <DatePicker
                                                 selected={this.state.startDate}
-                                                onChange={this.handleChange}
-                                            />
+                                                onChange={this.handleChange}/>
                                         </div>
                                         <Icon name="calendar" />
                                     </div>
@@ -69,18 +99,18 @@ class FoundPage extends Component {
                             </tr>
                             <tr>
                                 <th>Found location</th>
-                                <td><input></input></td>
+                                <td><input id="location"></input></td>
                             </tr>
                             <tr>
                                 <th cellspan="2">Description</th>
                             </tr>
                             <tr>
                                 <th>Breed</th>
-                                <td><input></input></td>
+                                <td><input id="breed"></input></td>
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td><input></input></td>
+                                <td><input id="gender"></input></td>
                             </tr>
                             <tr>
                                 <th>Eye Color</th>
@@ -88,19 +118,19 @@ class FoundPage extends Component {
                             </tr>
                             <tr>
                                 <th>Hair Color</th>
-                                <td><input></input></td>
+                                <td><input id="color"></input></td>
                             </tr>
                             <tr>
                                 <th>Images</th>
-                                <td><input></input></td>
+                                <td><input id="img_url"></input></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div className="submitButton">
-                          <Link to={'/'}>
+                          <Button  onClick={this.handleSubmit}>
                                 Report Found Pet
-                          </Link>
+                          </Button>
                     </div>
                 </div>
             </div>
