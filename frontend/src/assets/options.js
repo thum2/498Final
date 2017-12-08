@@ -33,13 +33,6 @@ let genderOptions = [
         {key:2, value:'female', text:'Female'},
 ];
 
-let eyeColorOptions = [
-        {key:1, value:'blue', text:'Blue'},
-        {key:2, value:'green', text:'Green'},
-        {key:3, value:'brown', text:'Brown'},
-        {key:4, value:'black', text:'Black'},
-
-];
 
 
-export {sortOptions, petOptions, dogBreedOptions, colorOptions, genderOptions, eyeColorOptions};
+export {sortOptions, petOptions, dogBreedOptions, colorOptions, genderOptions};

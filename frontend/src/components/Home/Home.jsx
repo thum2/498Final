@@ -39,31 +39,32 @@ class Home extends Component {
 
         return(
             <div className="Home">
+                <div className="header_home">
+                    <div className="navbar">
+                        <h1>
+                            <span>
+                                
+                                    <Icon link={true} to="/" name='paw' size='large'/>
+                                    Pet Finder
+                                    <Link to="/register" className="buttons">
+                                        <Button size="huge">
+                                            Sign Up
+                                        </Button>
+                                    </Link>
 
-                <div className="navbar">
-                    <span>
-                        <Link to="/register">
-                            <Button basic color="black" size="huge">
-                                Sign Up
-                            </Button>
-                        </Link>
-
-                        <Link to="/login">
-                            <Button basic color="black" size="huge">
-                                Login
-                            </Button>
-                        </Link>
-					</span>
-
-
+                                    <Link to="/login" className="buttons">
+                                        <Button size="huge">
+                                            Login
+                                        </Button>
+                                    </Link>
+        					</span>
+                        </h1>
+                    </div>
                 </div>
 
                 <div className="optionHolder">
                     <div className="centerer">
-                        <h1>
-                            <Icon name='paw' size='big' />
-                            PetFinder
-                        </h1>
+                        
 
                         <h1>The Web App That Helps Find Lost Pets</h1>
                         <h1>Register and Login to Access Posting Lost and Found Pets</h1>
@@ -72,33 +73,47 @@ class Home extends Component {
                     </div>
                 </div>
 
+                
                 <div className="optionHolder">
+                
                     <Grid columns={3}>
                         <Grid.Row>
 
                           <Grid.Column>
-                            <div className="threeDivider">
+                            <Link to='/login'>
+                            <div className="threeDivider">    
                                 <div className="threeDividerText">
                                     <h1>I found a pet thats not mine</h1>
                                 </div>
+                                
+                            </div>
+                            </Link>
+                            <div>
+                                <Image src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX4279501.jpg" size="medium"/>
                             </div>
                           </Grid.Column>
 
                           <Grid.Column>
+                                <Link to="/login">
                                 <div className="threeDivider">
-                                    <div className="threeDividerText">
-                                        <h1>I lost a pet</h1>
-                                    </div>
+                                        <div className="threeDividerText">
+                                            <h1>I lost a pet</h1>
+                                        </div>
+                                       
                                 </div>
+                                </Link>
                           </Grid.Column>
 
                           <Grid.Column>
+                            <Link to="/search">
                             <div className="threeDivider">
-                                <Link to="/search">
                                     <div className="threeDividerText">
                                         <h1>Search lost and found pets</h1>
                                     </div>
-                                </Link>
+                            </div>
+                            </Link>
+                            <div>
+                                <Image src="https://ak3.picdn.net/shutterstock/videos/16019503/thumb/1.jpg"size="medium"/>
                             </div>
                           </Grid.Column>
 

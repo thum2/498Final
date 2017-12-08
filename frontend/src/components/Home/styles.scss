@@ -1,5 +1,5 @@
 body {
-	background-image: url("https://wallpaperscraft.com/image/dog_muzzle_butterfly_tongue_sticking_out_spring_summer_93617_1920x1080.jpg");
+	/*background-image: url("https://wallpaperscraft.com/image/dog_muzzle_butterfly_tongue_sticking_out_spring_summer_93617_1920x1080.jpg");*/
 	height: 100%;
 	width: 100%;
 	background-size: cover;
@@ -10,12 +10,24 @@ body {
 	width: 100%;
 }
 
-.navbar {
-	float:right;
-	padding-top: 1em;
-	padding-right: 1em;
+.header_home{
+	position: fixed;
+	background-color: #3FBF7F;
+	width: 100%;
+	z-index: 1;
 }
 
+.navbar {
+	width: 100%;
+	padding-top: 1em;
+	padding-right: 1em;
+	margin: 0 auto;
+	color: LightGray;
+}
+.buttons{
+	float:right;
+	padding-bottom: 5px;
+}
 .optionHolder {
 	margin: 0 auto;
 	height: 25%;
@@ -41,8 +53,13 @@ body {
 	background-color: LightGray;
 	position: relative;
 	margin: 0 auto;
-	border-radius: 5%;
+	border: 10px;
 	opacity: 0.85;
+	border-style: solid;
+	border-color: #3FBF7F;
+}
+.threeDivider:hover{
+	opacity: 1;
 }
 
 .threeDividerText {

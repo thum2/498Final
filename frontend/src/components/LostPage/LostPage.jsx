@@ -25,7 +25,7 @@ class LostPage extends Component {
   }
   handleSubmit(){
     let info = {}
-    let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
+    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -33,9 +33,14 @@ class LostPage extends Component {
         }
     }
     info["found"] = false;
-    info["date"] = this.state.startDate;
-    axios.post('/api/pets',info)
-    .then((res)=>{console.log(res)});
+    info["original_website"] = "LOCAL";
+    info["description"] = null;
+    info["datefound"] = this.state.startDate.date; //lost date
+    axios.post('/api/pets',info).then((res)=>{
+        console.log(res);
+    }).catch((err)=>{
+        console.log(err);
+    });
 
   }
     render() {
@@ -47,7 +52,7 @@ class LostPage extends Component {
                     </span>
                     <div className="LostPage_Navi">
                         <Breadcrumb.Section>
-                            <Link to={'/notification'}>
+                            <Link to={'/notifications'}>
                                 Notifications
                             </Link>
                         </Breadcrumb.Section>
@@ -63,8 +68,8 @@ class LostPage extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <th>Pet's species</th>
-                                <td><input id="species"></input></td>
+                                <th>Pet Type</th>
+                                <td><input id="type"></input></td>
                             </tr>
                             <tr>
                                 <th>Pet's name</th>
