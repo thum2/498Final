@@ -79,7 +79,7 @@ class Home extends Component {
                           <Grid.Column>
                             <div className="threeDivider">
                                 <div className="threeDividerText">
-                                    <h1>I found a pet that's not mine</h1>
+                                    <h1>I found a pet thats not mine</h1>
                                 </div>
                             </div>
                           </Grid.Column>
@@ -94,7 +94,7 @@ class Home extends Component {
 
                           <Grid.Column>
                             <div className="threeDivider">
-                                <Link to="/SearchPet">
+                                <Link to="/search">
                                     <div className="threeDividerText">
                                         <h1>Search lost and found pets</h1>
                                     </div>
