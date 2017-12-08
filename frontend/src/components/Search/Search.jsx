@@ -107,7 +107,7 @@ class Search extends Component {
                   </span>
                   <div className="Search_Navi">
                       <Breadcrumb.Section>
-                          <Link to={'/notification'}>
+                          <Link to={'/notifications'}>
                               Notifications
                           </Link>
                       </Breadcrumb.Section>

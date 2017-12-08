@@ -34,8 +34,11 @@ class LostPage extends Component {
     }
     info["found"] = false;
     info["date"] = this.state.startDate;
-    axios.post('/api/pets',info)
-    .then((res)=>{console.log(res)});
+    axios.post('/api/pets',info).then((res)=>{
+        console.log(res);
+    }).catch((err)=>{
+        console.log(err);
+    });
 
   }
     render() {
@@ -47,7 +50,7 @@ class LostPage extends Component {
                     </span>
                     <div className="LostPage_Navi">
                         <Breadcrumb.Section>
-                            <Link to={'/notification'}>
+                            <Link to={'/notifications'}>
                                 Notifications
                             </Link>
                         </Breadcrumb.Section>

@@ -48,8 +48,11 @@ class FoundPage extends Component {
     }
     info["found"] = true;
     info["datefound"] = this.state.startDate;
-    axios.post('/api/pets',info)
-    .then((res)=>{console.log(res)});
+    axios.post('/api/pets',info).then((res)=>{
+        console.log(res);
+    }).catch((err)=>{
+        console.log(err);
+    });
 
   }
     render() {
@@ -61,7 +64,7 @@ class FoundPage extends Component {
                     </span>
                     <div className="FoundPage_Navi">
                         <Breadcrumb.Section>
-                            <Link to={'/notification'}>
+                            <Link to={'/notifications'}>
                                 Notifications
                             </Link>
                         </Breadcrumb.Section>
@@ -111,10 +114,6 @@ class FoundPage extends Component {
                             <tr>
                                 <th>Gender</th>
                                 <td><input id="gender"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Eye Color</th>
-                                <td><input></input></td>
                             </tr>
                             <tr>
                                 <th>Hair Color</th>
