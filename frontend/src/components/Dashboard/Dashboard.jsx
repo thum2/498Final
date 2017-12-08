@@ -45,11 +45,11 @@ class Dashboard extends Component {
             return(
                 <div className="Dashboard">
 
-                    <div className="header">
+                    <div className="header_home">
                         <div className="navbar">
                             <h1>
                                 <span>
-                                    <Icon link={true} to="/" name='paw' size='large'/>
+                                    <Icon link={true} to="/dashboard" name='paw' size='large'/>
                                     Pet Finder
                                     <Link to="/notifications" className="buttons">
                                         <Button  size="huge">

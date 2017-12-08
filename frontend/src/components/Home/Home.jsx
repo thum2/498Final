@@ -39,7 +39,7 @@ class Home extends Component {
 
         return(
             <div className="Home">
-                <div className="header">
+                <div className="header_home">
                     <div className="navbar">
                         <h1>
                             <span>
