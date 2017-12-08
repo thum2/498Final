@@ -80,7 +80,7 @@ class Notifications extends Component {
                                 <div className="threeDivider">
                                     <Link to="/foundpage">
                                         <div className="threeDividerText">
-                                            <h1>I found a pet that'\''s not mine</h1>
+                                            <h1>I found a pet that's not mine</h1>
                                         </div>
                                     </Link>
                                 </div>
