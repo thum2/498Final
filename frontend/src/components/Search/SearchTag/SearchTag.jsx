@@ -22,9 +22,6 @@ class SearchTag extends Component {
             let tags = this.props.searchList.map((searchList,idx) =>{
                     return {index: idx, tagName:searchList};
             });
-            // let tags = this.props.searchList;
-            // console.log("Tags: " + tags.value);
-            // console.log("Type of: " + typeof(tags));
 
             let SearchTag = tags.map((tag,idx) =>{
                 let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
