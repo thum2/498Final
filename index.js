@@ -28,6 +28,17 @@ app.route('/').get(function(req, res) {
 app.route('/login').get(function(req, res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));
 });
+app.route('/lostpage').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
+
+app.route('/foundpage').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
+
+app.route('/search').get(function(req, res) {
+  return res.sendFile(path.join(__dirname, './backend/static/index.html'));
+});
 
 app.route('/register').get(function(req, res) {
   return res.sendFile(path.join(__dirname, './backend/static/index.html'));

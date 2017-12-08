@@ -79,7 +79,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                 <div className="threeDivider">
-                                    <Link to="/FoundPet">
+                                    <Link to="/foundpage">
                                         <div className="threeDividerText">
                                             <h1>I found a pet that's not mine</h1>
                                         </div>
@@ -89,7 +89,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                     <div className="threeDivider">
-                                        <Link to="/LostPet">
+                                        <Link to="/lostpage">
                                             <div className="threeDividerText">
                                                 <h1>I lost a pet</h1>
                                             </div>
@@ -99,7 +99,7 @@ class Dashboard extends Component {
 
                               <Grid.Column>
                                 <div className="threeDivider">
-                                    <Link to="/SearchPet">
+                                    <Link to="/search">
                                         <div className="threeDividerText">
                                             <h1>Search lost and found pets</h1>
                                         </div>

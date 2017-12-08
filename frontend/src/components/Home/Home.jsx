@@ -39,9 +39,9 @@ class Home extends Component {
        
         return(
             <div className="Home">
+
                 <div className="navbar">
                     <span>
-
                         <Link to="/register">
                             <Button basic color="black" size="huge">
                                 Sign Up
@@ -53,8 +53,9 @@ class Home extends Component {
                                 Login
                             </Button>
                         </Link>
+					</span>
 
-                    </span>
+
                 </div>
 
                 <div className="optionHolder">
