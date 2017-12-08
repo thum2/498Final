@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Label, Card, Item, Image, List } from 'semantic-ui-react'
+import { Button, Label, Card, Item, Image, List, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -8,7 +8,7 @@ import style from './SearchGallery.scss'
 class SearchGallery extends Component {
     constructor(){
         super();
-        this.baseUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+
     }
 
     render(){
@@ -21,12 +21,12 @@ class SearchGallery extends Component {
         }
         else{
 
-                let pets = this.props.pets.map((pet,idx) =>{
-                        return {index: idx, name: pet.name, breed: pet.breed, gender: pet.gender, color: pet.color, eyeColor: eye.color};
+                let pets = this.props.pets.data.map((pet,idx) =>{
+                        return {index: idx, name: pet.name, breed: pet.breed, gender: pet.gender, color: pet.color};
                 });
 
                 let SearchGallery = pets.map((pet,idx) =>{
-                    let name = pet.name.charAt(0).toUpperCase() + pet.name.slice(1);
+                    let name = pet.name;
                     let breed = pet.breed;
                     let gender = pet.gender;
                     let color = pet.color;

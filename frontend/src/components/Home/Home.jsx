@@ -36,7 +36,7 @@ class Home extends Component {
     }
 
     render() {
-       
+
         return(
             <div className="Home">
 
@@ -108,7 +108,7 @@ class Home extends Component {
 
             </div>
         )
-        
+
     }
 }
 

@@ -47,6 +47,19 @@ class Search extends Component {
 
     }
 
+    componentWillMount(){
+        let url = this.baseUrl;
+        axios.get(url)
+            .then((response) =>{
+                this.setState({
+                    pets:response.data,
+                })
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     searchChangehandler(event, val, type){
         if(type=="pet"){
