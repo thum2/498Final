@@ -39,7 +39,7 @@ class FoundPage extends Component {
   }
   handleSubmit(){
     let info = {}
-    let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
+    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -47,7 +47,9 @@ class FoundPage extends Component {
         }
     }
     info["found"] = true;
-    info["datefound"] = this.state.startDate;
+      info["original_website"] = "LOCAL";
+    info["description"] = null;
+    info["datefound"] = this.state.startDate.date;
     axios.post('/api/pets',info).then((res)=>{
         console.log(res);
     }).catch((err)=>{
@@ -80,8 +82,8 @@ class FoundPage extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <th>Pets species</th>
-                                <td><input id="species"></input></td>
+                                <th>Pet Type</th>
+                                <td><input id="type"></input></td>
                             </tr>
                             <tr>
                                 <th>Pets name</th>
