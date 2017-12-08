@@ -37,6 +37,7 @@ class FoundPage extends Component {
       startDate: date
     });
   }
+
   handleSubmit(){
     let info = {}
     let entries = ["species", "name", "location", "breed", "gender", "color", "img_url"]
@@ -48,44 +49,45 @@ class FoundPage extends Component {
     }
     info["found"] = true;
     info["datefound"] = this.state.startDate;
-    axios.post('/api/pets',info).then((res)=>{
+    
+    axios.post('/api/pets', info).then((res)=>{
         console.log(res);
     }).catch((err)=>{
         console.log(err);
     });
 
   }
+
     render() {
         return(
             <div className="FoundPage">
-                <div className="FoundPage_Header">
-                    <span className="GroupTitle">
-                        <h1><Icon name="paw" />Pet Finder</h1>
-                    </span>
-                    <div className="FoundPage_Navi">
-                        <Breadcrumb.Section>
-                            <Link to={'/notifications'}>
+
+                <div className="navbar">
+                    <span>
+
+                        <Link to="/notifications">
+                            <Button basic color="black" size="huge">
                                 Notifications
-                            </Link>
-                        </Breadcrumb.Section>
-                        <Breadcrumb.Divider />
-                        <Breadcrumb.Section>
-                            <Link to={'/'}>
+                            </Button>
+                        </Link>
+
+                        <Link to="/" onClick={this.logOut}>
+                            <Button basic color="black" size="huge">
                                 Logout
-                            </Link>
-                        </Breadcrumb.Section>
-                    </div>
+                            </Button>
+                        </Link>
+
+                    </span>
                 </div>
+
                 <div className="FoundPage_Body">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Pets species</th>
-                                <td><input id="species"></input></td>
+                                <Input id="species" label='Pet Species' placeholder='Dog' />
                             </tr>
                             <tr>
-                                <th>Pets name</th>
-                                <td><input id="name"></input></td>
+                                <Input id="name" label='Pet Name' placeholder='Rover' />
                             </tr>
                             <tr>
                                 <th>Found Date</th>
@@ -101,27 +103,22 @@ class FoundPage extends Component {
                                 </td>
                             </tr>
                             <tr>
-                                <th>Found location</th>
-                                <td><input id="location"></input></td>
+                                <Input id="location" label='Location Found' placeholder='XYZ Park' />
                             </tr>
                             <tr>
                                 <th cellspan="2">Description</th>
                             </tr>
                             <tr>
-                                <th>Breed</th>
-                                <td><input id="breed"></input></td>
+                                <Input id="breed" label='Breed' placeholder='Golden Retriever' />
                             </tr>
                             <tr>
-                                <th>Gender</th>
-                                <td><input id="gender"></input></td>
+                                <Input id="gender" label='Gender' placeholder='Male' />
                             </tr>
                             <tr>
-                                <th>Hair Color</th>
-                                <td><input id="color"></input></td>
+                                <Input id="color" label='Hair Color' placeholder='Golden' />
                             </tr>
                             <tr>
-                                <th>Images</th>
-                                <td><input id="img_url"></input></td>
+                                <Input id="img_url" label='Image URL' placeholder='http://imgur.com/DogPic' />
                             </tr>
                         </tbody>
                     </table>
@@ -132,6 +129,7 @@ class FoundPage extends Component {
                           </Button>
                     </div>
                 </div>
+
             </div>
         )
     }

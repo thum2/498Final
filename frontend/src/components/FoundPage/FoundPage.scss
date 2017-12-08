@@ -9,6 +9,12 @@
     height: 100%;
 }
 
+.navbar {
+    float:right;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
 .FoundPage{
     position: relative;
     @include full;
