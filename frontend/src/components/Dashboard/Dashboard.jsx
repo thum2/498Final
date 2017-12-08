@@ -70,7 +70,6 @@ class Dashboard extends Component {
                     <div className="centerer">
                         
 
-<<<<<<< HEAD
                         <h1>The Web App That Helps Find Lost Pets</h1>
                         <h1>Register and Login to Access Posting Lost and Found Pets</h1>
 
