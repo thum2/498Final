@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions, eyeColorOptions } from '../../assets/options.js'
+import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions} from '../../assets/options.js'
 import SearchTag from './SearchTag/SearchTag.jsx'
 import SearchGallery from './SearchGallery/SearchGallery.jsx'
 
@@ -16,7 +16,6 @@ class Search extends Component {
             genderValue: '',
             breedValue: '',
             colorValue: '',
-            eyeColorValue: '',
             petValue: '',
             resultCount: 0,
             searchList:[],
@@ -52,7 +51,8 @@ class Search extends Component {
         axios.get(url)
             .then((response) =>{
                 this.setState({
-                    pets:response.data,
+                    pets: response.data,
+                    resultCount: response.data.data.length
                 })
                 console.log(response.data);
             })
@@ -165,14 +165,6 @@ class Search extends Component {
                                   options={colorOptions}
                                   selection
                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "color")}
-                              />
-                          </List.Item>
-                          <List.Item>
-                              <Dropdown
-                                  placeholder="Eye Color"
-                                  options={eyeColorOptions}
-                                  selection
-                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "eyeColor")}
                               />
                           </List.Item>
                       </List>
