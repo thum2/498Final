@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon } from 'semantic-ui-react'
+import { Button, Input, Breadcrumb, Icon, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
 
+import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions} from '../../assets/options.js'
 
 import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -13,11 +14,16 @@ class FoundPage extends Component {
     constructor (props) {
     super(props)
     this.state = {
-      startDate: moment()
+      startDate: moment(),
+        petType:'',
+        petBreed: '',
+        petGender: '',
+        petColor: '',
+        petName: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.inputChangeHandler = this.inputChangeHandler.bind(this);
   }
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
@@ -39,7 +45,7 @@ class FoundPage extends Component {
   }
   handleSubmit(){
     let info = {}
-    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url"]
+    let entries = ["type", "name", "location", "breed", "gender", "size", "color", "img_url"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -57,6 +63,35 @@ class FoundPage extends Component {
     });
 
   }
+    
+    inputChangeHandler(event, val, type){
+        if(type=="pet"){
+            this.setState({
+                petType: val
+            });
+        }
+        else if(type=="gender"){
+            this.setState({
+                petGender: val
+            })
+        }
+        else if(type=="breed"){
+            this.setState({
+                petBreed: val
+            })
+        }
+        else if(type=="color"){
+            this.setState({
+                petColor: val
+            })
+        }
+        else{
+            this.setState({
+                petName: val
+            })
+        }
+        
+    }
     render() {
         return(
             <div className="FoundPage">
@@ -83,11 +118,26 @@ class FoundPage extends Component {
                         <tbody>
                             <tr>
                                 <th>Pet Type</th>
-                                <td><input id="type"></input></td>
+                                <td>
+                                    <Dropdown
+                                      placeholder="Pet Type"
+                                      options={petOptions}
+                                      selection
+                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "pet")}
+                                    />
+                                </td>
                             </tr>
                             <tr>
-                                <th>Pets name</th>
-                                <td><input id="name"></input></td>
+                                <th>Pet's name</th>
+                                <td>
+                                    <Input
+                                        fluid
+                                        type="text"
+                                        placeholder='Name'
+                                        value={this.state.petName}
+                                        onChange={(event, {value}) => this.inputChangeHandler(event, value, "name")}>
+                                    </Input>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Found Date</th>
@@ -96,7 +146,8 @@ class FoundPage extends Component {
                                         <div className="ui input left icon">
                                             <DatePicker
                                                 selected={this.state.startDate}
-                                                onChange={this.handleChange}/>
+                                                onChange={this.handleChange}
+                                            />
                                         </div>
                                         <Icon name="calendar" />
                                     </div>
@@ -111,15 +162,44 @@ class FoundPage extends Component {
                             </tr>
                             <tr>
                                 <th>Breed</th>
-                                <td><input id="breed"></input></td>
+                                <td>
+                                    <Dropdown
+                                      placeholder="Breed"
+                                      options={dogBreedOptions}
+                                      selection
+                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "breed")}
+                                    />
+                                </td>
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td><input id="gender"></input></td>
+                                <td>
+                                    <Dropdown
+                                      placeholder="Gender"
+                                      options={genderOptions}
+                                      selection
+                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "gender")}
+                                  />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Size</th>
+                                <td>
+                                  <Radio label='Small' value='sm' checked={this.state.petSize === 'sm'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
+                                  <Radio label='Medium' value='md' checked={this.state.petSize === 'md'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
+                                  <Radio label='Large' value='lg' checked={this.state.petSize === 'lg'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
+                                </td>
                             </tr>
                             <tr>
                                 <th>Hair Color</th>
-                                <td><input id="color"></input></td>
+                                <td>
+                                    <Dropdown
+                                          placeholder="Color"
+                                          options={colorOptions}
+                                          selection
+                                         onChange={(event, {value}) => this.inputChangehandler(event, value, "color")}
+                                      />
+                                </td>
                             </tr>
                             <tr>
                                 <th>Images</th>
@@ -140,3 +220,7 @@ class FoundPage extends Component {
 }
 
 export default FoundPage
+
+
+
+

@@ -82,11 +82,6 @@ class Search extends Component {
                 colorValue: val
             })
         }
-        else if(type=="eyeColor"){
-            this.setState({
-                eyeColorValue: val
-            })
-        }
         else{
             this.setState({
                 sortValue: val
