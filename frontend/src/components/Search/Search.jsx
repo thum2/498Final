@@ -3,7 +3,7 @@ import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-
 import DebounceInput from 'react-debounce-input';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import {sortOptions, genderOptions} from '../../assets/options.js'
+import {sortOptions, genderOptions, lostFound} from '../../assets/options.js'
 import SearchTag from './SearchTag/SearchTag.jsx'
 import SearchGallery from './SearchGallery/SearchGallery.jsx'
 
@@ -18,6 +18,7 @@ class Search extends Component {
             colorValue: '',
             breedValue: '',
             genderValue: '',
+            lostFoundValue: '',
             resultCount: 0,
             pets:[],
             search:[]
@@ -45,19 +46,18 @@ class Search extends Component {
             })
     }
 
-    viewPets(type, val){
-      console.log(type);
-      console.log(val);
+    viewPets(type){
       let pet = this.state.petValue;
       let breed = this.state.breedValue;
       let color = this.state.colorValue;
       let gender = this.state.genderValue;
-      let list = [pet, gender, breed, color];
+      let lostFound = (this.state.lostFoundValue == 'lost') ? "false" : "true";
+      let list = [pet, gender, breed, color, lostFound];
 
       if(type != "sortby"){
         let all_pets = this.state.pets.data;
         let new_pets = checkMatch(all_pets, list);
-        console.log(new_pets);
+        // let new_pets = [];
         this.setState({
             search: {data:new_pets},
             resultCount:new_pets.length
@@ -78,51 +78,77 @@ class Search extends Component {
         if(type == "type"){
             this.setState({
                 petValue: ''
+            },() => {
+                this.viewPets("search")
             })
-            this.viewPets("type", '');
         }
         else if(type == "breed"){
             this.setState({
                 breedValue: ''
+            },() => {
+                this.viewPets("search")
             })
-            this.viewPets("breed", '');
         }
         else if(type == "color"){
             this.setState({
                 colorValue: ''
+            },() => {
+                this.viewPets("search")
             })
-            this.viewPets("color", '');
         }
         else if(type == "gender"){
             this.setState({
                 genderValue: ''
+            },() => {
+                this.viewPets("search")
             })
-            this.viewPets("gender", '');
         }
+        else if(type == "lostFound"){
+            this.setState({
+                lostFoundValue: ''
+            },() => {
+                this.viewPets("search")
+            })
+        }
+
     }
 
     searchChangeHandler(event, type, val){
         if(type == "type"){
             this.setState({
                 petValue: event.target.value
+            },() => {
+                this.viewPets("search")
             })
         }
         else if(type == "breed"){
             this.setState({
                 breedValue: event.target.value
+            },() => {
+                this.viewPets("search")
             })
         }
         else if(type == "color"){
             this.setState({
                 colorValue: event.target.value
+            },() => {
+                this.viewPets("search")
             })
         }
         else if(type == "gender"){
             this.setState({
                 genderValue: val
+            },() => {
+                this.viewPets("search")
             })
         }
-        this.viewPets("search",val);
+        else if(type == "lostFound"){
+            this.setState({
+                lostFoundValue: val
+            },() => {
+                this.viewPets("search")
+            })
+        }
     }
 
     render(){
@@ -205,10 +231,19 @@ class Search extends Component {
                                       onChange={event => this.searchChangeHandler(event,"color")}/>
                                 </Input>
                           </List.Item>
+                          <List.Item>
+                              <Dropdown
+                                  placeholder="Lost or Found"
+                                  options={lostFound}
+                                  selection
+                                  value={this.state.lostFoundValue}
+                                  onChange={(event, {value}) => this.searchChangeHandler(event,"lostFound", value)}
+                              />
+                          </List.Item>
                       </List>
                   </div>
                   <div className="Search_ResultsBar">
-                      {<SearchTag delete={this.removeTagHandler} searchType={this.state.petValue} searchBreed={this.state.breedValue} searchColor={this.state.colorValue} searchGender={this.state.genderValue}/>}
+                      {<SearchTag lostFound={this.state.lostFoundValue} delete={this.removeTagHandler} searchType={this.state.petValue} searchBreed={this.state.breedValue} searchColor={this.state.colorValue} searchGender={this.state.genderValue}/>}
                   </div>
               </div>
               <div className="Search_Gallery">
@@ -228,20 +263,33 @@ function showElement(div){
 
 function checkMatch(all_pets, listVal){
     let result = [];
-    let checkList = ["type", "gender", "breed", "color"];
+    let checkList = ["type", "gender", "breed", "color", "found"];
     for(let i=0;i<all_pets.length;i++){
         let flag = true;
         for(let j=0; j<checkList.length; j++){
             //make sure pet has the type,if the values match add it
-            if(listVal[j] && all_pets[i][checkList[j]]){
-                console.log("in");
-                if(all_pets[i][checkList[j]].toLowerCase() != (listVal[j]).toLowerCase()){
+            let description = all_pets[i]["description"];
+
+            let gender_alt = description ? (description.split("\n")[0] ? description.split("\n")[0] : "") : "";
+            let gender = all_pets[i]["gender"] ? all_pets[i]["gender"] : gender_alt;
+            let breed_alt = description ? (description.split("\n")[2] ? description.split("\n")[2] : "") : "";
+            let breed = all_pets[i]["breed"] ? all_pets[i]["breed"] : breed_alt;
+            let color_alt = description ? (description.split("\n")[1] ? description.split("\n")[1] : "") : "";
+            let color = all_pets[i]["color"] ? all_pets[i]["color"] : color_alt;
+
+            let petType = all_pets[i]["type"];
+
+            let lostFound = all_pets[i]["found"];
+
+            let checkListVal = [petType, gender, breed, color, lostFound];
+            if(listVal[j] != '' && checkListVal[j] != ''){
+
+                if(checkListVal[j].toString().toLowerCase() !== (listVal[j]).toLowerCase()){
                     flag = false;
                 }
             }
         }
         if(flag){
-            console.log(flag);
             result.push(all_pets[i]);
         }
     }

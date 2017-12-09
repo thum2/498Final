@@ -12,7 +12,7 @@ class SearchTag extends Component {
     }
 
     handleDelete(event, idx){
-        let type = (idx==0 ? "type" : (idx==1 ? "gender":(idx == 2 ? "breed": "color")));
+        let type = (idx==0 ? "type" : (idx==1 ? "gender":(idx == 2 ? "breed": (idx == 3 ? "color" : "lostFound"))));
         this.props.delete(event, type);
     }
 
@@ -21,14 +21,15 @@ class SearchTag extends Component {
         let breed = this.props.searchBreed;
         let color = this.props.searchColor;
         let gender = this.props.searchGender;
-        if(type == '' && breed == '' && color == '' && gender == ''){
+        let lostFound = this.props.lostFound;
+        if(type == '' && breed == '' && color == '' && gender == '' && lostFound == ''){
             return(
                 <div className="SearchTagContainer">
                 </div>
             );
         }
         else{
-            let list = [type,gender,breed,color];
+            let list = [type, gender, breed, color, lostFound];
             let tags = list.map((val,idx) =>{
                     return {index: idx, tagName:val};
             });
@@ -61,7 +62,11 @@ SearchTag.propTypes = {
     searchType: PropTypes.string,
     searchBreed: PropTypes.string,
     searchColor: PropTypes.string,
-    searchGender: PropTypes.string
+    searchGender: PropTypes.string,
+    lostFound: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }
 
 export default SearchTag
