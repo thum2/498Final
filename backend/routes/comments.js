@@ -1,15 +1,11 @@
 var express = require('express'),
 	router = express.Router(),
-	pet = require('../models/pet');
+	comment = require('../models/comment');
 
 router.get('/', function(req, res){
-	let query = pet.find({})
+	let query = comment.find({})
 
-	if(req.query.found == "true" || req.query.found == 1){
-		query = pet.find({found: true})
-	}
-
-	query.exec(function(err, pets){
+	query.exec(function(err, comments){
 		if(err){
 			res.status(500).send({
 				message: err,
@@ -18,7 +14,7 @@ router.get('/', function(req, res){
 		}
 
 		else{
-			if(pets === null){
+			if(comments === null){
 				res.status(404).send({
 					message: 'Resource not found',
 					data: []
@@ -27,7 +23,7 @@ router.get('/', function(req, res){
 			else{
 				res.status(200).send({
 					message: 'Results Found',
-					data: pets
+					data: comments
 				});
 			}
 		}	
@@ -36,9 +32,9 @@ router.get('/', function(req, res){
 
 router.get('/:id', function(req,res){
 	
-	var query = pet.findById(req.params.id)
+	var query = comment.findById(req.params.id)
 
-	query.exec(function(err, onePet){
+	query.exec(function(err, oneComment){
 		if(err){
 			res.status(500).send({
 				message: err,
@@ -46,7 +42,7 @@ router.get('/:id', function(req,res){
 			})
 		}
 		else{
-			if(onePet === null){
+			if(oneComment === null){
 				res.status(404).send({
 					message: 'Resource not found',
 					data: []
@@ -54,32 +50,21 @@ router.get('/:id', function(req,res){
 			}
 			else{
 				res.status(200).send({
-					message: 'Pet found',
-					data: onePet
+					message: 'Comment found',
+					data: oneComment
 				});
 			}
 		}
 	})
 })
 
-
 router.post('/', function(req, res){
-	var newPet = {
-		name: req.body.name,
-		location: req.body.location,
-		description: req.body.description,
-		type: req.body.type,
-		breed: req.body.breed,
-		color: req.body.color,
-		size: req.body.size,
-		gender: req.body.gender,
-		datefound: req.body.datefound,
-		found: req.body.found,
-		original_website: req.body.original_website,
-		img_url: req.body.img_url
+	var newComment = {
+		comment: req.body.comment,
+		user: req.body.user,
 	}
 
-	pet.create(newPet, function(err, pet){
+	comment.create(newComment, function(err, comment){
 		if(err){
 			res.status(500).send({
 				message: err,
@@ -89,8 +74,8 @@ router.post('/', function(req, res){
 
 		else{
 			res.status(201).send({
-				message: 'Pet entry created',
-				data: pet
+				message: 'Comment entry created',
+				data: comment
 			});
 		}
 	});

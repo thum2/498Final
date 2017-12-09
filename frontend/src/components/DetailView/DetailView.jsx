@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Segment, Button, Item, Card, Icon } from 'semantic-ui-react'
+import { Button, Comment, Form, Header, Segment,Item, Card, Icon } from 'semantic-ui-react'
 import styles from './styles.scss' 
 import axios from 'axios'
 
@@ -81,34 +81,59 @@ class PetInformation extends Component{
 }
 
 class CommentList extends Component{
+	constructor(props) {
+    	super(props);
+    	this.state = {
+      		comments: ["dog"],
+    	};
 
-	constructor(props){
-		super(props);
-		this.state={
-			comments : this.props.data.comments
+    	this.MakeCommentList = this.MakeCommentList.bind(this);
+    	this.CommentOrNah = this.CommentOrNah.bind(this);
+    }
+
+	MakeCommentList(props){
+		return this.state.comments.map(function(comment,idx){
+			return(
+				<Comment key={idx}>
+					<Comment.Content>
+						<Comment.Author as='a'>Current USER</Comment.Author>
+						<Comment.Metadata>
+								<span>Today</span>
+						</Comment.Metadata>
+						<Comment.Text>{comment}</Comment.Text>
+					</Comment.Content>
+				</Comment>
+			)
 		}
-
-	}
-
-
-	// componentDidMount(){
-	// 	let commentlist = [];
-	// 	commentlist = this.props.data.description;
-
-	// 	this.setState({
-	// 		comments : commentlist
-	// 	})
-	// }
-
-	render(){
-		console.log("This is in the render()" + this.props.data.comments)
-		return(
-			<div>
-				<ul>
-	            </ul>
-			</div>
 		)
 	}
+
+	CommentOrNah(props){
+		if(this.state.comments != null ){
+			return(
+				<this.MakeCommentList data={props.data}/>
+			)
+		}
+
+		else {
+			return null
+		}
+	}
+
+	render(){
+		console.log("This is in the render()" + this.state.comments)
+		return(
+			<Comment.Group threaded>
+				<this.CommentOrNah data={this.state.comments}/>
+				<Form reply>
+  					<Form.TextArea />
+  						<Button content='Post Comment' labelPosition='left' icon='edit' primary />
+				</Form>
+			</Comment.Group>
+		)
+		
+	}
+	
 }
 
 export default DetailView
