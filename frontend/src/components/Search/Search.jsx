@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
+import DebounceInput from 'react-debounce-input';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import {sortOptions, genderOptions} from '../../assets/options.js'
@@ -13,10 +14,10 @@ class Search extends Component {
         super();
         this.state = {
             sortValue: '',
-            genderValue: '',
-            breedValue: '',
-            colorValue: '',
             petValue: '',
+            colorValue: '',
+            breedValue: '',
+            genderValue: '',
             resultCount: 0,
             searchList:[],
             pets:[],
@@ -25,31 +26,11 @@ class Search extends Component {
 
         this.searchL = [];
         this.baseUrl = "/api/pets";
-        this.sortChangehandler.bind(this);
-        this.searchChangeHandler.bind(this);
-        this.submitSearchHandler.bind(this);
-        this.clickHandler = this.clickHandler.bind(this);
+        this.sortChangeHandler = this.sortChangeHandler.bind(this);
+        this.searchChangeHandler = this.searchChangeHandler.bind(this);
+        this.submitSearchHandler = this.submitSearchHandler.bind(this);
         this.viewPets = this.viewPets.bind(this);
     }
-
-    clickHandler(){
-        let url = this.baseUrl + this.state.query + '/' + this.state.value;
-        this.setState({
-            clicked:"true"
-        })
-        axios.get(url)
-            .then((response) => {
-                this.setState({
-                    pokemon: response.data
-                })
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-
-    }
-
     componentWillMount(){
         let url = this.baseUrl;
         axios.get(url)
@@ -66,66 +47,64 @@ class Search extends Component {
             })
     }
 
-
     viewPets(type,val){
       console.log(type);
       console.log(val);
       if(type != "sortby"){
         let new_pets = [];
         let all_pets = this.state.search.data;
-        for(let i=0;i<all_pets.length;i++){
-            //make sure pet has the type,if the values match add it
-            if(all_pets[i][type] && (all_pets[i][type]).toLowerCase() == (val).toLowerCase()){
-
-              new_pets.push(all_pets[i]);
-            }
-        }
-        //console.log(new_pets)
-        this.setState({pets: {data:new_pets}})
-      }
-    }
-    
-    sortChangehandler(event, val, type){
+        checkMatch(all_pets,type,val);
         this.setState({
-                sortValue: val
-            })
+            pets: {data:new_pets},
+            search: {data:new_pets},
+            resultCount:new_pets.length
+        })
+      }
+
     }
 
-    searchChangeHandler(event, val, type){
-        if(type=="pet"){
-            this.viewPets("type",val)
+    sortChangeHandler(event, {value}){
+        this.setState({
+            sortValue: value
+        });
+
+    }
+
+    searchChangeHandler(event, type, val){
+        if(type == "type"){
             this.setState({
-                petValue: val
-            });
+                petValue: event.target.value
+            })
         }
-        else if(type=="gender"){
+        else if(type == "breed"){
+            this.setState({
+                breedValue: event.target.value
+            })
+        }
+        else if(type == "color"){
+            this.setState({
+                colorValue: event.target.value
+            })
+        }
+        else if(type == "gender"){
             this.setState({
                 genderValue: val
-            });
-            this.viewPets(type,val)
-        }
-        else if(type=="breed"){
-            this.setState({
-                breedValue: val
-            });
-            this.viewPets(type,val)
-        }
-        else{
-            this.setState({
-                colorValue: val
-            });
-            this.viewPets(type,val)
+            })
         }
     }
-    
+
     submitSearchHandler(){
-        this.searchL.push(this.state.petValue);
+        let type = document.getElementById("petType").value;
+        let breed = document.getElementById("petBreed").value
+        let color = document.getElementById("petColor").value;
+        this.searchL.push(type);
         this.searchL.push(this.state.genderValue);
-        this.searchL.push(this.state.breedValue);
-        this.searchL.push(this.state.colorValue);
+        this.searchL.push(breed);
+        this.searchL.push(color);
         this.setState({
             searchList: this.searchL
         });
+        this.viewPets("type",type);
     }
 
     render(){
@@ -159,7 +138,7 @@ class Search extends Component {
                               placeholder="SORT BY"
                               options={sortOptions}
                               selection
-                              onChange={(event, {value}) => this.sortChangehandler(event, value, "sort")}
+                              onChange={this.sortChangeHandler}
                           />
                       </span>
                   </div>
@@ -167,46 +146,47 @@ class Search extends Component {
                       <List horizontal relaxed>
                           <List.Item>
                               <Input
-                                    fluid
-                                    type="text"
-                                    placeholder='Pet Type'
-                                    value={this.state.petValue}
-                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "pet")}>
+                                    type="text">
+                                    <DebounceInput
+                                        placeholder='Pet Type'
+                                      minLength={2}
+                                      debounceTimeout={300}
+                                      onChange={event => this.searchChangeHandler(event,"type")}/>
                                 </Input>
+
                           </List.Item>
                           <List.Item>
                               <Dropdown
                                   placeholder="Gender"
                                   options={genderOptions}
                                   selection
-                                  onChange={(event, {value}) => this.searchChangeHandler(event, value, "gender")}
+                                  onChange={(event, {value}) => this.searchChangeHandler(event,"gender", value)}
                               />
                           </List.Item>
                           <List.Item>
                               <Input
-                                    fluid
-                                    type="text"
-                                    placeholder='Breed'
-                                    value={this.state.breedValue}
-                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "breed")}>
+                                    type="text">
+                                    <DebounceInput
+                                        placeholder='Breed'
+                                      minLength={2}
+                                      debounceTimeout={300}
+                                      onChange={event => this.searchChangeHandler(event,"breed")}/>
                                 </Input>
                           </List.Item>
                           <List.Item>
                               <Input
-                                    fluid
-                                    type="text"
-                                    placeholder='Color'
-                                    value={this.state.colorValue}
-                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "color")}>
+                                    type="text">
+                                    <DebounceInput
+                                        placeholder='Color'
+                                      minLength={3}
+                                      debounceTimeout={300}
+                                      onChange={event => this.searchChangeHandler(event,"color")}/>
                                 </Input>
                           </List.Item>
-                          <Button  onClick={this.submitSearchHandler(event, value, "search")}>
-                                Search
-                          </Button>
                       </List>
                   </div>
                   <div className="Search_ResultsBar">
-                      {<SearchTag searchList={this.state.searchList}/>}
+                      {<SearchTag delete={this.searchChangeHandler} searchType={this.state.petValue} searchBreed={this.state.breedValue} searchColor={this.state.colorValue} searchGender={this.state.genderValue}/>}
                   </div>
               </div>
               <div className="Search_Gallery">
@@ -221,6 +201,15 @@ function showElement(div){
     let elem = document.getElementsByClassName(div);
     for(let i=0; i<elem.length;i++){
         elem[i].style.display = "block";
+    }
+}
+
+function checkMatch(all_pets,type,val){
+    for(let i=0;i<all_pets.length;i++){
+        //make sure pet has the type,if the values match add it
+        if(all_pets[i][type] && (all_pets[i][type]).toLowerCase() == (val).toLowerCase()){
+          new_pets.push(all_pets[i]);
+        }
     }
 }
 

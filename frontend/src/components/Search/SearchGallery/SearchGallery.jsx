@@ -38,28 +38,28 @@ class SearchGallery extends Component {
                 });
 
                 let SearchGallery = pets.map((pet,idx) =>{
-                    let name = pet.name? pet.name:"No name";
-                    let breed_alt = pet.description? (pet.description.split("\n")[2] ? pet.description.split("\n")[2] : "Not specified") : "Not specified";
-                    let breed = pet.breed? pet.breed: breed_alt;
-                    let gender_alt = pet.description? (pet.description.split("\n")[0] ? pet.description.split("\n")[0] : "Not specified") : "Not specified";
-                    let gender = pet.gender? pet.gender: gender_alt;
-                    let color_alt = pet.description? (pet.description.split("\n")[1] ? pet.description.split("\n")[1] : "Not specified") : "Not specified";
-                    let color = pet.color? pet.color: color_alt;
-                    let image = pet.image;
-                    let type = pet.type;
-                    let datefound = pet.datefound.slice(0,10);
-                    
-                    
-//                    let name = pet.name? pet.name:"No name";
-//                    let breed_alt = "Not specified";
-//                    let breed = pet.breed? pet.breed: breed_alt;
-//                    let gender_alt = "Not specified";
-//                    let gender = pet.gender? pet.gender: gender_alt;
-//                    let color_alt = "Not specified";
-//                    let color = pet.color? pet.color: color_alt;
-//                    let image = pet.image;
-//                    let type = pet.type;
-//                    let datefound = pet.datefound;
+                    // let name = pet.name? pet.name:"No name";
+                    // let breed_alt = pet.description? (pet.description.split("\n")[2] ? pet.description.split("\n")[2] : "Not specified") : "Not specified";
+                    // let breed = pet.breed? pet.breed: breed_alt;
+                    // let gender_alt = pet.description? (pet.description.split("\n")[0] ? pet.description.split("\n")[0] : "Not specified") : "Not specified";
+                    // let gender = pet.gender? pet.gender: gender_alt;
+                    // let color_alt = pet.description? (pet.description.split("\n")[1] ? pet.description.split("\n")[1] : "Not specified") : "Not specified";
+                    // let color = pet.color? pet.color: color_alt;
+                    // let image = pet.image;
+                    // let type = pet.type;
+                    // let datefound = pet.datefound.slice(0,10);
+
+
+                   let name = pet.name? pet.name:"No name";
+                   let breed_alt = "Not specified";
+                   let breed = pet.breed? pet.breed: breed_alt;
+                   let gender_alt = "Not specified";
+                   let gender = pet.gender? pet.gender: gender_alt;
+                   let color_alt = "Not specified";
+                   let color = pet.color? pet.color: color_alt;
+                   let image = pet.image;
+                   let type = pet.type;
+                   let datefound = pet.datefound;
 
                     return(
                             <Card key={idx}>

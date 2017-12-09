@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon, Dropdown } from 'semantic-ui-react'
+import { Button, Input, Breadcrumb, Icon, Dropdown, Form, TextArea } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
 
-import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions} from '../../assets/options.js'
+
 
 import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,16 +14,11 @@ class FoundPage extends Component {
     constructor (props) {
     super(props)
     this.state = {
-      startDate: moment(),
-        petType:'',
-        petBreed: '',
-        petGender: '',
-        petColor: '',
-        petName: ''
+      startDate: moment()
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.inputChangeHandler = this.inputChangeHandler.bind(this);
+
   }
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
@@ -43,9 +38,11 @@ class FoundPage extends Component {
       startDate: date
     });
   }
+
   handleSubmit(){
     let info = {}
-    let entries = ["type", "name", "location", "breed", "gender", "size", "color", "img_url"]
+    console.log("The description " + document.getElementById("gender"));
+    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url", "size"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -53,174 +50,117 @@ class FoundPage extends Component {
         }
     }
     info["found"] = true;
-      info["original_website"] = "LOCAL";
-    info["description"] = null;
+    info["original_website"] = "LOCAL";
     info["datefound"] = this.state.startDate.date;
-    axios.post('/api/pets',info).then((res)=>{
+
+    axios.post('/api/pets', info).then((res)=>{
         console.log(res);
     }).catch((err)=>{
         console.log(err);
     });
 
   }
-    
-    inputChangeHandler(event, val, type){
-        if(type=="pet"){
-            this.setState({
-                petType: val
-            });
-        }
-        else if(type=="gender"){
-            this.setState({
-                petGender: val
-            })
-        }
-        else if(type=="breed"){
-            this.setState({
-                petBreed: val
-            })
-        }
-        else if(type=="color"){
-            this.setState({
-                petColor: val
-            })
-        }
-        else{
-            this.setState({
-                petName: val
-            })
-        }
-        
-    }
+
     render() {
+        const genderOptions = [{key: 'male', text: 'Male', value: 'male'},
+                               {key: 'female', text: 'Female', value: 'female'}
+        ];
+
+        const sizeOptions   = [{key: 'small', text: 'Small', value: 'small'},
+                               {key: 'medium', text: 'Medium', value: 'medium'},
+                               {key: 'large', text: 'Large', value: 'large'}
+        ];
+
         return(
             <div className="FoundPage">
-                <div className="FoundPage_Header">
-                    <span className="GroupTitle">
-                        <h1><Icon name="paw" />Pet Finder</h1>
-                    </span>
-                    <div className="FoundPage_Navi">
-                        <Breadcrumb.Section>
-                            <Link to={'/notifications'}>
-                                Notifications
-                            </Link>
-                        </Breadcrumb.Section>
-                        <Breadcrumb.Divider />
-                        <Breadcrumb.Section>
-                            <Link to={'/'}>
-                                Logout
-                            </Link>
-                        </Breadcrumb.Section>
-                    </div>
-                </div>
-                <div className="FoundPage_Body">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Pet Type</th>
-                                <td>
-                                    <Dropdown
-                                      placeholder="Pet Type"
-                                      options={petOptions}
-                                      selection
-                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "pet")}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Pet's name</th>
-                                <td>
-                                    <Input
-                                        fluid
-                                        type="text"
-                                        placeholder='Name'
-                                        value={this.state.petName}
-                                        onChange={(event, {value}) => this.inputChangeHandler(event, value, "name")}>
-                                    </Input>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Found Date</th>
-                                <td>
-                                    <div className="ui calendar" id="example2">
-                                        <div className="ui input left icon">
-                                            <DatePicker
-                                                selected={this.state.startDate}
-                                                onChange={this.handleChange}
-                                            />
-                                        </div>
-                                        <Icon name="calendar" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Found location</th>
-                                <td><input id="location"></input></td>
-                            </tr>
-                            <tr>
-                                <th cellspan="2">Description</th>
-                            </tr>
-                            <tr>
-                                <th>Breed</th>
-                                <td>
-                                    <Dropdown
-                                      placeholder="Breed"
-                                      options={dogBreedOptions}
-                                      selection
-                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "breed")}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Gender</th>
-                                <td>
-                                    <Dropdown
-                                      placeholder="Gender"
-                                      options={genderOptions}
-                                      selection
-                                      onChange={(event, {value}) => this.inputChangehandler(event, value, "gender")}
-                                  />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Size</th>
-                                <td>
-                                  <Radio label='Small' value='sm' checked={this.state.petSize === 'sm'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
-                                  <Radio label='Medium' value='md' checked={this.state.petSize === 'md'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
-                                  <Radio label='Large' value='lg' checked={this.state.petSize === 'lg'} onChange={(event, {value}) => this.inputChangeHandler(event, value, "size")} />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Hair Color</th>
-                                <td>
-                                    <Dropdown
-                                          placeholder="Color"
-                                          options={colorOptions}
-                                          selection
-                                         onChange={(event, {value}) => this.inputChangehandler(event, value, "color")}
-                                      />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Images</th>
-                                <td><input id="img_url"></input></td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <div className="submitButton">
-                          <Button  onClick={this.handleSubmit}>
-                                Report Found Pet
-                          </Button>
-                    </div>
+                <div className="navbar">
+                    <span>
+
+                        <Link to="/notifications">
+                            <Button basic color="black" size="large">
+                                Notifications
+                            </Button>
+                        </Link>
+
+                        <Link to="/" onClick={this.logOut}>
+                            <Button basic color="black" size="large">
+                                Logout
+                            </Button>
+                        </Link>
+
+                    </span>
                 </div>
+
+                <div id="FormContainer">
+                    <Form>
+                        <Form.Field>
+                            <label>Pet Species</label>
+                            <Input id="type" placeholder='Dog' fluid />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Pet Name</label>
+                            <Input id="name" placeholder='Rover' fluid />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Date Found</label>
+                            <div className="ui calendar" id="example2">
+                                <div className="ui input left icon">
+                                    <DatePicker
+                                        selected={this.state.startDate}
+                                        onChange={this.handleChange}/>
+                                </div>
+                            </div>
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Location Found</label>
+                            <Input id="location" placeholder='XYZ Park' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Description</label>
+                            <TextArea id="description" placeholder='Tell us more about your pet, the more information the more likely it will be found' style={{ minHeight: 100 }} />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Breed</label>
+                            <Input id="breed" placeholder='Golden Retriever' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Gender</label>
+                            <Dropdown id="gender" placeholder='Select Gender' fluid selection options={genderOptions} />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Size</label>
+                            <Dropdown id="size" placeholder='Select Size' fluid selection options={sizeOptions} />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Hair Color</label>
+                            <Input id="color" placeholder='Golden' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Image URL</label>
+                            <Input id="img_url" placeholder='http://imgur.com/DogPic' />
+                        </Form.Field>
+
+                        <div className="submitButton">
+                              <Button  onClick={this.handleSubmit}>
+                                    Report Found Pet
+                              </Button>
+                        </div>
+                    </Form>
+                </div>
+
             </div>
         )
     }
 }
 
 export default FoundPage
-
-
-
-

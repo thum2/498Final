@@ -6,66 +6,55 @@ import PropTypes from 'prop-types'
 import style from './SearchTag.scss'
 
 class SearchTag extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    handleDelete(event, idx){
+        let type = (idx==0 ? "type" : (idx==1 ? "gender":(idx == 2 ? "breed": "color")));
+        console.log(type);
+        this.props.delete(event, type);
     }
 
     render(){
-        let noList = (Object.keys(this.props.searchList).length == 0);
-        if(noList){
+        let type = this.props.searchType;
+        let breed = this.props.searchBreed;
+        let color = this.props.searchColor;
+        let gender = this.props.searchGender;
+        if(type == '' && breed == '' && color == '' && gender == ''){
             return(
                 <div className="SearchTagContainer">
                 </div>
             );
         }
         else{
-            let tags = this.props.searchList.map((searchList,idx) =>{
-                    return {index: idx, tagName:searchList};
+            let list = [type,gender,breed,color];
+            let tags = list.map((val,idx) =>{
+                    return {index: idx, tagName:val};
             });
 
             let SearchTag = tags.map((tag,idx) =>{
-                let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
-                return (
-                    <Label key={idx}>
-                      {name}
-                      <Icon name='delete' />
-                    </Label>
-                )
+                if(tag.tagName != ''){
+                    let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
+                    let index = idx;
+                    return (
+                        <Label key={idx}>
+                          {name}
+                          <Icon name='delete' value='' onClick={event => this.handleDelete(event,index)}/>
+                        </Label>
+                    )
+                }
             });
             return(
                 <List className="SearchTagContainer">
-                    {SearchTag}
+                    Searching for: {SearchTag}
                 </List>
             );
         }
     }
 }
 
-function sort(array,order){
-    if(order == "alphabetical"){
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-      }));
-    }
-    else{
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return -1;
-          }
-          if (a.name < b.name) {
-            return 1;
-          }
-          return 0;
-      }));
-    }
-
-}
 
 // SearchTag.propTypes = {
 //     searchList: PropTypes.oneOfType([
