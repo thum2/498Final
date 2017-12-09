@@ -43,8 +43,9 @@ class Home extends Component {
                     <div className="navbar">
                         <h1>
                             <span>
-                                
-                                    <Icon link={true} to="/" name='paw' size='large'/>
+                                    <Link to= {this.state.isLoggedIn ? "/" : "/"} style={{ color: 'LightGray' }}>
+                                        <Icon name='paw' size='large'/>
+                                    </Link>
                                     Pet Finder
                                     <Link to="/register" className="buttons">
                                         <Button size="huge">

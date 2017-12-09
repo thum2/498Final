@@ -63,3 +63,22 @@ body {
     height: 70%;
     width: 100%;
 }
+
+.Found_Header{
+    position: fixed;
+    background-color: #3FBF7F;
+    width: 100%;
+    z-index: 1;
+}
+
+.navbar {
+    width: 100%;
+    padding-top: 1em;
+    padding-right: 1em;
+    margin: 0 auto;
+    color: LightGray;
+}
+.buttons{
+    float:right;
+    padding-bottom: 5px;
+}

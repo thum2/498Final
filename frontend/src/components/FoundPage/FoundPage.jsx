@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon, Dropdown, Form, TextArea } from 'semantic-ui-react'
+import { Button, Input, Breadcrumb, Icon, Dropdown, Form, TextArea, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
@@ -18,7 +18,7 @@ class FoundPage extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.logOut = this.logOut.bind(this);
   }
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
@@ -38,7 +38,14 @@ class FoundPage extends Component {
       startDate: date
     });
   }
-
+logOut(e) {
+        console.log(e)
+        let self = this
+        axios.get('/api/logout').then( (res) => {
+            console.log(self.state);
+            console.log("Logged out");
+        })
+    }
   handleSubmit(){
     let info = {}
     console.log("The description " + document.getElementById("gender"));
@@ -55,8 +62,11 @@ class FoundPage extends Component {
 
     axios.post('/api/pets', info).then((res)=>{
         console.log(res);
+        alert("Your Pet has been submitted")
     }).catch((err)=>{
         console.log(err);
+        alert("Your Pet failed to be submitted")
+
     });
 
   }
@@ -74,24 +84,35 @@ class FoundPage extends Component {
         return(
             <div className="FoundPage">
 
-                <div className="navbar">
-                    <span>
+                <Grid>
+                <Grid.Row className="Found_Header">
+                <Grid.Column>
+                        <div className="navbar">
+                            <h1>
+                                <span>
+                                  <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
+                                    <Icon name='paw' size='large'/>
+                                  </Link>
+                                  Pet Finder
+                                  <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
+                                      <Button size="medium">
+                                        {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
+                                      </Button>
+                                  </Link>
 
-                        <Link to="/notifications">
-                            <Button basic color="black" size="large">
-                                Notifications
-                            </Button>
-                        </Link>
+                                  <Link to= {this.state.isLoggedIn ? "/" : "/login"} onClick={this.state.isLoggedIn ? this.logOut : null} className="buttons">
+                                      <Button size="medium">
+                                          {this.state.isLoggedIn ? "Logout" : "Login"}
+                                      </Button>
+                                  </Link>
+                                </span>
+                            </h1>
+                        </div>
+                </Grid.Column>
+                </Grid.Row>
 
-                        <Link to="/" onClick={this.logOut}>
-                            <Button basic color="black" size="large">
-                                Logout
-                            </Button>
-                        </Link>
-
-                    </span>
-                </div>
-
+                <Grid.Row>
+                <Grid.Column>
                 <div id="FormContainer">
                     <Form>
                         <Form.Field>
@@ -151,13 +172,17 @@ class FoundPage extends Component {
                         </Form.Field>
 
                         <div className="submitButton">
+                            <Link to="/dashboard">
                               <Button  onClick={this.handleSubmit}>
                                     Report Found Pet
                               </Button>
+                            </Link>
                         </div>
                     </Form>
                 </div>
-
+                </Grid.Column>
+                </Grid.Row>
+                </Grid>
             </div>
         )
     }

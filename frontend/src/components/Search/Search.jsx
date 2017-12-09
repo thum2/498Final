@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
+import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown, Grid, Sticky } from 'semantic-ui-react'
 import DebounceInput from 'react-debounce-input';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -13,6 +13,7 @@ class Search extends Component {
     constructor(){
         super();
         this.state = {
+            isLoggedIn: false,
             sortValue: '',
             petValue: '',
             colorValue: '',
@@ -29,6 +30,7 @@ class Search extends Component {
         this.searchChangeHandler = this.searchChangeHandler.bind(this);
         this.viewPets = this.viewPets.bind(this);
         this.removeTagHandler = this.removeTagHandler.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
     componentWillMount(){
         let url = this.baseUrl;
@@ -44,9 +46,31 @@ class Search extends Component {
             .catch((error) => {
                 console.log(error);
             })
+
+       axios.get('/api/profile').then( (res) => {
+            console.log(res);
+            this.setState({
+                isLoggedIn: true
+            })
+        }).catch( (err) => {
+            this.setState({
+                isLoggedIn: false
+            })
+        })
+    }
+
+    logOut(e) {
+        console.log(e)
+        let self = this
+        axios.get('/api/logout').then( (res) => {
+            console.log(self.state);
+            console.log("Logged out");
+        })
     }
 
     viewPets(type){
+        console.log(type);
+      console.log(val);
       let pet = this.state.petValue;
       let breed = this.state.breedValue;
       let color = this.state.colorValue;
@@ -154,24 +178,35 @@ class Search extends Component {
     render(){
         return(
           <div className="Search">
-              <div className="Search_Header">
-                  <span className="GroupTitle">
-                      <h1><Icon name="paw" />Pet Finder</h1>
-                  </span>
-                  <div className="Search_Navi">
-                      <Breadcrumb.Section>
-                          <Link to={'/notifications'}>
-                              Notifications
-                          </Link>
-                      </Breadcrumb.Section>
-                      <Breadcrumb.Divider />
-                      <Breadcrumb.Section>
-                          <Link to={'/'}>
-                              Logout
-                          </Link>
-                      </Breadcrumb.Section>
-                  </div>
-              </div>
+            <Grid>
+            <Grid.Row className="Search_Header">
+            <Grid.Column>
+                    <div className="navbar">
+                        <h1>
+                            <span>
+                              <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
+                                <Icon name='paw' size='large'/>
+                              </Link>
+                              Pet Finder
+                              <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
+                                  <Button size="medium">
+                                    {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
+                                  </Button>
+                              </Link>
+
+                              <Link to= {this.state.isLoggedIn ? "/" : "/login"} onClick={this.state.isLoggedIn ? this.logOut : null} className="buttons">
+                                  <Button size="medium">
+                                      {this.state.isLoggedIn ? "Logout" : "Login"}
+                                  </Button>
+                              </Link>
+                            </span>
+                        </h1>
+                    </div>
+              </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row>
+              <Grid.Column>
               <div className="Search_SearchTools">
                   <div className="Search_SortBar">
                       <span>
@@ -182,8 +217,7 @@ class Search extends Component {
                               placeholder="SORT BY"
                               options={sortOptions}
                               selection
-                              onChange={this.sortChangeHandler}
-                          />
+                              onChange={this.sortChangeHandler}/>
                       </span>
                   </div>
                   <div className="Search_SearchBar">
@@ -246,6 +280,9 @@ class Search extends Component {
                       {<SearchTag lostFound={this.state.lostFoundValue} delete={this.removeTagHandler} searchType={this.state.petValue} searchBreed={this.state.breedValue} searchColor={this.state.colorValue} searchGender={this.state.genderValue}/>}
                   </div>
               </div>
+              </Grid.Column>
+              </Grid.Row>
+              </Grid>
               <div className="Search_Gallery">
                   {<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>}
               </div>
