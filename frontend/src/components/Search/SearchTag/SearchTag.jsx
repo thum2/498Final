@@ -13,7 +13,6 @@ class SearchTag extends Component {
 
     handleDelete(event, idx){
         let type = (idx==0 ? "type" : (idx==1 ? "gender":(idx == 2 ? "breed": "color")));
-        console.log(type);
         this.props.delete(event, type);
     }
 
@@ -35,13 +34,15 @@ class SearchTag extends Component {
             });
 
             let SearchTag = tags.map((tag,idx) =>{
+                let val = '';
                 if(tag.tagName != ''){
-                    let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
+                    let lName = tag.tagName.toLowerCase();
+                    let name = lName.charAt(0).toUpperCase() + lName.slice(1);
                     let index = idx;
                     return (
                         <Label key={idx}>
                           {name}
-                          <Icon name='delete' value='' onClick={event => this.handleDelete(event,index)}/>
+                          <Icon name='delete' value={val} onClick={event => this.handleDelete(event, index)}/>
                         </Label>
                     )
                 }
@@ -56,10 +57,11 @@ class SearchTag extends Component {
 }
 
 
-// SearchTag.propTypes = {
-//     searchList: PropTypes.oneOfType([
-//         PropTypes.object
-//     ])
-// }
+SearchTag.propTypes = {
+    searchType: PropTypes.string,
+    searchBreed: PropTypes.string,
+    searchColor: PropTypes.string,
+    searchGender: PropTypes.string
+}
 
 export default SearchTag
