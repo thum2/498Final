@@ -49,8 +49,9 @@ class Dashboard extends Component {
                         <div className="navbar">
                             <h1>
                                 <span>
-                                    <Icon link={true} to="/dashboard" name='paw' size='large'/>
-                                    Pet Finder
+                                      <Link to= {this.state.isLoggedIn ? "/dashboard" : "/dashboard"} style={{ color: 'LightGray' }}>
+                                        <Icon name='paw' size='large'/>
+                                      </Link>                                    Pet Finder
                                     <Link to="/notifications" className="buttons">
                                         <Button  size="huge">
                                             Notifications

@@ -38,29 +38,29 @@ class SearchGallery extends Component {
                 });
 
                 let SearchGallery = pets.map((pet,idx) =>{
-                    // let name = pet.name? pet.name:"No name";
-                    // let breed_alt = pet.description? (pet.description.split("\n")[2] ? pet.description.split("\n")[2] : "Not specified") : "Not specified";
-                    // let breed = pet.breed? pet.breed: breed_alt;
-                    // let gender_alt = pet.description? (pet.description.split("\n")[0] ? pet.description.split("\n")[0] : "Not specified") : "Not specified";
-                    // let gender = pet.gender? pet.gender: gender_alt;
-                    // let color_alt = pet.description? (pet.description.split("\n")[1] ? pet.description.split("\n")[1] : "Not specified") : "Not specified";
-                    // let color = pet.color? pet.color: color_alt;
-                    // let image = pet.image;
-                    // let type = pet.type;
-                    // let datefound = pet.datefound.slice(0,10);
+                    let name = pet.name? pet.name:"No name";
+                    let breed_alt = pet.description? (pet.description.split("\n")[2] ? pet.description.split("\n")[2] : "Not specified") : "Not specified";
+                    let breed = pet.breed? pet.breed: breed_alt;
+                    let gender_alt = pet.description? (pet.description.split("\n")[0] ? pet.description.split("\n")[0] : "Not specified") : "Not specified";
+                    let gender = pet.gender? pet.gender: gender_alt;
+                    let color_alt = pet.description? (pet.description.split("\n")[1] ? pet.description.split("\n")[1] : "Not specified") : "Not specified";
+                    let color = pet.color? pet.color: color_alt;
+                    let image = pet.image;
+                    let type = pet.type;
+                    let datefound = pet.datefound.slice(0,10);
+                    let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
 
-                   let name = pet.name? pet.name:"No name";
-                   let breed_alt = "Not specified";
-                   let breed = pet.breed? pet.breed: breed_alt;
-                   let gender_alt = "Not specified";
-                   let gender = pet.gender? pet.gender: gender_alt;
-                   let color_alt = "Not specified";
-                   let color = pet.color? pet.color: color_alt;
-                   let image = pet.image;
-                   let type = pet.type;
-                   let datefound = pet.datefound;
-
+                   // let name = pet.name? pet.name:"No name";
+                   // let breed_alt = "Not specified";
+                   // let breed = pet.breed? pet.breed: breed_alt;
+                   // let gender_alt = "Not specified";
+                   // let gender = pet.gender? pet.gender: gender_alt;
+                   // let color_alt = "Not specified";
+                   // let color = pet.color? pet.color: color_alt;
+                   // let image = pet.image;
+                   // let type = pet.type;
+                   // let datefound = pet.datefound;
                     return(
                             <Card key={idx}>
                               <Card.Content>
@@ -75,23 +75,27 @@ class SearchGallery extends Component {
                                   <h5>Breed:</h5>{breed}
                                   <h5>Gender:</h5>{gender}
                                   <h5>Color:</h5>{color}
-                                  <h5>Date Found:</h5>{datefound}
+                                  <h5>{date_display}</h5>{datefound}
                                 </Card.Description>
                               </Card.Content>
                               <Card.Content extra>
-                                <div className='ui two buttons'>
+                                <div>
                                   <Button
-                                      active={this.state.active === 'reconnected'}
-                                      name='reconnected'
-                                      onClick={this.handleActive}
-                                      color={this.state.active === 'reconnected'? 'green' : null}
-                                      content="Reconnected"/>
+                                      disabled
+                                      fluid
+                                      basic
+                                      active={pet.foundOrLost}
+                                      name='Found'
+                                      color={pet.foundOrLost ? 'green' : null}
+                                      content="Found"/>
                                   <Button
-                                      active={this.state.active === 'notfound'}
+                                      disabled
+                                      fluid
+                                      basic
+                                      active={!pet.foundOrLost}
                                       name='notfound'
-                                      onClick={this.handleActive}
-                                      color={this.state.active === 'notfound'? 'red' : null}
-                                      content="Not Found"/>
+                                      color={!pet.foundOrLost ? 'red' : null}
+                                      content="Lost"/>
                                 </div>
                               </Card.Content>
                             </Card>
