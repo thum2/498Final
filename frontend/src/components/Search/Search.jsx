@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { sortOptions, petOptions, genderOptions, dogBreedOptions, colorOptions} from '../../assets/options.js'
+import {sortOptions, genderOptions} from '../../assets/options.js'
 import SearchTag from './SearchTag/SearchTag.jsx'
 import SearchGallery from './SearchGallery/SearchGallery.jsx'
 
@@ -25,7 +25,9 @@ class Search extends Component {
 
         this.searchL = [];
         this.baseUrl = "/api/pets";
-        this.searchChangehandler = this.searchChangehandler.bind(this);
+        this.sortChangehandler.bind(this);
+        this.searchChangeHandler.bind(this);
+        this.submitSearchHandler.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
         this.viewPets = this.viewPets.bind(this);
     }
@@ -82,11 +84,16 @@ class Search extends Component {
         this.setState({pets: {data:new_pets}})
       }
     }
+    
+    sortChangehandler(event, val, type){
+        this.setState({
+                sortValue: val
+            })
+    }
 
-    searchChangehandler(event, val, type){
+    searchChangeHandler(event, val, type){
         if(type=="pet"){
-                      this.viewPets("type",val)
-
+            this.viewPets("type",val)
             this.setState({
                 petValue: val
             });
@@ -103,25 +110,25 @@ class Search extends Component {
             });
             this.viewPets(type,val)
         }
-        else if(type=="color"){
+        else{
             this.setState({
                 colorValue: val
             });
             this.viewPets(type,val)
         }
-        else{
-            this.setState({
-                sortValue: val
-            })
-        }
-        this.searchL.push(val);
+    }
+    
+    submitSearchHandler(){
+        this.searchL.push(this.state.petValue);
+        this.searchL.push(this.state.genderValue);
+        this.searchL.push(this.state.breedValue);
+        this.searchL.push(this.state.colorValue);
         this.setState({
             searchList: this.searchL
         });
     }
 
     render(){
-        console.log(this.state.pets)
         return(
           <div className="Search">
               <div className="Search_Header">
@@ -152,44 +159,50 @@ class Search extends Component {
                               placeholder="SORT BY"
                               options={sortOptions}
                               selection
-                              onChange={(event, {value}) => this.searchChangehandler(event, value, "sort")}
+                              onChange={(event, {value}) => this.sortChangehandler(event, value, "sort")}
                           />
                       </span>
                   </div>
                   <div className="Search_SearchBar">
                       <List horizontal relaxed>
                           <List.Item>
-                              <Dropdown
-                                  placeholder="Pet"
-                                  options={petOptions}
-                                  selection
-                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "pet")}
-                              />
+                              <Input
+                                    fluid
+                                    type="text"
+                                    placeholder='Pet Type'
+                                    value={this.state.petValue}
+                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "pet")}>
+                                </Input>
                           </List.Item>
                           <List.Item>
                               <Dropdown
                                   placeholder="Gender"
                                   options={genderOptions}
                                   selection
-                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "gender")}
+                                  onChange={(event, {value}) => this.searchChangeHandler(event, value, "gender")}
                               />
                           </List.Item>
                           <List.Item>
-                              <Dropdown
-                                  placeholder="Breed"
-                                  options={dogBreedOptions}
-                                  selection
-                                  onChange={(event, {value}) => this.searchChangehandler(event, value, "breed")}
-                              />
+                              <Input
+                                    fluid
+                                    type="text"
+                                    placeholder='Breed'
+                                    value={this.state.breedValue}
+                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "breed")}>
+                                </Input>
                           </List.Item>
                           <List.Item>
-                              <Dropdown
-                                  placeholder="Color"
-                                  options={colorOptions}
-                                  selection
-                                 onChange={(event, {value}) => this.searchChangehandler(event, value, "color")}
-                              />
+                              <Input
+                                    fluid
+                                    type="text"
+                                    placeholder='Color'
+                                    value={this.state.colorValue}
+                                    onChange={(event, {value}) => this.searchChangeHandler(event, value, "color")}>
+                                </Input>
                           </List.Item>
+                          <Button  onClick={this.submitSearchHandler(event, value, "search")}>
+                                Search
+                          </Button>
                       </List>
                   </div>
                   <div className="Search_ResultsBar">
