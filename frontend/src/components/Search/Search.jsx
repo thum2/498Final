@@ -66,13 +66,6 @@ class Search extends Component {
 
     }
 
-    // viewPets(type){
-    //     let type = this.state.petValue;
-    //     let breed = this.state.breedValue;
-    //     let color = this.state.colorValue;
-    //     let gender = this.state.genderValue;
-    //     let list = [type, gender, breed, color];
-    // }
 
     sortChangeHandler(event, {value}){
         this.setState({
@@ -113,26 +106,23 @@ class Search extends Component {
             this.setState({
                 petValue: event.target.value
             })
-            this.viewPets("type",event.target.value);
         }
         else if(type == "breed"){
             this.setState({
                 breedValue: event.target.value
             })
-            this.viewPets("breed",event.target.value);
         }
         else if(type == "color"){
             this.setState({
                 colorValue: event.target.value
             })
-            this.viewPets("color",event.target.value);
         }
         else if(type == "gender"){
             this.setState({
                 genderValue: val
             })
-            this.viewPets("gender",val);
         }
+        this.viewPets("search",val);
     }
 
     render(){
