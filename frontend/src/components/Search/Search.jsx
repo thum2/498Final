@@ -206,7 +206,7 @@ class Search extends Component {
               <Grid.Row>
               <Grid.Column>
               <div className="Search_SearchTools">
-                  
+
                   <div className="Search_SearchBar">
                       <List horizontal relaxed>
                           <List.Item>
@@ -265,6 +265,7 @@ class Search extends Component {
                   </div>
                   <div className="Search_ResultsBar">
                       {<SearchTag lostFound={this.state.lostFoundValue} delete={this.removeTagHandler} searchType={this.state.petValue} searchBreed={this.state.breedValue} searchColor={this.state.colorValue} searchGender={this.state.genderValue}/>}
+                      <br />Result: {this.state.resultCount}
                   </div>
               </div>
               </Grid.Column>
@@ -306,7 +307,6 @@ function checkMatch(all_pets, listVal){
             let lostFound = all_pets[i]["found"];
 
             let checkListVal = [petType, gender, breed, color, lostFound];
-            console.log(checkListVal)
             if(checkListVal[j] == ""){
               flag = false;
             }
@@ -317,7 +317,7 @@ function checkMatch(all_pets, listVal){
                 }
 
             }
-            
+
 
         }
         if(flag){

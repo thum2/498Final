@@ -48,7 +48,7 @@ class SearchGallery extends Component {
                     let image = pet.image;
                     let type = pet.type;
                     let datefound = pet.datefound.slice(0,10);
-                    // let datefound = pet.datefound;
+                    //let datefound = pet.datefound;
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
                     return(
