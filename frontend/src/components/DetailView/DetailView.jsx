@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button, Comment, Form, Header, Segment,Item, Card, Icon } from 'semantic-ui-react'
 import styles from './styles.scss' 
 import axios from 'axios'
+import moment from 'moment'
 
 class DetailView extends Component{
 
@@ -18,7 +19,6 @@ class DetailView extends Component{
 
     componentWillMount(){
     	axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
-          //  console.log(res.data.data);
             this.setState({
             	pet_id: this.props.match.params.id,
             	pet_data: res.data.data
@@ -62,7 +62,7 @@ class PetInformation extends Component{
 			      		<div className="meta">
 			        		<p>{this.props.data.type}</p>
 			        		<p>{this.props.data.location}</p>
-			        		<p>{this.props.data.datefound}</p>
+			        		<p>{moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
 			      		</div>
 				      	<div className="description">
 				        	<p>{this.props.data.description}</p>
@@ -84,23 +84,83 @@ class CommentList extends Component{
 	constructor(props) {
     	super(props);
     	this.state = {
-      		comments: ["dog"],
+      		comments: []
     	};
 
     	this.MakeCommentList = this.MakeCommentList.bind(this);
     	this.CommentOrNah = this.CommentOrNah.bind(this);
+    	this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+    	this.postComment = this.postComment.bind(this)
     }
+
+    componentWillReceiveProps(nextProps){
+    	if(nextProps == null)
+    		return;
+  		let promises = []
+  		let data = []
+ 		nextProps.data.comments.forEach(function(comment_id){
+			promises.push(axios.get('/api/comments/' + comment_id))
+		})
+		axios.all(promises).then(function (response) {
+			response.forEach(function (response){
+				data.push(response.data.data)
+			})
+    	}).then((response) => {
+    		this.setState({
+				comments : data,
+			})
+    	})
+	}
+
+	postComment(){
+		let self = this
+		let comment = document.getElementById("comment").value;
+		document.getElementById("comment").value = "";
+		if(comment == "")
+			return
+		let date = moment()
+		let user
+		var newComment
+		var comment_id
+		var updatePet
+		axios.get('/api/profile').then( (res) => {
+            res.data.user.email ? user = res.data.user.email : user = "anon" ;
+            newComment ={
+            	user: user,
+            	date: date,
+            	comment: comment
+            }
+			let comments = this.state.comments
+			comments.unshift(newComment)
+			this.setState({
+				comments: comments
+			})}).then((res) => {
+        		return axios.post('/api/comments', newComment).then(function(res){
+        			comment_id = res.data.data._id
+        			let comments = self.props.data.comments
+        			comments.unshift(comment_id)
+        			updatePet = {
+        				comments: comments
+        			}
+        			console.log(updatePet)
+        		})}).then((res) =>{
+        				return axios.put('/api/pets/' + self.props.id, updatePet).then(function(res){
+        				console.log("put " + res.data.data)
+        			})})
+        
+
+	}
 
 	MakeCommentList(props){
 		return this.state.comments.map(function(comment,idx){
 			return(
 				<Comment key={idx}>
 					<Comment.Content>
-						<Comment.Author as='a'>Current USER</Comment.Author>
+						<Comment.Author as='a'>{comment.user}</Comment.Author>
 						<Comment.Metadata>
-								<span>Today</span>
+								<span>{moment(comment.date).format("MMMM Do YYYY, h:mm:ss a")}</span>
 						</Comment.Metadata>
-						<Comment.Text>{comment}</Comment.Text>
+						<Comment.Text>{comment.comment}</Comment.Text>
 					</Comment.Content>
 				</Comment>
 			)
@@ -121,14 +181,13 @@ class CommentList extends Component{
 	}
 
 	render(){
-		console.log("This is in the render()" + this.state.comments)
 		return(
 			<Comment.Group threaded>
-				<this.CommentOrNah data={this.state.comments}/>
 				<Form reply>
-  					<Form.TextArea />
-  						<Button content='Post Comment' labelPosition='left' icon='edit' primary />
+  					<Form.TextArea id="comment" placeholder='Enter Comment Here...' />
+  					<Button content='Post Comment' labelPosition='left' icon='edit' primary onClick={this.postComment}/>
 				</Form>
+				<this.CommentOrNah data={this.state.comments}/>
 			</Comment.Group>
 		)
 		

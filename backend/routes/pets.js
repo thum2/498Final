@@ -96,4 +96,67 @@ router.post('/', function(req, res){
 	});
 });
 
+router.put('/:id', function(req, res){
+
+	var updatePet = {}
+
+	if(typeof req.body.userid !== 'undefined')
+		updatePet.userid = req.body.userid
+	if(typeof req.body.name !== 'undefined')
+		updatePet.name = req.body.name
+	if(typeof req.body.location !== 'undefined')
+		updatePet.location = req.body.location
+	if(typeof req.body.description !== 'undefined')
+		updatePet.description= req.body.description
+	if(typeof req.body.type !== 'undefined')
+		updatePet.type = req.body.type
+	if(typeof req.body.breed!== 'undefined')
+		updatePet.breed = req.body.breed
+	if(typeof req.body.color !== 'undefined')
+		updatePet.color = req.body.color
+	if(typeof req.body.size !== 'undefined')
+		updatePet.size = req.body.size
+	if(typeof req.body.gender !== 'undefined')
+		updatePet.gender = req.body.gender
+	if(typeof req.body.datefound !== 'undefined')
+		updatePet.datefound = req.body.datefound
+	if(typeof req.body.date !== 'undefined')
+		updatePet.date = req.body.date
+	if(typeof req.body.found !== 'undefined')
+		updatePet.found = req.body.found
+	if(typeof req.body.comments !== 'undefined')
+		updatePet.comments = req.body.comments
+	if(typeof req.body.original_website !== 'undefined')
+		updatePet.original_website = req.body.original_website
+	if(typeof req.body.img_url !== 'undefined')
+		updatePet.img_url = req.body.img_url
+
+
+
+
+	console.log(updatePet)
+	pet.findByIdAndUpdate(req.params.id, updatePet, {new: true},function(err, pet){
+		if(err) {
+			res.status(500).send({
+				message: err,
+				data: []
+			});
+		}
+		else{
+			if(pet === null){
+				res.status(404).send({
+					message: 'Resource not found',
+					data: []
+				})
+			}
+			else{
+				res.status(200).send({
+					message: 'Pet updated',
+					data: pet
+				});
+			}
+		}	
+	})
+});
+
 module.exports = router;

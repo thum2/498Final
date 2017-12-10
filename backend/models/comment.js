@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 
 var CommentSchema = new mongoose.Schema({
 	comment: String,
-	user: String,
+	user: {type: String, default: "Anonymous"},
 	date: {type:Date, default:Date.now}
 })
 
