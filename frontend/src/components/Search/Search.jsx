@@ -311,10 +311,12 @@ function checkMatch(all_pets, listVal){
               flag = false;
             }
             if(listVal[j] != '' && checkListVal[j] != ''){
-
-                if(!checkListVal[j].toString().toLowerCase().trim().includes((listVal[j]).toLowerCase().trim())){
-                    //console.log("hit");
-                    flag = false;
+                if(!checkListVal[j].toString().toLowerCase().trim().includes((listVal[j]).toString().toLowerCase().trim())){
+                    
+                      flag = false;
+                }
+                if(checkListVal[j].toString().toLowerCase().trim() === "female" && (listVal[j]).toString().toLowerCase().trim() === "male"){
+                      flag = false;
                 }
 
             }
