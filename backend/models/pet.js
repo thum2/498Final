@@ -13,6 +13,7 @@ var PetSchema = new mongoose.Schema({
 	datefound: {type:Date, default:null},
 	date: {type:Date, default:Date.now},
 	found: {type:Boolean, default:null},
+	comments: {type:[String], default:[]},
 	original_website: {type:String,default:null},
 	img_url: {type:String,default:null}
 })
