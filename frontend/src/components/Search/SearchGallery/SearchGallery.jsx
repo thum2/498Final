@@ -47,21 +47,10 @@ class SearchGallery extends Component {
                     let color = pet.color? pet.color: color_alt;
                     let image = pet.image;
                     let type = pet.type;
-                    let datefound = pet.datefound.slice(0,10);
+                    let datefound = "Date Found"//pet.datefound.slice(0,10);
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
-                    let name = pet.name? pet.name:"No name";
-                    let description = pet.description;
-                    let breed_alt = description ? (description.split("\n")[2] ? description.split("\n")[2] : "Not specified") : "Not specified";
-                    let breed = pet.breed ? pet.breed: breed_alt;
-                    let gender_alt = description ? (description.split("\n")[0] ? description.split("\n")[0] : "Not specified") : "Not specified";
-                    let gender = pet.gender ? pet.gender: gender_alt;
-                    let color_alt = description ? (description.split("\n")[1] ? description.split("\n")[1] : "Not specified") : "Not specified";
-                    let color = pet.color? pet.color: color_alt;
-                    let image = pet.image;
-                    let type = pet.type;
-                    let datefound = pet.datefound.slice(0,10);
-
+                    
                     return(
                             <Card key={idx}>
                               <Card.Content>
