@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import { Button, Input, Breadcrumb, Icon, Dropdown, Form, TextArea, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
-
-
 
 import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -48,7 +47,6 @@ logOut(e) {
     }
   handleSubmit(){
     let info = {}
-    console.log("The description " + document.getElementById("gender"));
     let entries = ["type", "name", "location", "breed", "gender", "color", "img_url", "size"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
@@ -58,16 +56,26 @@ logOut(e) {
     }
     info["found"] = true;
     info["original_website"] = "LOCAL";
-    info["datefound"] = this.state.startDate.date;
+    info["datefound"] = this.state.startDate
 
-    axios.post('/api/pets', info).then((res)=>{
-        console.log(res);
-        alert("Your Pet has been submitted")
-    }).catch((err)=>{
-        console.log(err);
-        alert("Your Pet failed to be submitted")
+    if(info["type"] && info["location"] && info["color"]){
+        axios.post('/api/pets', info).then((res)=>{
+            console.log(res);
+            alert("Your Pet has been submitted")
+        }).then(() => {
+            this.props.history.push('/dashboard');
+        }).catch((err)=>{
+            console.log(err);
+            alert("Your Pet failed to be submitted")
 
-    });
+        });
+    }
+
+    else{
+        alert("Please fill up mandatory fields");
+    }
+
+
 
   }
 
@@ -92,8 +100,8 @@ logOut(e) {
                                 <span>
                                   <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
                                     <Icon name='paw' size='large'/>
-                                  </Link>
                                   Pet Finder
+                                  </Link>
                                   <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
                                       <Button size="medium">
                                         {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
@@ -115,8 +123,8 @@ logOut(e) {
                 <Grid.Column>
                 <div id="FormContainer">
                     <Form>
-                        <Form.Field>
-                            <label>Pet Species</label>
+                        <Form.Field required>
+                            <label>Pet Type</label>
                             <Input id="type" placeholder='Dog' fluid />
                         </Form.Field>
 
@@ -131,12 +139,13 @@ logOut(e) {
                                 <div className="ui input left icon">
                                     <DatePicker
                                         selected={this.state.startDate}
-                                        onChange={this.handleChange}/>
+                                        onChange={this.handleChange}
+                                        required />
                                 </div>
                             </div>
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Location Found</label>
                             <Input id="location" placeholder='XYZ Park' />
                         </Form.Field>
@@ -161,7 +170,7 @@ logOut(e) {
                             <Dropdown id="size" placeholder='Select Size' fluid selection options={sizeOptions} />
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Hair Color</label>
                             <Input id="color" placeholder='Golden' />
                         </Form.Field>
@@ -172,11 +181,9 @@ logOut(e) {
                         </Form.Field>
 
                         <div className="submitButton">
-                            <Link to="/dashboard">
                               <Button  onClick={this.handleSubmit}>
                                     Report Found Pet
                               </Button>
-                            </Link>
                         </div>
                     </Form>
                 </div>

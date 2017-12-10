@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import { Button, Input, Breadcrumb, Icon, Dropdown, Radio, Grid, Form, TextArea } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
@@ -54,7 +55,7 @@ logOut(e) {
       startDate: date
     });
   }
-    
+
   handleSubmit(){
     let info = {}
     let entries = ["type", "name", "location", "breed", "gender", "size", "color", "img_url"]
@@ -67,15 +68,26 @@ logOut(e) {
     info["found"] = false;
     info["original_website"] = "LOCAL";
     info["description"] = null;
-    info["datefound"] = this.state.startDate.date; //lost date
-    axios.post('/api/pets',info).then((res)=>{
-        console.log(res);
-    }).catch((err)=>{
-        console.log(err);
-    });
+    info["datefound"] = this.state.startDate._d;
+    if(info["type"] && info["location"] && info["color"]){
+        axios.post('/api/pets', info).then((res)=>{
+            console.log(res);
+            alert("Your Pet has been submitted")
+        }).then(() => {
+            this.props.history.push('/dashboard');
+        }).catch((err)=>{
+            console.log(err);
+            alert("Your Pet failed to be submitted")
+
+        });
+    }
+
+    else{
+        alert("Please fill up mandatory fields");
+    }
 
   }
-    
+
     inputChangeHandler(event, val, type){
         if(type=="pet"){
             this.setState({
@@ -112,9 +124,9 @@ logOut(e) {
                 petName: val
             })
         }
-        
+
     }
-    
+
     render() {
         const genderOptions = [{key: 'male', text: 'Male', value: 'male'},
                                {key: 'female', text: 'Female', value: 'female'}
@@ -136,8 +148,8 @@ logOut(e) {
                                 <span>
                                   <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
                                     <Icon name='paw' size='large'/>
-                                  </Link>
                                   Pet Finder
+                                  </Link>
                                   <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
                                       <Button size="medium">
                                         {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
@@ -159,28 +171,29 @@ logOut(e) {
                 <Grid.Column>
                 <div id="FormContainer">
                     <Form>
-                        <Form.Field>
-                            <label>Pet Species</label>
-                            <Input id="type" placeholder='Dog' fluid />
+                        <Form.Field required>
+                            <label>Pet Type</label>
+                            <Input id="type" placeholder='Dog' fluid/>
                         </Form.Field>
 
                         <Form.Field>
                             <label>Pet Name</label>
-                            <Input id="name" placeholder='Rover' fluid />
+                            <Input id="name" placeholder='Rover' fluid/>
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Date Lost</label>
                             <div className="ui calendar" id="example2">
                                 <div className="ui input left icon">
                                     <DatePicker
                                         selected={this.state.startDate}
-                                        onChange={this.handleChange}/>
+                                        onChange={this.handleChange}
+                                        />
                                 </div>
                             </div>
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Location Lost</label>
                             <Input id="location" placeholder='XYZ Park' />
                         </Form.Field>
@@ -205,7 +218,7 @@ logOut(e) {
                             <Dropdown id="size" placeholder='Select Size' fluid selection options={sizeOptions} />
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Hair Color</label>
                             <Input id="color" placeholder='Golden' />
                         </Form.Field>
@@ -216,11 +229,9 @@ logOut(e) {
                         </Form.Field>
 
                         <div className="submitButton">
-                            <Link to="/dashboard">
                               <Button  onClick={this.handleSubmit}>
                                     Report Lost Pet
                               </Button>
-                            </Link>
                         </div>
                     </Form>
                 </div>

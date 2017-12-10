@@ -69,8 +69,6 @@ class Search extends Component {
     }
 
     viewPets(type){
-        console.log(type);
-      console.log(val);
       let pet = this.state.petValue;
       let breed = this.state.breedValue;
       let color = this.state.colorValue;
@@ -186,8 +184,8 @@ class Search extends Component {
                             <span>
                               <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
                                 <Icon name='paw' size='large'/>
-                              </Link>
-                              Pet Finder
+                                Pet Finder
+                            </Link>
                               <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
                                   <Button size="medium">
                                     {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
