@@ -206,18 +206,7 @@ class Search extends Component {
               <Grid.Row>
               <Grid.Column>
               <div className="Search_SearchTools">
-                  <div className="Search_SortBar">
-                      <span>
-                          {this.state.resultCount}
-                      </span>
-                      <span>
-                          <Dropdown
-                              placeholder="SORT BY"
-                              options={sortOptions}
-                              selection
-                              onChange={this.sortChangeHandler}/>
-                      </span>
-                  </div>
+                  
                   <div className="Search_SearchBar">
                       <List horizontal relaxed>
                           <List.Item>
@@ -317,16 +306,25 @@ function checkMatch(all_pets, listVal){
             let lostFound = all_pets[i]["found"];
 
             let checkListVal = [petType, gender, breed, color, lostFound];
+            console.log(checkListVal)
+            if(checkListVal[j] == ""){
+              flag = false;
+            }
             if(listVal[j] != '' && checkListVal[j] != ''){
 
-                if(checkListVal[j].toString().toLowerCase() !== (listVal[j]).toLowerCase()){
+                if(!checkListVal[j].toString().toLowerCase().trim().includes((listVal[j]).toLowerCase().trim())){
                     flag = false;
                 }
+
             }
+            
+
         }
         if(flag){
             result.push(all_pets[i]);
         }
+        console.log(result)
+
     }
     return result;
 }
