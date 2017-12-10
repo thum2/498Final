@@ -43,9 +43,10 @@ class Home extends Component {
                     <div className="navbar">
                         <h1>
                             <span>
-                                
-                                    <Icon link={true} to="/" name='paw' size='large'/>
+                                    <Link to= {this.state.isLoggedIn ? "/" : "/"} style={{ color: 'LightGray' }}>
+                                        <Icon name='paw' size='large'/>
                                     Pet Finder
+                                    </Link>
                                     <Link to="/register" className="buttons">
                                         <Button size="huge">
                                             Sign Up
@@ -64,7 +65,7 @@ class Home extends Component {
 
                 <div className="optionHolder">
                     <div className="centerer">
-                        
+
 
                         <h1>The Web App That Helps Find Lost Pets</h1>
                         <h1>Register and Login to Access Posting Lost and Found Pets</h1>
@@ -73,19 +74,19 @@ class Home extends Component {
                     </div>
                 </div>
 
-                
+
                 <div className="optionHolder">
-                
+
                     <Grid columns={3}>
                         <Grid.Row>
 
                           <Grid.Column>
                             <Link to='/login'>
-                            <div className="threeDivider">    
+                            <div className="threeDivider">
                                 <div className="threeDividerText">
                                     <h1>I found a pet thats not mine</h1>
                                 </div>
-                                
+
                             </div>
                             </Link>
                             <div>
@@ -99,7 +100,7 @@ class Home extends Component {
                                         <div className="threeDividerText">
                                             <h1>I lost a pet</h1>
                                         </div>
-                                       
+
                                 </div>
                                 </Link>
                           </Grid.Column>

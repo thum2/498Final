@@ -49,8 +49,10 @@ class Dashboard extends Component {
                         <div className="navbar">
                             <h1>
                                 <span>
-                                    <Icon link={true} to="/dashboard" name='paw' size='large'/>
-                                    Pet Finder
+                                      <Link to= {this.state.isLoggedIn ? "/dashboard" : "/dashboard"} style={{ color: 'LightGray' }}>
+                                        <Icon name='paw' size='large'/>
+                                        Pet Finder
+                                      </Link>
                                     <Link to="/notifications" className="buttons">
                                         <Button  size="huge">
                                             Notifications
@@ -68,7 +70,7 @@ class Dashboard extends Component {
 
                     <div className="optionHolder">
                     <div className="centerer">
-                        
+
 
                         <h1>The Web App That Helps Find Lost Pets</h1>
                         <h1>Register and Login to Access Posting Lost and Found Pets</h1>
@@ -77,20 +79,20 @@ class Dashboard extends Component {
                     </div>
                 </div>
 
-                
+
                 <div className="optionHolder">
-                
+
                     <Grid columns={3}>
                         <Grid.Row>
 
                           <Grid.Column>
                             <Link to='/foundpage'>
-                            <div className="threeDivider">    
+                            <div className="threeDivider">
                                 <div className="threeDividerText">
                                     <h1>I found a pet thats not mine</h1>
-                                
+
                                 </div>
-                                
+
                             </div>
                             </Link>
                             <div>
@@ -104,7 +106,7 @@ class Dashboard extends Component {
                                         <div className="threeDividerText">
                                             <h1>I lost a pet</h1>
                                         </div>
-                                       
+
                                 </div>
                                 </Link>
                           </Grid.Column>

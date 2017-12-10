@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
 
 import styles from './styles.scss'
 
@@ -31,7 +31,7 @@ class Login extends Component {
         const password = encodeURIComponent(this.state.user.password);
         const formData = `email=${email}&password=${password}`;
 
-        // create an AJAX request (This should probably done with Axios instead) 
+        // create an AJAX request (This should probably done with Axios instead)
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/api/login');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

@@ -6,71 +6,67 @@ import PropTypes from 'prop-types'
 import style from './SearchTag.scss'
 
 class SearchTag extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    handleDelete(event, idx){
+        let type = (idx==0 ? "type" : (idx==1 ? "gender":(idx == 2 ? "breed": (idx == 3 ? "color" : "lostFound"))));
+        this.props.delete(event, type);
     }
 
     render(){
-        let noList = (Object.keys(this.props.searchList).length == 0);
-        if(noList){
+        let type = this.props.searchType;
+        let breed = this.props.searchBreed;
+        let color = this.props.searchColor;
+        let gender = this.props.searchGender;
+        let lostFound = this.props.lostFound;
+        if(type == '' && breed == '' && color == '' && gender == '' && lostFound == ''){
             return(
                 <div className="SearchTagContainer">
                 </div>
             );
         }
         else{
-            let tags = this.props.searchList.map((searchList,idx) =>{
-                    return {index: idx, tagName:searchList};
+            let list = [type, gender, breed, color, lostFound];
+            let tags = list.map((val,idx) =>{
+                    return {index: idx, tagName:val};
             });
 
             let SearchTag = tags.map((tag,idx) =>{
-                let name = tag.tagName.charAt(0).toUpperCase() + tag.tagName.slice(1);
-                return (
-                    <Label key={idx}>
-                      {name}
-                      <Icon name='delete' />
-                    </Label>
-                )
+                let val = '';
+                if(tag.tagName != ''){
+                    let lName = tag.tagName.toLowerCase();
+                    let name = lName.charAt(0).toUpperCase() + lName.slice(1);
+                    let index = idx;
+                    return (
+                        <Label key={idx}>
+                          {name}
+                          <Icon name='delete' value={val} onClick={event => this.handleDelete(event, index)}/>
+                        </Label>
+                    )
+                }
             });
             return(
                 <List className="SearchTagContainer">
-                    {SearchTag}
+                    Searching for: {SearchTag}
                 </List>
             );
         }
     }
 }
 
-function sort(array,order){
-    if(order == "alphabetical"){
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-      }));
-    }
-    else{
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return -1;
-          }
-          if (a.name < b.name) {
-            return 1;
-          }
-          return 0;
-      }));
-    }
 
+SearchTag.propTypes = {
+    searchType: PropTypes.string,
+    searchBreed: PropTypes.string,
+    searchColor: PropTypes.string,
+    searchGender: PropTypes.string,
+    lostFound: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }
-
-// SearchTag.propTypes = {
-//     searchList: PropTypes.oneOfType([
-//         PropTypes.object
-//     ])
-// }
 
 export default SearchTag

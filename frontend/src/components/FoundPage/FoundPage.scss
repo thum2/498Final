@@ -1,3 +1,10 @@
+@mixin childCenter {
+    position: absolute;
+    left: 25%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
 @mixin center {
     display: flex;
     justify-content: center;
@@ -7,6 +14,26 @@
 @mixin full {
     width: 100%;
     height: 100%;
+}
+
+body {
+    @include full;
+    position: relative;
+}
+
+.navbar {
+    float:right;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+#FormContainer {
+    background-color: transparent;
+    width: 60%;
+    padding: 2%;
+    border-radius: 2%;
+    border: 2px solid black;
+    @include childCenter
 }
 
 .FoundPage{
@@ -35,4 +62,23 @@
     position: relative;
     height: 70%;
     width: 100%;
+}
+
+.Found_Header{
+    position: fixed;
+    background-color: #3FBF7F;
+    width: 100%;
+    z-index: 1;
+}
+
+.navbar {
+    width: 100%;
+    padding-top: 1em;
+    padding-right: 1em;
+    margin: 0 auto;
+    color: LightGray;
+}
+.buttons{
+    float:right;
+    padding-bottom: 5px;
 }
