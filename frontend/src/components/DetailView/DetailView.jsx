@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Comment, Form, Header, Segment,Item, Card, Icon } from 'semantic-ui-react'
+import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid } from 'semantic-ui-react'
 import styles from './styles.scss' 
 import axios from 'axios'
 import moment from 'moment'
@@ -11,34 +11,98 @@ class DetailView extends Component{
     	super(props);
     	this.state = {
       		pet_id: this.props.match.params.id,
-      		pet_data: {}
+      		pet_data: {},
+      		isLoggedIn: false
     	};
 
     	this.componentWillMount = this.componentWillMount.bind(this);
+    	this.logOut = this.logOut.bind(this);
     }
 
     componentWillMount(){
+    	
+
+
     	axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
             this.setState({
             	pet_id: this.props.match.params.id,
             	pet_data: res.data.data
             })
         })
+        
     }
+    componentDidMount(){
+    	// axios.get('/api/profile').then( (res) => {
+     //        console.log(res);
+     //        this.setState({
+     //            isLoggedIn: true
+     //        })
+     //    }).catch( (err) => {
+     //        this.setState({
+     //            isLoggedIn: false
+     //        })
+     //    })
+    }
+   
+	logOut(e) {
+        console.log(e)
+        let self = this
+        axios.get('/api/logout').then( (res) => {
+            console.log(self.state);
+            console.log("Logged out");
+        })
+	}
+
+
+
+
 
 	render(){
 		return(
 			<div className="DetailView">
-				<span className="GroupTitle">
-	            <h1><Icon name="paw" />Pet Finder</h1>
-	            </span>
-				<div className="PetInformation">
-					<PetInformation id={this.state.pet_id} data={this.state.pet_data}/>
-				</div>
+				<Grid>
+                <Grid.Row className="header_home">
+                <Grid.Column>
+                        <div className="navbar">
+                            <h1>
+                                <span>
+                                  <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
+                                    <Icon name='paw' size='large'/>
+                                  Pet Finder
+                                  </Link>
+                                  <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
+                                      <Button size="medium">
+                                        {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
+                                      </Button>
+                                  </Link>
 
-				<div className="CommentList">
-					<CommentList id={this.state.pet_id} data={this.state.pet_data}/>
-				</div>
+                                  <Link to= {this.state.isLoggedIn ? "/" : "/login"} onClick={this.state.isLoggedIn ? this.logOut : null} className="buttons">
+                                      <Button size="medium">
+                                          {this.state.isLoggedIn ? "Logout" : "Login"}
+                                      </Button>
+                                  </Link>
+                                </span>
+                            </h1>
+                        </div>
+                </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                <Grid.Column>
+					<div className="PetInformation">
+						<PetInformation id={this.state.pet_id} data={this.state.pet_data}/>
+					</div>
+				</Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                <Grid.Column>
+					<div className="CommentList">
+						<CommentList id={this.state.pet_id} data={this.state.pet_data}/>
+					</div>
+				</Grid.Column>
+                </Grid.Row>
+                </Grid>
 			</div>
 		)
 	}

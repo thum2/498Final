@@ -34,7 +34,7 @@ class SearchGallery extends Component {
                         return {index: idx, name: pet.name, type:pet.type,
                              breed: pet.breed, gender: pet.gender, color: pet.color,
                              image:pet.img_url, datefound:pet.datefound, description: pet.description,
-                             foundOrLost: pet.found, location: pet.location, website: pet.original_website};
+                             foundOrLost: pet.found, location: pet.location, website: pet.original_website, id:pet._id};
                 });
 
                 let SearchGallery = pets.map((pet,idx) =>{
@@ -52,10 +52,14 @@ class SearchGallery extends Component {
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
                     return(
+                          
                             <Card key={idx}>
                               <Card.Content>
                                 <Card.Header>
+                                    <Link to={"/detailview/" + pet.id.toString()} >
                                     <Image floated='right' size='small' src={image} />
+                                    </Link>
+
                                     {name}
                                 </Card.Header>
                                 <Card.Meta>
