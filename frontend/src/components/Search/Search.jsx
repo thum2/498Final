@@ -303,16 +303,17 @@ function checkMatch(all_pets, listVal){
             let color = all_pets[i]["color"] ? all_pets[i]["color"] : color_alt;
 
             let petType = all_pets[i]["type"];
-
             let lostFound = all_pets[i]["found"];
 
+
             let checkListVal = [petType, gender, breed, color, lostFound];
-            if(checkListVal[j] == ""){
+            if(checkListVal[j] === "" && listVal[j] !== ""){
               flag = false;
             }
             if(listVal[j] != '' && checkListVal[j] != ''){
 
                 if(!checkListVal[j].toString().toLowerCase().trim().includes((listVal[j]).toLowerCase().trim())){
+                    //console.log("hit");
                     flag = false;
                 }
 
@@ -323,7 +324,6 @@ function checkMatch(all_pets, listVal){
         if(flag){
             result.push(all_pets[i]);
         }
-        console.log(result)
 
     }
     return result;
