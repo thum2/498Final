@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon } from 'semantic-ui-react'
+import { withRouter } from 'react-router'
+import { Button, Input, Breadcrumb, Icon, Dropdown, Form, TextArea, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
-
 
 import styles from './FoundPage.scss'
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,7 +17,7 @@ class FoundPage extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.logOut = this.logOut.bind(this);
   }
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
@@ -37,9 +37,17 @@ class FoundPage extends Component {
       startDate: date
     });
   }
+logOut(e) {
+        console.log(e)
+        let self = this
+        axios.get('/api/logout').then( (res) => {
+            console.log(self.state);
+            console.log("Logged out");
+        })
+    }
   handleSubmit(){
     let info = {}
-    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url"]
+    let entries = ["type", "name", "location", "breed", "gender", "color", "img_url", "size"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -47,93 +55,141 @@ class FoundPage extends Component {
         }
     }
     info["found"] = true;
-      info["original_website"] = "LOCAL";
-    info["description"] = null;
-    info["datefound"] = this.state.startDate.date;
-    axios.post('/api/pets',info).then((res)=>{
-        console.log(res);
-    }).catch((err)=>{
-        console.log(err);
-    });
+    info["original_website"] = "LOCAL";
+    info["datefound"] = this.state.startDate
+
+    if(info["type"] && info["location"] && info["color"]){
+        axios.post('/api/pets', info).then((res)=>{
+            console.log(res);
+            alert("Your Pet has been submitted")
+        }).then(() => {
+            this.props.history.push('/dashboard');
+        }).catch((err)=>{
+            console.log(err);
+            alert("Your Pet failed to be submitted")
+
+        });
+    }
+
+    else{
+        alert("Please fill up mandatory fields");
+    }
+
+
 
   }
+
     render() {
+        const genderOptions = [{key: 'male', text: 'Male', value: 'male'},
+                               {key: 'female', text: 'Female', value: 'female'}
+        ];
+
+        const sizeOptions   = [{key: 'small', text: 'Small', value: 'small'},
+                               {key: 'medium', text: 'Medium', value: 'medium'},
+                               {key: 'large', text: 'Large', value: 'large'}
+        ];
+
         return(
             <div className="FoundPage">
-                <div className="FoundPage_Header">
-                    <span className="GroupTitle">
-                        <h1><Icon name="paw" />Pet Finder</h1>
-                    </span>
-                    <div className="FoundPage_Navi">
-                        <Breadcrumb.Section>
-                            <Link to={'/notifications'}>
-                                Notifications
-                            </Link>
-                        </Breadcrumb.Section>
-                        <Breadcrumb.Divider />
-                        <Breadcrumb.Section>
-                            <Link to={'/'}>
-                                Logout
-                            </Link>
-                        </Breadcrumb.Section>
-                    </div>
-                </div>
-                <div className="FoundPage_Body">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Pet Type</th>
-                                <td><input id="type"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Pets name</th>
-                                <td><input id="name"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Found Date</th>
-                                <td>
-                                    <div className="ui calendar" id="example2">
-                                        <div className="ui input left icon">
-                                            <DatePicker
-                                                selected={this.state.startDate}
-                                                onChange={this.handleChange}/>
-                                        </div>
-                                        <Icon name="calendar" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Found location</th>
-                                <td><input id="location"></input></td>
-                            </tr>
-                            <tr>
-                                <th cellspan="2">Description</th>
-                            </tr>
-                            <tr>
-                                <th>Breed</th>
-                                <td><input id="breed"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Gender</th>
-                                <td><input id="gender"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Hair Color</th>
-                                <td><input id="color"></input></td>
-                            </tr>
-                            <tr>
-                                <th>Images</th>
-                                <td><input id="img_url"></input></td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <div className="submitButton">
-                          <Button  onClick={this.handleSubmit}>
-                                Report Found Pet
-                          </Button>
-                    </div>
+                <Grid>
+                <Grid.Row className="Found_Header">
+                <Grid.Column>
+                        <div className="navbar">
+                            <h1>
+                                <span>
+                                  <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
+                                    <Icon name='paw' size='large'/>
+                                  Pet Finder
+                                  </Link>
+                                  <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
+                                      <Button size="medium">
+                                        {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
+                                      </Button>
+                                  </Link>
+
+                                  <Link to= {this.state.isLoggedIn ? "/" : "/login"} onClick={this.state.isLoggedIn ? this.logOut : null} className="buttons">
+                                      <Button size="medium">
+                                          {this.state.isLoggedIn ? "Logout" : "Login"}
+                                      </Button>
+                                  </Link>
+                                </span>
+                            </h1>
+                        </div>
+                </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                <Grid.Column>
+                <div id="FormContainer">
+                    <Form>
+                        <Form.Field required>
+                            <label>Pet Type</label>
+                            <Input id="type" placeholder='Dog' fluid />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Pet Name</label>
+                            <Input id="name" placeholder='Rover' fluid />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Date Found</label>
+                            <div className="ui calendar" id="example2">
+                                <div className="ui input left icon">
+                                    <DatePicker
+                                        selected={this.state.startDate}
+                                        onChange={this.handleChange}
+                                        required />
+                                </div>
+                            </div>
+                        </Form.Field>
+
+                        <Form.Field required>
+                            <label>Location Found</label>
+                            <Input id="location" placeholder='XYZ Park' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Description</label>
+                            <TextArea id="description" placeholder='Tell us more about your pet, the more information the more likely it will be found' style={{ minHeight: 100 }} />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Breed</label>
+                            <Input id="breed" placeholder='Golden Retriever' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Gender</label>
+                            <Dropdown id="gender" placeholder='Select Gender' fluid selection options={genderOptions} />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Size</label>
+                            <Dropdown id="size" placeholder='Select Size' fluid selection options={sizeOptions} />
+                        </Form.Field>
+
+                        <Form.Field required>
+                            <label>Hair Color</label>
+                            <Input id="color" placeholder='Golden' />
+                        </Form.Field>
+
+                        <Form.Field>
+                            <label>Image URL</label>
+                            <Input id="img_url" placeholder='http://imgur.com/DogPic' />
+                        </Form.Field>
+
+                        <div className="submitButton">
+                              <Button  onClick={this.handleSubmit}>
+                                    Report Found Pet
+                              </Button>
+                        </div>
+                    </Form>
                 </div>
+                </Grid.Column>
+                </Grid.Row>
+                </Grid>
             </div>
         )
     }
