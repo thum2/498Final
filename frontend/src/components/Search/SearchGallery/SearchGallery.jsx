@@ -52,14 +52,12 @@ class SearchGallery extends Component {
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
                     return(
-                          
+
                             <Card key={idx}>
+                                <Link to={"/detailview/" + pet.id.toString()} >
                               <Card.Content>
                                 <Card.Header>
-                                    <Link to={"/detailview/" + pet.id.toString()} >
                                     <Image floated='right' size='small' src={image} />
-                                    </Link>
-
                                     {name}
                                 </Card.Header>
                                 <Card.Meta>
@@ -92,6 +90,7 @@ class SearchGallery extends Component {
                                       content="Lost"/>
                                 </div>
                               </Card.Content>
+                              </Link>
                             </Card>
                     );
                 });
