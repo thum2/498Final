@@ -66,7 +66,7 @@ logOut(e) {
     info["gender"] = this.state.gender;
     info["size"] = this.state.size;
     info["notes"] = this.state.notes;
-    info["found"] = true;
+    info["found"] = false;
     info["original_website"] = "LOCAL";
     info["datefound"] = this.state.startDate;
     info["userid"] = this.state.user;
