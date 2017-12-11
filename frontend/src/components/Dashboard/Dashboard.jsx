@@ -12,12 +12,11 @@ class Dashboard extends Component {
         this.state = {
             isLoggedIn: false
         }
-
         this.logOut = this.logOut.bind(this);
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get('/api/profile').then( (res) => {
             console.log(res);
             this.setState({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown, Grid, Sticky } from 'semantic-ui-react'
+import { Button, Input, Breadcrumb, Icon, Card, List, Dropdown, Grid, Sticky,Loader,Dimmer } from 'semantic-ui-react'
 import DebounceInput from 'react-debounce-input';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -31,6 +31,7 @@ class Search extends Component {
         this.viewPets = this.viewPets.bind(this);
         this.removeTagHandler = this.removeTagHandler.bind(this);
         this.logOut = this.logOut.bind(this);
+        this.loadHandler = this.loadHandler.bind(this);
     }
     componentWillMount(){
         let url = this.baseUrl;
@@ -173,6 +174,16 @@ class Search extends Component {
         }
     }
 
+    loadHandler(){
+
+      if(this.state.resultCount != 0){
+        return(<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>);
+      }
+      if(this.state.search.length == 0){
+        return( <div className="loader"><Loader active inline centered>Getting Pets</Loader></div>);
+      }
+    }
+
     render(){
         return(
           <div className="Search">
@@ -271,9 +282,12 @@ class Search extends Component {
               </Grid.Column>
               </Grid.Row>
               </Grid>
-              <div className="Search_Gallery">
-                  {<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>}
-              </div>
+              
+                <div className="Search_Gallery">
+                    {this.loadHandler()}
+                </div>
+              
+
           </div>
         )
     }
