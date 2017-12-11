@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid } from 'semantic-ui-react'
+import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input } from 'semantic-ui-react'
 import styles from './styles.scss' 
 import axios from 'axios'
 import moment from 'moment'
@@ -52,10 +52,6 @@ class DetailView extends Component{
             console.log("Logged out");
         })
 	}
-
-
-
-
 
 	render(){
 		return(
@@ -112,6 +108,41 @@ class DetailView extends Component{
 
 
 class PetInformation extends Component{
+	constructor(props) {
+    	super(props);
+
+    	this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+	handleSubmit(){
+	    let info = {}
+		let val = document.getElementById("userEmail").value;
+		info['recommendId'] = val;
+		info['petId'] = this.props.id;
+		console.log(val);
+		console.log(this.props.id);
+
+		axios.post('/api/users/notifications', info).then((res) => {
+			console.log(res);
+			alert("It worked");
+		}).catch((err) => {
+			console.log(err);
+		});
+
+		/*
+	    if(info["type"] && info["location"] && info["color"]){
+	        axios.post('/api/users/notifications', info).then((res)=>{
+	            console.log(res);
+	            alert("Your Pet has been submitted")
+	        }).then(() => {
+	            this.props.history.push('/dashboard');
+	        }).catch((err)=>{
+	            console.log(err);
+	            alert("Your Pet failed to be submitted")
+
+        });
+        */
+    }
 
 	render(){
 		return(
@@ -133,8 +164,23 @@ class PetInformation extends Component{
 				      	</div>
 				      		<a href={this.props.data.original_website}>Here</a>
 				      	<div className="extra">
-				        	<button className="ui primary right floated button" role="button">Recommend</button>
+				     
 							<button className="ui primary right floated button" role="button">This is my Pet</button>
+							<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
+							    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
+							    <Modal.Content>
+		    	                    <Form>
+				                        <Form.Field required>
+				                            <Input id="userEmail" placeholder='username@email.com' fluid />
+				                        </Form.Field>
+				                    </Form>
+							    </Modal.Content>
+							    <Modal.Actions>
+							    	<Button  onClick={this.handleSubmit}>
+                                   		Submit
+                              		</Button>
+							    </Modal.Actions>
+						    </Modal>
 						</div>
 					</div>
 				</div>

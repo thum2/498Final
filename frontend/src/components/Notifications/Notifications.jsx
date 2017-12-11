@@ -9,7 +9,8 @@ class Notifications extends Component {
 	constructor() {
         super();
         this.state = {
-            isLoggedIn: false
+            isLoggedIn: false,
+            notifications: []
         }
 
         this.logOut = this.logOut.bind(this);
@@ -26,7 +27,13 @@ class Notifications extends Component {
             this.setState({
                 isLoggedIn: false
             })
-        })
+        });
+
+        axios.get('/api/users/notifications').then( (res) => {
+            console.log("Responded");
+        }).catch( (err) => {
+            console.log("There is an errro");
+        });
     }
 
     logOut() {
