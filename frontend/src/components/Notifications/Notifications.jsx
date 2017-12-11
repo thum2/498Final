@@ -67,11 +67,15 @@ class Notifications extends Component {
 		                    </div>
 		              </Grid.Column>
 		              </Grid.Row>
-				  </Grid>
 
+                    <Grid.Row>
+                    <Grid.Column>
                     <div className="Notifications_List">
 						{<NotificationsPost feed={this.state.feed} />}
                     </div>
+                    </Grid.Column>
+                    </Grid.Row>
+                  </Grid>
 
                 </div>
             )
