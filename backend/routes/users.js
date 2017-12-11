@@ -1,6 +1,7 @@
 var express = require('express'),
 	router = express.Router(),
-	user = require('../models/user');
+	user = require('../models/user'),
+	ObjectId = require('mongodb').ObjectID;
 
 router.get('/', function(req, res){
 	let query = user.find({})
@@ -29,5 +30,55 @@ router.get('/', function(req, res){
 		}	
 	});	
 })
+
+router.get('/notifications', function(req, res) {
+	console.log(req.session.passport.user);
+	var uId = ObjectId("" + req.session.passport.user);
+	console.log(uId);
+	user.findOne({"_id": uId}, function(err, user) {
+		if(err){
+			res.status(500).send({
+				message: err,
+				data: []
+			});
+		} else{
+			if(user === null){
+				res.status(404).send({
+					message: 'Resource not found',
+					data: []
+				});
+			}
+			else{
+				console.log(user.notifications);
+				res.status(200).send({
+					message: 'Results Found',
+					data: user.notifications
+				});
+			}
+		}		
+	});
+});
+
+router.post('/notifications', function(req, res) {
+	console.log(req.body);
+	user.findOne({"email": req.body.recommendId }, function(err, user) {
+		if(err) {
+			console.log(err);
+		} else {
+			if(user === null) {
+				console.log("User does not exist");
+			} else {
+				if(user.notifications.indexOf(req.body.petId) === -1) {
+					console.log(user);
+					console.log(req.body.petId);
+					user.notifications.push(req.body.petId);
+					user.save();
+				} else {
+					console.log("Already notified user of this post");
+				}
+			}
+		}
+	});
+});
 
 module.exports = router;

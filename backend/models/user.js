@@ -7,6 +7,12 @@ var userSchema = mongoose.Schema({
     firstname   : String,
     lastname    : String,
     phone       : String,
+    notifications: [
+    	{
+    		type: mongoose.Schema.Types.ObjectId,
+    		ref: "Notifications"
+    	}
+    ]
 });
 
 userSchema.methods.generateHash = function(password) {

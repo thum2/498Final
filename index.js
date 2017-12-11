@@ -2,15 +2,17 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const passport = require('passport')
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const config = require('./config');
-const User = require('./')
+const User = require('./');
 const router = express.Router();
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
-const user = require('./backend/routes/users')
-const pet = require('./backend/routes/pets')
-const comment = require('./backend/routes/comments')
+const user = require('./backend/routes/users');
+const pet = require('./backend/routes/pets');
+const comment = require('./backend/routes/comments');
+const session = require('express-session');
 
 app.use(express.static('./backend/static/'));
 app.use(express.static('./frontend/dist/'));
@@ -66,9 +68,15 @@ require('./backend/models').connect(config.dbUri);
 require('./backend/auth/passport')(passport);
 
 // Initialize cookie sessions
-app.use(cookieParser());
+app.use(cookieParser('secret'));
 app.use(cookieSession({
   keys: ['asdf', 'asdf']
+}));
+
+app.use(require("express-session")({
+  secret: 'secret',
+  saveUnitialized: false,
+  resave: false
 }));
 
 // Initialize Passport
