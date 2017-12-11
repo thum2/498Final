@@ -53,8 +53,7 @@ class SearchGallery extends Component {
 
                     return(
 
-                            <Card key={idx}>
-                                <Link to={"/detailview/" + pet.id.toString()} >
+                            <Card key={idx} as={Link} to={"/detailview/" + pet.id.toString()}>
                               <Card.Content>
                                 <Card.Header>
                                     <Image floated='right' size='small' src={image} />
@@ -90,7 +89,6 @@ class SearchGallery extends Component {
                                       content="Lost"/>
                                 </div>
                               </Card.Content>
-                              </Link>
                             </Card>
                     );
                 });
