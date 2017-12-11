@@ -18,7 +18,8 @@ class LostPage extends Component {
       startDate: moment(),
       gender: '',
       size: '',
-      notes: ''
+      notes: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,7 +30,8 @@ class LostPage extends Component {
         axios.get('/api/profile').then( (res) => {
             console.log(res);
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: res.data.user.email
             })
         }).catch( (err) => {
             this.setState({
@@ -67,6 +69,7 @@ logOut(e) {
     info["found"] = true;
     info["original_website"] = "LOCAL";
     info["datefound"] = this.state.startDate;
+    info["userid"] = this.state.user;
     if(info["type"] && info["location"] && info["color"]){
         axios.post('/api/pets', info).then((res)=>{
             console.log(res);

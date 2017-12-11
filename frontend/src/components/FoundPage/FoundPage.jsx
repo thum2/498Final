@@ -16,18 +16,21 @@ class FoundPage extends Component {
       startDate: moment(),
       gender: '',
       size: '',
-      notes: ''
+      notes: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDropDowns = this.handleDropDowns.bind(this);
     this.logOut = this.logOut.bind(this);
   }
+
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
             console.log(res);
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: res.data.user.email
             })
         }).catch( (err) => {
             this.setState({
@@ -84,6 +87,7 @@ class FoundPage extends Component {
         info["found"] = true;
         info["original_website"] = "LOCAL";
         info["datefound"] = this.state.startDate;
+        info["userid"] = this.state.user;
 
         if(info["type"] && info["location"] && info["color"]){
             axios.post('/api/pets', info).then((res)=>{
@@ -94,7 +98,6 @@ class FoundPage extends Component {
             }).catch((err)=>{
                 console.log(err);
                 alert("Your Pet failed to be submitted")
-
             });
         }
 
@@ -102,8 +105,6 @@ class FoundPage extends Component {
             alert("Please fill up mandatory fields");
         }
     }
-
-
 
     render() {
         const genderOptions = [{key: 'male', text: 'Male', value: 'male'},
