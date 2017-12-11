@@ -21,27 +21,22 @@ class DetailView extends Component{
 
     componentWillMount(){
     	
-
-
     	axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
             this.setState({
             	pet_id: this.props.match.params.id,
             	pet_data: res.data.data
             })
+            axios.get('/api/profile').then( (res) => {
+	            console.log(res);
+	            this.setState({isLoggedIn: true});
+	        })
+	        .catch( (err) => {
+	            this.setState({isLoggedIn: false});
+	        })
         })
+
+
         
-    }
-    componentDidMount(){
-    	// axios.get('/api/profile').then( (res) => {
-     //        console.log(res);
-     //        this.setState({
-     //            isLoggedIn: true
-     //        })
-     //    }).catch( (err) => {
-     //        this.setState({
-     //            isLoggedIn: false
-     //        })
-     //    })
     }
    
 	logOut(e) {
@@ -52,10 +47,6 @@ class DetailView extends Component{
             console.log("Logged out");
         })
 	}
-
-
-
-
 
 	render(){
 		return(
