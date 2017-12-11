@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 import style from './SearchGallery.scss'
 
 class SearchGallery extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             active:"notfound"
         }
@@ -126,11 +126,11 @@ function sort(array,order){
 
 }
 
-// SearchGallery.propTypes = {
-//     pokemon: PropTypes.oneOfType([
-//         PropTypes.string,
-//         PropTypes.object
-//     ])
-// }
+SearchGallery.propTypes = {
+    pets: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ])
+}
 
 export default SearchGallery
