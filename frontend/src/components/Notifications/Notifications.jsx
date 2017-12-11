@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { Button, Card, Grid, Image, Reveal, Icon} from 'semantic-ui-react'
+import { Button, Card, Grid, Image, Reveal, Icon, Feed} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import NotificationsPost from './NotificationsPost/NotificationsPost.jsx'
 
-import styles from './styles.scss'
+import styles from './Notifications.scss'
 
 class Notifications extends Component {
 	constructor() {
         super();
         this.state = {
             isLoggedIn: false,
-            notifications: []
+			feed:[]
         }
 
         this.logOut = this.logOut.bind(this);
-
     }
 
     componentDidMount() {
@@ -47,75 +47,41 @@ class Notifications extends Component {
         if (this.state.isLoggedIn) {
             return(
                 <div className="Notifications">
+					<Grid>
+					<Grid.Row className="Notifications_Header">
+		            <Grid.Column>
+		                    <div className="navbar">
+		                        <h1>
+		                            <span>
+		                              <Link to= {this.state.isLoggedIn ? "/dashboard" : "/"} style={{ color: 'LightGray' }}>
+		                                <Icon name='paw' size='large'/>
+		                                Pet Finder
+		                            </Link>
+		                              <Link to={this.state.isLoggedIn ? "/notifications" : "/register"} className="buttons">
+		                                  <Button size="medium">
+		                                    {this.state.isLoggedIn ? "Notifications" : "Sign Up"}
+		                                  </Button>
+		                              </Link>
 
-                    <div className="navbar">
-                        <span>
+		                              <Link to= {this.state.isLoggedIn ? "/" : "/login"} onClick={this.state.isLoggedIn ? this.logOut : null} className="buttons">
+		                                  <Button size="medium">
+		                                      {this.state.isLoggedIn ? "Logout" : "Login"}
+		                                  </Button>
+		                              </Link>
+		                            </span>
+		                        </h1>
+		                    </div>
+		              </Grid.Column>
+		              </Grid.Row>
 
-                            <Link to="/notifications">
-                                <Button basic color="black" size="huge">
-                                    Notifications
-                                </Button>
-                            </Link>
-
-                            <Link to="/" onClick={this.logOut}>
-                                <Button basic color="black" size="huge">
-                                    Logout
-                                </Button>
-                            </Link>
-
-                        </span>
+                    <Grid.Row>
+                    <Grid.Column>
+                    <div className="Notifications_List">
+						{<NotificationsPost feed={this.state.feed} />}
                     </div>
-
-                    <div className="optionHolder">
-                        <div className="centerer">
-                            <h1>
-                                <Icon name='paw' size='big' />
-                                PetFinder
-                            </h1>
-
-                            <h1>The Web App That Helps Find Lost Pets</h1>
-
-                            <br />
-                        </div>
-                    </div>
-
-                    <div className="optionHolder">
-                        <Grid columns={3}>
-                            <Grid.Row>
-
-                              <Grid.Column>
-                                <div className="threeDivider">
-                                    <Link to="/foundpage">
-                                        <div className="threeDividerText">
-                                            <h1>I found a pet that's not mine</h1>
-                                        </div>
-                                    </Link>
-                                </div>
-                              </Grid.Column>
-
-                              <Grid.Column>
-                                    <div className="threeDivider">
-                                        <Link to="/lostpage">
-                                            <div className="threeDividerText">
-                                                <h1>I lost a pet</h1>
-                                            </div>
-                                        </Link>
-                                    </div>
-                              </Grid.Column>
-
-                              <Grid.Column>
-                                <div className="threeDivider">
-                                    <Link to="/search">
-                                        <div className="threeDividerText">
-                                            <h1>Search lost and found pets</h1>
-                                        </div>
-                                    </Link>
-                                </div>
-                              </Grid.Column>
-
-                            </Grid.Row>
-                        </Grid>
-                    </div>
+                    </Grid.Column>
+                    </Grid.Row>
+                  </Grid>
 
                 </div>
             )

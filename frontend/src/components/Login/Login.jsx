@@ -40,7 +40,7 @@ class Login extends Component {
             this.setState({
                 message: 'Successfully logged in!'
             });
-            alert("You have logged in");
+            //alert("You have logged in");
             this.props.history.push('/dashboard');
         }).catch( (res) => {
             console.log(res);
