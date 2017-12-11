@@ -14,6 +14,7 @@ var PetSchema = new mongoose.Schema({
 	date: {type:Date, default:Date.now},
 	found: {type:Boolean, default:null},
 	comments: {type:[String], default:[]},
+	notes:{type:String, default:null},
 	original_website: {type:String,default:null},
 	img_url: {type:String,default:null}
 })
