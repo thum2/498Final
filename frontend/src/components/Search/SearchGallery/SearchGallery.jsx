@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 import style from './SearchGallery.scss'
 
 class SearchGallery extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             active:"notfound"
         }
@@ -52,14 +52,12 @@ class SearchGallery extends Component {
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
 
                     return(
-                          
+
                             <Card key={idx}>
+                                <Link to={"/detailview/" + pet.id.toString()} >
                               <Card.Content>
                                 <Card.Header>
-                                    <Link to={"/detailview/" + pet.id.toString()} >
                                     <Image floated='right' size='small' src={image} />
-                                    </Link>
-
                                     {name}
                                 </Card.Header>
                                 <Card.Meta>
@@ -92,6 +90,7 @@ class SearchGallery extends Component {
                                       content="Lost"/>
                                 </div>
                               </Card.Content>
+                              </Link>
                             </Card>
                     );
                 });
@@ -130,11 +129,11 @@ function sort(array,order){
 
 }
 
-// SearchGallery.propTypes = {
-//     pokemon: PropTypes.oneOfType([
-//         PropTypes.string,
-//         PropTypes.object
-//     ])
-// }
+SearchGallery.propTypes = {
+    pets: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ])
+}
 
 export default SearchGallery
