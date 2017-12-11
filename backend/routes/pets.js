@@ -30,12 +30,12 @@ router.get('/', function(req, res){
 					data: pets
 				});
 			}
-		}	
+		}
 	});
 });
 
 router.get('/:id', function(req,res){
-	
+
 	var query = pet.findById(req.params.id)
 
 	query.exec(function(err, onePet){
@@ -75,6 +75,7 @@ router.post('/', function(req, res){
 		gender: req.body.gender,
 		datefound: req.body.datefound,
 		found: req.body.found,
+		notes:req.body.notes,
 		original_website: req.body.original_website,
 		img_url: req.body.img_url
 	}
@@ -126,6 +127,8 @@ router.put('/:id', function(req, res){
 		updatePet.found = req.body.found
 	if(typeof req.body.comments !== 'undefined')
 		updatePet.comments = req.body.comments
+	if(typeof req.body.notes !== 'undefined')
+		updatePet.notes = req.body.found
 	if(typeof req.body.original_website !== 'undefined')
 		updatePet.original_website = req.body.original_website
 	if(typeof req.body.img_url !== 'undefined')
@@ -155,7 +158,7 @@ router.put('/:id', function(req, res){
 					data: pet
 				});
 			}
-		}	
+		}
 	})
 });
 
