@@ -180,7 +180,7 @@ class Search extends Component {
         return(<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>);
       }
       if(this.state.search.length == 0){
-        return( <Loader active inline centered>Getting Pets</Loader>);
+        return( <div className="loader"><Loader active inline centered>Getting Pets</Loader></div>);
       }
     }
 
