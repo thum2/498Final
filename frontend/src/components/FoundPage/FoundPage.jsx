@@ -27,7 +27,6 @@ class FoundPage extends Component {
 
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
-            console.log(res);
             this.setState({
                 isLoggedIn: true,
                 user: res.data.user.email
