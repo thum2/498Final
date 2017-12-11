@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 import styles from './styles.scss'
+
 
 class Login extends Component {
 
@@ -27,11 +29,28 @@ class Login extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const email = encodeURIComponent(this.state.user.email);
-        const password = encodeURIComponent(this.state.user.password);
-        const formData = `email=${email}&password=${password}`;
+        const email = this.state.user.email;
+        const password = this.state.user.password;
+        const user = {}
+        user["email"] = email;
+        user["password"] = password;
+
+        axios.post('/api/login', user).then( (res) => {
+            console.log(res);
+            this.setState({
+                message: 'Successfully logged in!'
+            });
+            alert("You have logged in");
+            this.props.history.push('/dashboard');
+        }).catch( (res) => {
+            console.log(res);
+            this.setState({
+                message: 'Unable to log in'
+            });
+        });
 
         // create an AJAX request (This should probably done with Axios instead)
+        /*
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/api/login');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -41,6 +60,8 @@ class Login extends Component {
                 this.setState({
                     message: 'Successfully logged in!'
                 })
+                alert("You have logged in");
+                this.props.history.push('/dashboard');
             } else {
                 this.setState({
                     message: 'Unable to log in'
@@ -48,6 +69,7 @@ class Login extends Component {
             }
         });
         xhr.send(formData);
+        */
     }
 
     onChangeEmail(e) {
@@ -84,8 +106,6 @@ class Login extends Component {
                     <p>{this.state.message}</p>
                     <Input type="submit" />
                     <h4>No account yet? Click <Link to="/register">here</Link> to Register!</h4>
-
-                    <Link to="/dashboard"><p>Go to Dashboard</p></Link>
                 </div>
             </Card>
         </form>
