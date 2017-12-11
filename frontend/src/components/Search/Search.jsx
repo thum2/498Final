@@ -175,10 +175,11 @@ class Search extends Component {
     }
 
     loadHandler(){
+
       if(this.state.resultCount != 0){
         return(<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>);
       }
-      else{
+      if(this.state.search.length == 0){
         return( <Loader active inline centered>Getting Pets</Loader>);
       }
     }
