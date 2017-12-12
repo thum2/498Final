@@ -70,7 +70,7 @@ logOut(e) {
     info["description"] = null;
     info["datefound"] = this.state.startDate._d;
     info["userid"] = this.state.user;
-    if(info["type"] && info["location"] && info["color"]){
+    if(info["type"] && info["location"] && info["color"] && info["datefound"]){
         axios.post('/api/pets', info).then((res)=>{
             console.log(res);
             alert("Your Pet has been submitted")
