@@ -3,7 +3,7 @@ import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from './styles.scss'
+import styles from './Register.scss'
 
 
 class Register extends Component {
@@ -74,25 +74,22 @@ class Register extends Component {
             <form className="Register" action="/" onSubmit={this.onSubmit}>
                 <Card className="Register__content">
                     <div>
-                        <h1>
+                        <h1 className="iconHeader">
                             <Icon name='paw' size='big' />
                             PetFinder
                         </h1>
-                        <h1>Register</h1>
-                        <Input label="Email" onChange={this.onChangeEmail} />
+                        <Input icon="users" iconPosition="left" placeholder="Email Address" onChange={this.onChangeEmail} />
                         <br/><br/>
-                        <Input label="Password" onChange={this.onChangePassword} />
+                        <Input icon="lock" iconPosition="left" placeholder="Password" onChange={this.onChangePassword} />
                         <br/><br/>
                         <p>{this.state.message}</p>
-                        <Input type="submit" />
-                        <h4>Already registered? Click <Link to="/login">here</Link> to Log-in!</h4>
-
-                        <Link to="/dashboard"><p>Go to Dashboard</p></Link>
+                        <Input fluid value="Register" type="submit" />
+                        <h4>Already registered? Login <Link to="/login">here</Link></h4>
                     </div>
                 </Card>
             </form>
-    )
-}
+        )
+    }
 }
 
 export default Register

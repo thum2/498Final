@@ -31,6 +31,7 @@ class Notifications extends Component {
 
         axios.get('/api/users/notifications').then( (res) => {
             console.log("Responded");
+            console.log(res.data.data);
         }).catch( (err) => {
             console.log("There is an errro");
         });
