@@ -176,7 +176,7 @@ class Search extends Component {
     loadHandler(){
 
       if(this.state.resultCount != 0){
-        return(<SearchGallery pets={this.state.search} col={3}/>);
+        return(<SearchGallery pets={this.state.search} col={10}/>);
       }
       if(this.state.search.length == 0){
         return( <div className="loader"><Loader active inline centered>Getting Pets</Loader></div>);
