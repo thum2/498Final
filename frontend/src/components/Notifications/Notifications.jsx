@@ -93,7 +93,7 @@ class Notifications extends Component {
                     <Grid.Column>
                     <div className="Notifications_List">
 						<h1>List of pets recommended by other users</h1>
-						{<SearchGallery pets={this.state.pets} col={0}/>}
+						{<SearchGallery pets={this.state.pets} col={1}/>}
                     </div>
                     </Grid.Column>
                     </Grid.Row>
