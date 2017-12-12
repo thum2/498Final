@@ -77,7 +77,8 @@ router.post('/', function(req, res){
 		found: req.body.found,
 		notes:req.body.notes,
 		original_website: req.body.original_website,
-		img_url: req.body.img_url
+		img_url: req.body.img_url,
+		userid: req.body.userid
 	}
 
 	pet.create(newPet, function(err, pet){

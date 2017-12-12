@@ -49,7 +49,6 @@ class Search extends Component {
             })
 
        axios.get('/api/profile').then( (res) => {
-            console.log(res);
             this.setState({
                 isLoggedIn: true
             })
@@ -177,7 +176,7 @@ class Search extends Component {
     loadHandler(){
 
       if(this.state.resultCount != 0){
-        return(<SearchGallery pets={this.state.search} sortValue={this.state.sortValue}/>);
+        return(<SearchGallery pets={this.state.search} col={3}/>);
       }
       if(this.state.search.length == 0){
         return( <div className="loader"><Loader active inline centered>Getting Pets</Loader></div>);
@@ -282,11 +281,11 @@ class Search extends Component {
               </Grid.Column>
               </Grid.Row>
               </Grid>
-              
+
                 <div className="Search_Gallery">
                     {this.loadHandler()}
                 </div>
-              
+
 
           </div>
         )
@@ -326,7 +325,7 @@ function checkMatch(all_pets, listVal){
             }
             if(listVal[j] != '' && checkListVal[j] != ''){
                 if(!checkListVal[j].toString().toLowerCase().trim().includes((listVal[j]).toString().toLowerCase().trim())){
-                    
+
                       flag = false;
                 }
                 if(checkListVal[j].toString().toLowerCase().trim() === "female" && (listVal[j]).toString().toLowerCase().trim() === "male"){

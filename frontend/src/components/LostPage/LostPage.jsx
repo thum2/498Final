@@ -15,14 +15,11 @@ class LostPage extends Component {
     constructor (props) {
     super(props)
     this.state = {
-        startDate: moment(),
-        petType:'',
-        petBreed: '',
-        petGender: '',
-        petColor: '',
-        petName: '',
-        petSize:'',
-        petLocation: ''
+      startDate: moment(),
+      gender: '',
+      size: '',
+      notes: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,9 +28,9 @@ class LostPage extends Component {
   }
   componentDidMount() {
         axios.get('/api/profile').then( (res) => {
-            console.log(res);
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: res.data.user.email
             })
         }).catch( (err) => {
             this.setState({
@@ -65,10 +62,14 @@ logOut(e) {
             info[entries[i]] = val;
         }
     }
+    info["gender"] = this.state.gender;
+    info["size"] = this.state.size;
+    info["notes"] = this.state.notes;
     info["found"] = false;
     info["original_website"] = "LOCAL";
     info["description"] = null;
     info["datefound"] = this.state.startDate._d;
+    info["userid"] = this.state.user;
     if(info["type"] && info["location"] && info["color"]){
         axios.post('/api/pets', info).then((res)=>{
             console.log(res);

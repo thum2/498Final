@@ -40,7 +40,7 @@ class Dashboard extends Component {
 
     render() {
 
-        if (this.state.isLoggedIn) {
+        
             return(
                 <div className="Dashboard">
 
@@ -129,18 +129,7 @@ class Dashboard extends Component {
 
             </div>
             )
-        } else {
-            return(
-                <div className="Dashboard">
-                    <Card>
-                        <h1>You must log in before you can see this page.</h1>
-                        <Link to="/">
-                            Back
-                        </Link>
-                    </Card>
-                </div>
-            )
-        }
+         
     }
 }
 
