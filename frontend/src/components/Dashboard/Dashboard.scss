@@ -31,6 +31,13 @@ body {
 	}
 }
 
+.headerHolder {
+	margin: 0 auto;
+	height: 25%;
+	width: 80%;
+	padding-top: 6%;
+}
+
 .petFinderHeader {
 	padding-top: 7.5%
 }
@@ -39,22 +46,32 @@ body {
 	float:right;
 	padding-bottom: 5px;
 }
-.optionHolder {
+
+.dashoptionHolder {
 	margin: 0 auto;
 	height: 25%;
 	width: 80%;
-	padding-top: 6%;
 }
 
 .centerer {
 	text-align: center;
-	height: 20em;
 	width: 75%;
 	background-color: transparent;
 	position: relative;
 	margin: 0 auto;
 	border-radius: 5%;
 	opacity: 0.85;
+}
+
+.ui.grid > .column:not(.row), .ui.grid > .row > .column {
+	padding-left: 8rem;
+}
+
+.headerHolder {
+	margin: 0 auto;
+	height: 25%;
+	width: 80%;
+	padding-top: 6%;
 }
 
 .threeDivider {
