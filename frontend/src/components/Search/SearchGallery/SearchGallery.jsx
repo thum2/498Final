@@ -38,15 +38,15 @@ class SearchGallery extends Component {
                 });
 
                 let SearchGallery = pets.map((pet,idx) =>{
-                    let name = pet.name? pet.name:"No name";
+                    let name = pet.name? pet.name.charAt(0).toUpperCase() + pet.name.slice(1):"No name";
                     let breed_alt = pet.description? (pet.description.split("\n")[2] ? pet.description.split("\n")[2] : "Not specified") : "Not specified";
-                    let breed = pet.breed? pet.breed: breed_alt;
+                    let breed = pet.breed? pet.breed.charAt(0).toUpperCase() + pet.breed.slice(1): breed_alt;
                     let gender_alt = pet.description? (pet.description.split("\n")[0] ? pet.description.split("\n")[0] : "Not specified") : "Not specified";
-                    let gender = pet.gender? pet.gender: gender_alt;
+                    let gender = pet.gender? pet.gender.charAt(0).toUpperCase() + pet.gender.slice(1): gender_alt;
                     let color_alt = pet.description? (pet.description.split("\n")[1] ? pet.description.split("\n")[1] : "Not specified") : "Not specified";
-                    let color = pet.color? pet.color: color_alt;
+                    let color = pet.color? pet.color.charAt(0).toUpperCase() + pet.color.slice(1): color_alt;
                     let image = pet.image;
-                    let type = pet.type;
+                    let type = pet.type.charAt(0).toUpperCase() + pet.type.slice(1);
                     let datefound = pet.datefound.slice(0,10);
                     //let datefound = pet.datefound;
                     let date_display = pet.foundOrLost ? "Date Found:" : "Date Lost:";
