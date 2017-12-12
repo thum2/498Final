@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard/Dashboard.jsx';
 import Notifications from './components/Notifications/Notifications.jsx';
 import DetailView from './components/DetailView/DetailView.jsx';
 import FoundGallery from './components/FoundGallery/FoundGallery.jsx';
+import styles from './styles/main.scss';
 
 ReactDom.render(
     <Router>

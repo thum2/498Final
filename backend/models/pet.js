@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var PetSchema = new mongoose.Schema({
-	userid: {type: mongoose.Schema.Types.ObjectId , default:null},
+	userid: {type: String, default:null},
 	name: {type:String, default:null},
 	location: {type:String, default:null},
 	description: {type:String, default:null},
