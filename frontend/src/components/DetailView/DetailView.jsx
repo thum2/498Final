@@ -91,7 +91,7 @@ class DetailView extends Component{
                 <Grid.Row>
                 <Grid.Column>
 					<div className="PetInformation">
-						<PetInformation id={this.state.pet_id} data={this.state.pet_data} userMatch={this.state.sameUser}/>
+						<PetInformation history={this.props.history} id={this.state.pet_id} data={this.state.pet_data} userMatch={this.state.sameUser}/>
 					</div>
 				</Grid.Column>
                 </Grid.Row>
@@ -157,7 +157,6 @@ class PetInformation extends Component{
 		if (remove){
 			axios.delete('/api/pets/' + this.props.data._id).then((res)=>{
 				console.log(res);
-			}).then(() => {
 				alert("Post deleted");
 				this.props.history.push('/search');
 			}).catch((err) =>{
