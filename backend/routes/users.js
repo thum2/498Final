@@ -67,14 +67,17 @@ router.post('/notifications', function(req, res) {
 		} else {
 			if(user === null) {
 				console.log("User does not exist");
+				res.send({message: "User does not exist"})
 			} else {
 				if(user.notifications.indexOf(req.body.petId) === -1) {
 					console.log(user);
 					console.log(req.body.petId);
 					user.notifications.push(req.body.petId);
 					user.save();
+					res.send({message: "Your recommendation has been sent to " + user.email + ". Thank You!"})
 				} else {
 					console.log("Already notified user of this post");
+					res.send({message:"You have already notified " + user.email + " of this post"})
 				}
 			}
 		}
