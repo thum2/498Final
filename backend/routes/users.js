@@ -75,7 +75,7 @@ router.post('/notifications', function(req, res) {
 					res.send({message: "Your recommendation has been sent to " + user.email + ". Thank You!"})
 				} else {
 					console.log("Already notified user of this post");
-					res.send({message:"You have already notified " + user.email + " of this post"})
+					res.send({message: user.email + " has already been notified of this post. Thank You!"})
 				}
 			}
 		}
