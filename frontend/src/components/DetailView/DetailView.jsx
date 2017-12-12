@@ -21,22 +21,21 @@ class DetailView extends Component{
     }
 
     componentWillMount(){
-    	
     	axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
             this.setState({
             	pet_id: this.props.match.params.id,
             	pet_data: res.data.data
             })
             axios.get('/api/profile').then( (res) => {
-	            console.log(res);
 	            this.setState({isLoggedIn: true});
 	        })
 	        .catch( (err) => {
 	            this.setState({isLoggedIn: false});
 	        })
-        })        
+
+        })
     }
-   
+
 	logOut(e) {
         console.log(e)
         let self = this
@@ -196,7 +195,7 @@ class PetInformation extends Component{
 				      	</div>
 				      		<a href={this.props.data.original_website}>Here</a>
 				      	<div className="extra">
-				     
+
 							<button className="ui primary right floated button" role="button">This is my Pet</button>
 							<Modal trigger={<Button className="ui primary right floated" onClick={this.getUsers}>Recommend</Button>} closeIcon>
 							    <Header icon='archive' content='Enter the username/e-mail of the user you want to notify about this post' />
@@ -298,7 +297,7 @@ class CommentList extends Component{
         				return axios.put('/api/pets/' + self.props.id, updatePet).then(function(res){
         				console.log("put " + res.data.data)
         			})})
-        
+
 
 	}
 
@@ -341,9 +340,9 @@ class CommentList extends Component{
 				<this.CommentOrNah data={this.state.comments}/>
 			</Comment.Group>
 		)
-		
+
 	}
-	
+
 }
 
 export default DetailView

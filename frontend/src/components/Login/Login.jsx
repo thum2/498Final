@@ -4,7 +4,7 @@ import { Button, Input, Card, Icon} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from './styles.scss'
+import styles from './Login.scss'
 
 
 class Login extends Component {
@@ -91,24 +91,23 @@ class Login extends Component {
     render() {
         return(
             <form className="Login" action="/" onSubmit={this.onSubmit}>
-            <Card className="Login__content">
-                <div>
-                    <h1>
-                        <Icon name='paw' size='big' />
-                        PetFinder
-                    </h1>
-                    <h1>Login</h1>
-                    <Input label="Email" onChange={this.onChangeEmail} />
-                    <br/><br/>
-                    <Input label="Password" onChange={this.onChangePassword} />
-                    <br/><br/>
+                <Card className="Login__content">
+                    <div>
+                        <h1 className="iconHeader">
+                            <Icon name='paw' size='big' />
+                            PetFinder
+                        </h1>
+                        <Input icon="users" iconPosition="left" placeholder="Email Address" onChange={this.onChangeEmail} />
+                        <br/><br/>
+                        <Input icon="lock" iconPosition="left" placeholder="Password" onChange={this.onChangePassword} />
+                        <br/><br/>
 
-                    <p>{this.state.message}</p>
-                    <Input type="submit" />
-                    <h4>No account yet? Click <Link to="/register">here</Link> to Register!</h4>
-                </div>
-            </Card>
-        </form>
+                        <p>{this.state.message}</p>
+                        <Input value="Login" type="submit" fluid />
+                        <h4>No account yet? Click <Link to="/register">here</Link> to Register!</h4>
+                    </div>
+                </Card>
+            </form>
     )
 }
 }

@@ -27,14 +27,12 @@ router.get('/', function(req, res){
 					data: users
 				});
 			}
-		}	
-	});	
+		}
+	});
 })
 
 router.get('/notifications', function(req, res) {
-	console.log(req.session.passport.user);
 	var uId = ObjectId("" + req.session.passport.user);
-	console.log(uId);
 	user.findOne({"_id": uId}, function(err, user) {
 		if(err){
 			res.status(500).send({
@@ -49,13 +47,13 @@ router.get('/notifications', function(req, res) {
 				});
 			}
 			else{
-				console.log(user.notifications);
+				// console.log(user.notifications);
 				res.status(200).send({
 					message: 'Results Found',
 					data: user.notifications
 				});
 			}
-		}		
+		}
 	});
 });
 

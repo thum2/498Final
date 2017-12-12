@@ -93,7 +93,7 @@ class SearchGallery extends Component {
                     );
                 });
                 return(
-                    <Card.Group itemsPerRow={10}>
+                    <Card.Group itemsPerRow={this.props.col}>
                         {SearchGallery}
                     </Card.Group>
                 );
@@ -101,37 +101,13 @@ class SearchGallery extends Component {
     }
 }
 
-function sort(array,order){
-    if(order == "alphabetical"){
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-      }));
-    }
-    else{
-        return (array.sort(function(a, b) {
-          if (a.name > b.name) {
-            return -1;
-          }
-          if (a.name < b.name) {
-            return 1;
-          }
-          return 0;
-      }));
-    }
-
-}
 
 SearchGallery.propTypes = {
     pets: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object
-    ])
+    ]),
+    col: PropTypes.number
 }
 
 export default SearchGallery

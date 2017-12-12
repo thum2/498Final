@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Card, Grid, Image, Reveal, Icon, Feed} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import SearchGallery from '../Search/SearchGallery/SearchGallery.jsx'
 import NotificationsPost from './NotificationsPost/NotificationsPost.jsx'
 
 import styles from './Notifications.scss'
@@ -11,7 +12,7 @@ class Notifications extends Component {
         super();
         this.state = {
             isLoggedIn: false,
-			      feed:[]
+			      pets:[]
         }
 
         this.logOut = this.logOut.bind(this);
@@ -19,7 +20,6 @@ class Notifications extends Component {
 
     componentDidMount() {
         axios.get('/api/profile').then( (res) => {
-            console.log(res);
             this.setState({
                 isLoggedIn: true
             })
@@ -30,9 +30,24 @@ class Notifications extends Component {
         });
 
         axios.get('/api/users/notifications').then( (res) => {
-            console.log("Responded");
+            console.log(res.data.data);
+			let promises = []
+	  		let list = []
+	 		res.data.data.forEach(function(pet_id){
+				promises.push(axios.get('/api/pets/' + pet_id))
+			})
+			axios.all(promises).then(function (response) {
+				response.forEach(function (response){
+					list.push(response.data.data)
+				})
+	    	}).then((response) => {
+	    		this.setState({
+					pets : {data: list}
+				})
+	    	})
+            console.log(res.data.data);
         }).catch( (err) => {
-            console.log("There is an errro");
+            console.log("There is an errror");
         });
     }
 
@@ -77,7 +92,8 @@ class Notifications extends Component {
                     <Grid.Row>
                     <Grid.Column>
                     <div className="Notifications_List">
-						{<NotificationsPost feed={this.state.feed} />}
+						<h1>List of pets recommended by other users</h1>
+						{<SearchGallery pets={this.state.pets} col={0}/>}
                     </div>
                     </Grid.Column>
                     </Grid.Row>
