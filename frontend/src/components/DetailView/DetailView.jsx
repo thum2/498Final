@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input,Search, Label } from 'semantic-ui-react'
 import styles from './styles.scss'
 import axios from 'axios'
