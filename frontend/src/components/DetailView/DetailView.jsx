@@ -197,7 +197,7 @@ class PetInformation extends Component{
 
 	render(){
 		let data = this.props.data;
-		let user = data.userid? data.userid : "Scraper" 
+		let user = data.userid? data.userid : "Scraper"
 		let img = data.img_url;
 		let name = data.name? data.name.charAt(0).toUpperCase() + data.name.slice(1): "No name";
 		let type = data.type? data.type.charAt(0).toUpperCase() + data.type.slice(1): "Not specified";
@@ -226,7 +226,7 @@ class PetInformation extends Component{
 					      	</div>
 					      		<a href={website}>Link to original website</a>
 					      	<div className="extra">
-								<div>{this.handleUser()}</div>
+								{this.handleUser()}
 								<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
 								    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
 								    <Modal.Content>
