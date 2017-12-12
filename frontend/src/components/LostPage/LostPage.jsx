@@ -18,17 +18,19 @@ class LostPage extends Component {
       startDate: moment(),
       gender: '',
       size: '',
-      notes: ''
+      notes: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDropDowns = this.handleDropDowns.bind(this);
+    this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.logOut = this.logOut.bind(this);
   }
   componentDidMount() {
         axios.get('/api/profile').then( (res) => {
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: res.data.user.email
             })
         }).catch( (err) => {
             this.setState({
@@ -53,7 +55,7 @@ logOut(e) {
 
   handleSubmit(){
     let info = {}
-    let entries = ["type", "name", "location", "breed", "color", "img_url"]
+    let entries = ["type", "name", "location", "breed", "gender", "size", "color", "img_url"]
     for(let i=0;i<entries.length;i++){
         let val = document.getElementById(entries[i]).value;
         if(val){
@@ -63,9 +65,11 @@ logOut(e) {
     info["gender"] = this.state.gender;
     info["size"] = this.state.size;
     info["notes"] = this.state.notes;
-    info["found"] = true;
+    info["found"] = false;
     info["original_website"] = "LOCAL";
-    info["datefound"] = this.state.startDate;
+    info["description"] = null;
+    info["datefound"] = this.state.startDate._d;
+    info["userid"] = this.state.user;
     if(info["type"] && info["location"] && info["color"]){
         axios.post('/api/pets', info).then((res)=>{
             console.log(res);
@@ -85,24 +89,44 @@ logOut(e) {
 
   }
 
-  handleDropDowns(event, val, type){
-      if(type=="gender"){
-          this.setState({
-              gender: val
-          })
-      }
-      else if(type=="size"){
-          this.setState({
-              size: val
-          })
-      }
-      else{
-          this.setState({
-              notes: val
-          })
-      }
+    inputChangeHandler(event, val, type){
+        if(type=="pet"){
+            this.setState({
+                petType: val
+            });
+        }
+        else if(type=="gender"){
+            this.setState({
+                petGender: val
+            })
+        }
+        else if(type=="breed"){
+            this.setState({
+                petBreed: val
+            })
+        }
+        else if(type=="color"){
+            this.setState({
+                petColor: val
+            })
+        }
+        else if(type=="size"){
+            this.setState({
+                petSize:val
+            })
+        }
+        else if(type=="location"){
+            this.setState({
+                petLocation: val
+            })
+        }
+        else{
+            this.setState({
+                petName: val
+            })
+        }
 
-  }
+    }
 
     render() {
         const genderOptions = [{key: 'male', text: 'Male', value: 'male'},
@@ -176,18 +200,23 @@ logOut(e) {
                         </Form.Field>
 
                         <Form.Field>
+                            <label>Description</label>
+                            <TextArea id="description" placeholder='Tell us more about your pet, the more information the more likely it will be found' style={{ minHeight: 100 }} />
+                        </Form.Field>
+
+                        <Form.Field>
                             <label>Breed</label>
                             <Input id="breed" placeholder='Golden Retriever' />
                         </Form.Field>
 
                         <Form.Field>
                             <label>Gender</label>
-                            <Dropdown value={this.state.gender} onChange={(event,{value}) => {this.handleDropDowns(event,value,"gender")}} placeholder='Select Gender' fluid selection options={genderOptions} />
+                            <Dropdown id="gender" placeholder='Select Gender' fluid selection options={genderOptions} />
                         </Form.Field>
 
                         <Form.Field>
                             <label>Size</label>
-                            <Dropdown value={this.state.size} onChange={(event,{value}) => {this.handleDropDowns(event,value,"size")}} placeholder='Select Size' fluid selection options={sizeOptions} />
+                            <Dropdown id="size" placeholder='Select Size' fluid selection options={sizeOptions} />
                         </Form.Field>
 
                         <Form.Field required>
@@ -198,11 +227,6 @@ logOut(e) {
                         <Form.Field>
                             <label>Image URL</label>
                             <Input id="img_url" placeholder='http://imgur.com/DogPic' />
-                        </Form.Field>
-
-                        <Form.Field>
-                            <label>Additional Notes</label>
-                            <TextArea value={this.state.notes} onChange={(event,{value}) => {this.handleDropDowns(event,value,"description")}} placeholder='Tell us more about your pet, the more information the more likely it will be found' style={{ minHeight: 100 }} />
                         </Form.Field>
 
                         <div className="submitButton">

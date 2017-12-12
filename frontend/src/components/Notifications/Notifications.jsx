@@ -45,6 +45,7 @@ class Notifications extends Component {
 					pets : {data: list}
 				})
 	    	})
+            console.log(res.data.data);
         }).catch( (err) => {
             console.log("There is an errror");
         });

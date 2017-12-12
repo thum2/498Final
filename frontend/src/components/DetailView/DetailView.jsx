@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input } from 'semantic-ui-react'
+import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input,Search, Label } from 'semantic-ui-react'
 import styles from './styles.scss'
 import axios from 'axios'
 import moment from 'moment'
+import _ from 'lodash'
 
 class DetailView extends Component{
 
@@ -43,6 +44,7 @@ class DetailView extends Component{
 	        .catch( (err) => {
 	            this.setState({isLoggedIn: false});
 	        })
+
         })
     }
 
@@ -112,7 +114,43 @@ class DetailView extends Component{
 class PetInformation extends Component{
 	constructor(props) {
     	super(props);
+		this.state ={
+    		value: '',
+    		users: [],
+    		users_view:[],
+    		submitMessage: ''
+    	};
     	this.handleSubmit = this.handleSubmit.bind(this);
+    	this.getUsers = this.getUsers.bind(this);
+    	this.handleResultSelect = this.handleResultSelect.bind(this);
+    	this.handleSearchChange = this.handleSearchChange.bind(this);
+    }
+
+
+    getUsers(){
+    	axios.get('/api/users/').then( (res) => {
+    		console.log(res.data)
+    		let users_data = [];
+    		res.data.data.map((user,idx) =>{
+    			users_data.push({key:user._id, "title": user.email})
+    		});
+    		console.log(users_data)
+            this.setState({
+            	users: users_data, users_view: users_data
+            });
+    	});
+    }
+    handleResultSelect(e, { result }){
+    	this.setState({ value: result.title })
+    }
+    handleSearchChange(e, { value }){
+      this.setState({value: value})
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+      const isMatch = result => re.test(result.title);
+
+      this.setState({
+        users_view: _.filter(this.state.users, isMatch)
+      })
     }
 
 	handleSubmit(){
@@ -122,14 +160,17 @@ class PetInformation extends Component{
 		info['petId'] = this.props.id;
 
 		axios.post('/api/users/notifications', info).then((res) => {
-			console.log(res);
-			alert("It worked");
+			this.setState({submitMessage: res.data.message})
+
 		}).catch((err) => {
 			console.log(err);
+			console.log("not sent");
+			this.setState({submitMessage: res.data.message})
 		});
     }
 
 	render(){
+<<<<<<< HEAD
 		let data = this.props.data;
 		let img = data.img_url;
 		let name = data.name? data.name.charAt(0).toUpperCase() + data.name.slice(1): "No name";
@@ -166,7 +207,16 @@ class PetInformation extends Component{
 								    <Modal.Content>
 			    	                    <Form>
 					                        <Form.Field required>
-					                            <Input id="userEmail" placeholder='username@email.com' fluid />
+												<Label pointing="below">{this.state.submitMessage}</Label>
+
+					                            <Search
+					                            	id="userEmail"
+					                            	fluid
+					                            	value={value}
+					                            	onResultSelect={this.handleResultSelect}
+					                            	onSearchChange={this.handleSearchChange}
+					                            	results={this.state.users_view}/>
+					                            
 					                        </Form.Field>
 					                    </Form>
 								    </Modal.Content>
@@ -177,6 +227,55 @@ class PetInformation extends Component{
 								    </Modal.Actions>
 							    </Modal>
 							</div>
+=======
+		let users_view = this.state.users_view;
+		let value = this.state.value;
+		return(
+		<Segment>
+			<div className="ui divided items">
+				<div className="item">
+		    		<div className="image">
+		      			<img src={this.props.data.img_url} />
+		    		</div>
+			    	<div className="content">
+				      	<a className="header">{this.props.data.name}</a>
+			      		<div className="meta">
+			        		<p>{this.props.data.type}</p>
+			        		<p>{this.props.data.location}</p>
+			        		<p>{moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
+			      		</div>
+				      	<div className="description">
+				        	<p>{this.props.data.description}</p>
+				      	</div>
+				      		<a href={this.props.data.original_website}>Here</a>
+				      	<div className="extra">
+
+							<button className="ui primary right floated button" role="button">This is my Pet</button>
+							<Modal trigger={<Button className="ui primary right floated" onClick={this.getUsers}>Recommend</Button>} closeIcon>
+							    <Header icon='archive' content='Enter the username/e-mail of the user you want to notify about this post' />
+							    <Modal.Content>
+		    	                    <Form>
+				                        <Form.Field required>
+				                    		<Label pointing="below">{this.state.submitMessage}</Label>
+
+				                            <Search
+				                            	id="userEmail"
+				                            	fluid
+				                            	value={value}
+				                            	onResultSelect={this.handleResultSelect}
+				                            	onSearchChange={this.handleSearchChange}
+				                            	results={this.state.users_view}/>
+
+				                        </Form.Field>
+				                    </Form>
+							    </Modal.Content>
+							    <Modal.Actions>
+							    	<Button  onClick={this.handleSubmit}>
+                                   		Submit
+                              		</Button>
+							    </Modal.Actions>
+						    </Modal>
+>>>>>>> 1198735e9e83a4a3f8e8727c15a40a8b3940c9a7
 						</div>
 					</div>
 				</div>
