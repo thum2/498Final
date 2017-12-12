@@ -28,16 +28,22 @@ body {
 	float:right;
 	padding-bottom: 5px;
 }
-.optionHolder {
+
+.headerHolder {
 	margin: 0 auto;
 	height: 25%;
 	width: 80%;
 	padding-top: 6%;
 }
 
+.optionHolder {
+	margin: 0 auto;
+	height: 25%;
+	width: 80%;
+}
+
 .centerer {
 	text-align: center;
-	height: 20em;
 	width: 75%;
 	background-color: transparent;
 	position: relative;

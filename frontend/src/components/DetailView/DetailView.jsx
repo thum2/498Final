@@ -197,6 +197,7 @@ class PetInformation extends Component{
 
 	render(){
 		let data = this.props.data;
+		let user = data.userid? data.userid : "Scraper" 
 		let img = data.img_url;
 		let name = data.name? data.name.charAt(0).toUpperCase() + data.name.slice(1): "No name";
 		let type = data.type? data.type.charAt(0).toUpperCase() + data.type.slice(1): "Not specified";
@@ -215,12 +216,13 @@ class PetInformation extends Component{
 				    	<div className="content">
 					      	<a className="header">{name}</a>
 				      		<div className="meta">
+				      			<p>User: {user}</p>
 				        		<p>Type: {type}</p>
 				        		<p>Location: {location}</p>
 				        		<p>Date posted: {moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
 				      		</div>
 					      	<div className="description">
-					        	<p>Description:{description}</p>
+					        	<p>Description: {description}</p>
 					      	</div>
 					      		<a href={website}>Link to original website</a>
 					      	<div className="extra">
