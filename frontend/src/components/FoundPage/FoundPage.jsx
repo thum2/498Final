@@ -88,7 +88,7 @@ class FoundPage extends Component {
         info["datefound"] = this.state.startDate;
         info["userid"] = this.state.user;
 
-        if(info["type"] && info["location"] && info["color"]){
+        if(info["type"] && info["location"] && info["color"] && info["datefound"]){
             axios.post('/api/pets', info).then((res)=>{
                 console.log(res);
                 alert("Your Pet has been submitted")
@@ -159,7 +159,7 @@ class FoundPage extends Component {
                             <Input id="name" placeholder='Rover' fluid />
                         </Form.Field>
 
-                        <Form.Field>
+                        <Form.Field required>
                             <label>Date Found</label>
                             <div className="ui calendar" id="example2">
                                 <div className="ui input left icon">

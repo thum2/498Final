@@ -163,4 +163,31 @@ router.put('/:id', function(req, res){
 	})
 });
 
+router.delete('/:id', function(req,res){
+	pet.findByIdAndRemove(req.params.id, function(err, pet){
+		if(err){
+			res.status(500).send({
+				message: err,
+				data: []
+			});
+		}
+
+
+		else{
+			if(pet === null){
+				res.status(404).send({
+					message: 'Resource not found',
+					data: []
+				})
+			}
+			else{
+				res.status(200).send({
+					message: 'Pet deleted',
+					data: []
+				});
+			}
+		}		
+	})
+})
+
 module.exports = router;

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input } from 'semantic-ui-react'
+import { withRouter } from 'react-router'
+import { Button, Comment, Form, Header, Segment,Item, Card, Icon, Grid, Modal, Input,Search, Label } from 'semantic-ui-react'
 import styles from './styles.scss'
 import axios from 'axios'
 import moment from 'moment'
+import _ from 'lodash'
 
 class DetailView extends Component{
 
@@ -12,7 +14,9 @@ class DetailView extends Component{
     	this.state = {
       		pet_id: this.props.match.params.id,
       		pet_data: {},
-      		isLoggedIn: false
+      		isLoggedIn: false,
+			currentUser: '',
+			sameUser: false
     	};
 
     	this.componentWillMount = this.componentWillMount.bind(this);
@@ -20,18 +24,29 @@ class DetailView extends Component{
     }
 
     componentWillMount(){
-    	axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
-            this.setState({
-            	pet_id: this.props.match.params.id,
-            	pet_data: res.data.data
-            })
-            axios.get('/api/profile').then( (res) => {
-	            this.setState({isLoggedIn: true});
+
+			axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
+	            this.setState({
+	            	pet_id: this.props.match.params.id,
+	            	pet_data: res.data.data
+	            })
+				axios.get('/api/profile').then( (res) => {
+		            this.setState({
+						isLoggedIn: true,
+						currentUser: res.data.user.email
+					});
+					let petUserId = this.state.pet_data.userid;
+					let currentUser = this.state.currentUser;
+					if( petUserId == currentUser){
+						this.setState({
+							sameUser: true
+						})
+					};
+
+				}).catch( (err) => {
+		            this.setState({isLoggedIn: false});
+		        })
 	        })
-	        .catch( (err) => {
-	            this.setState({isLoggedIn: false});
-	        })
-        })
     }
 
 	logOut(e) {
@@ -76,7 +91,7 @@ class DetailView extends Component{
                 <Grid.Row>
                 <Grid.Column>
 					<div className="PetInformation">
-						<PetInformation id={this.state.pet_id} data={this.state.pet_data}/>
+						<PetInformation id={this.state.pet_id} data={this.state.pet_data} userMatch={this.state.sameUser}/>
 					</div>
 				</Grid.Column>
                 </Grid.Row>
@@ -100,8 +115,69 @@ class DetailView extends Component{
 class PetInformation extends Component{
 	constructor(props) {
     	super(props);
-
+		this.state ={
+    		value: '',
+    		users: [],
+    		users_view:[],
+    		submitMessage: ''
+    	};
     	this.handleSubmit = this.handleSubmit.bind(this);
+    	this.getUsers = this.getUsers.bind(this);
+    	this.handleResultSelect = this.handleResultSelect.bind(this);
+    	this.handleSearchChange = this.handleSearchChange.bind(this);
+		this.handleUser = this.handleUser.bind(this);
+		this.deleteData = this.deleteData.bind(this);
+    }
+
+
+    getUsers(){
+    	axios.get('/api/users/').then( (res) => {
+    		console.log(res.data)
+    		let users_data = [];
+    		res.data.data.map((user,idx) =>{
+    			users_data.push({key:user._id, "title": user.email})
+    		});
+    		console.log(users_data)
+            this.setState({
+            	users: users_data, users_view: users_data
+            });
+    	});
+    }
+
+	handleUser(){
+		if(this.props.userMatch){
+			return(
+				<button onClick={this.deleteData} className="ui primary right floated button" role="button">Reconnected with Owner</button>
+			)
+		}
+	}
+
+	deleteData(){
+		let remove = confirm("Delete current post?");
+		if (remove){
+			axios.delete('/api/pets/' + this.props.data._id).then((res)=>{
+				console.log(res);
+			}).then(() => {
+				alert("Post deleted");
+				this.props.history.push('/search');
+			}).catch((err) =>{
+				console.log(err);
+			})
+		}
+
+	}
+
+    handleResultSelect(e, { result }){
+    	this.setState({ value: result.title })
+    }
+    handleSearchChange(e, { value }){
+      this.setState({value: value})
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+      const isMatch = result => re.test(result.title);
+
+      this.setState({
+        users_view: _.filter(this.state.users, isMatch)
+      })
     }
 
 	handleSubmit(){
@@ -109,75 +185,81 @@ class PetInformation extends Component{
 		let val = document.getElementById("userEmail").value;
 		info['recommendId'] = val;
 		info['petId'] = this.props.id;
-		console.log(val);
-		console.log(this.props.id);
 
 		axios.post('/api/users/notifications', info).then((res) => {
-			console.log(res);
-			alert("It worked");
+			this.setState({submitMessage: res.data.message})
+
 		}).catch((err) => {
 			console.log(err);
+			console.log("not sent");
+			this.setState({submitMessage: res.data.message})
 		});
-
-		/*
-	    if(info["type"] && info["location"] && info["color"]){
-	        axios.post('/api/users/notifications', info).then((res)=>{
-	            console.log(res);
-	            alert("Your Pet has been submitted")
-	        }).then(() => {
-	            this.props.history.push('/dashboard');
-	        }).catch((err)=>{
-	            console.log(err);
-	            alert("Your Pet failed to be submitted")
-
-        });
-        */
     }
 
 	render(){
-		return(
-		<Segment>
-			<div className="ui divided items">
-				<div className="item">
-		    		<div className="image">
-		      			<img src={this.props.data.img_url} />
-		    		</div>
-			    	<div className="content">
-				      	<a className="header">{this.props.data.name}</a>
-			      		<div className="meta">
-			        		<p>{this.props.data.type}</p>
-			        		<p>{this.props.data.location}</p>
-			        		<p>{moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
-			      		</div>
-				      	<div className="description">
-				        	<p>{this.props.data.description}</p>
-				      	</div>
-				      		<a href={this.props.data.original_website}>Here</a>
-				      	<div className="extra">
+		let data = this.props.data;
+		let user = data.userid? data.userid : "Scraper" 
+		let img = data.img_url;
+		let name = data.name? data.name.charAt(0).toUpperCase() + data.name.slice(1): "No name";
+		let type = data.type? data.type.charAt(0).toUpperCase() + data.type.slice(1): "Not specified";
+		let location = data.location
+		let description = data.description;
+		let website = data.original_website;
+		let userIdWhoPosted = data.userid;
 
-							<button className="ui primary right floated button" role="button">This is my Pet</button>
-							<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
-							    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
-							    <Modal.Content>
-		    	                    <Form>
-				                        <Form.Field required>
-				                            <Input id="userEmail" placeholder='username@email.com' fluid />
-				                        </Form.Field>
-				                    </Form>
-							    </Modal.Content>
-							    <Modal.Actions>
-							    	<Button  onClick={this.handleSubmit}>
-                                   		Submit
-                              		</Button>
-							    </Modal.Actions>
-						    </Modal>
+		return(
+			<Segment>
+				<div className="ui divided items">
+					<div className="item">
+			    		<div className="image">
+			      			<img src={img} />
+			    		</div>
+				    	<div className="content">
+					      	<a className="header">{name}</a>
+				      		<div className="meta">
+				      			<p>User: {user}</p>
+				        		<p>Type: {type}</p>
+				        		<p>Location: {location}</p>
+				        		<p>Date posted: {moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
+				      		</div>
+					      	<div className="description">
+					        	<p>Description: {description}</p>
+					      	</div>
+					      		<a href={website}>Link to original website</a>
+					      	<div className="extra">
+								<div>{this.handleUser()}</div>
+								<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
+								    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
+								    <Modal.Content>
+			    	                    <Form>
+					                        <Form.Field required>
+												<Label pointing="below">{this.state.submitMessage}</Label>
+
+					                            <Search
+					                            	id="userEmail"
+					                            	fluid
+					                            	value={this.state.value}
+					                            	onResultSelect={this.handleResultSelect}
+					                            	onSearchChange={this.handleSearchChange}
+					                            	results={this.state.users_view}/>
+
+					                        </Form.Field>
+					                    </Form>
+								    </Modal.Content>
+								    <Modal.Actions>
+								    	<Button  onClick={this.handleSubmit}>
+	                                   		Submit
+	                              		</Button>
+								    </Modal.Actions>
+							    </Modal>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</Segment>
-		)
-	}
+			</Segment>
+				)
+		}
+
 }
 
 class CommentList extends Component{
