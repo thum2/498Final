@@ -227,7 +227,7 @@ class PetInformation extends Component{
 					      		<a href={website}>Link to original website</a>
 					      	<div className="extra">
 								{this.handleUser()}
-								<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
+								<Modal trigger={<Button onClick={this.getUsers} className="ui primary right floated">Recommend</Button>} closeIcon>
 								    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
 								    <Modal.Content>
 			    	                    <Form>
