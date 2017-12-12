@@ -23,29 +23,29 @@ class DetailView extends Component{
     }
 
     componentWillMount(){
-            axios.get('/api/profile').then( (res) => {
-				console.log(res.data.user.email);
+
+			axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
 	            this.setState({
-					isLoggedIn: true,
-					currentUser: res.data.user.email
-				});
-	        }).then(()=>{
-				axios.get('/api/pets/'+ this.props.match.params.id).then( (res) => {
+	            	pet_id: this.props.match.params.id,
+	            	pet_data: res.data.data
+	            })
+				axios.get('/api/profile').then( (res) => {
 		            this.setState({
-		            	pet_id: this.props.match.params.id,
-		            	pet_data: res.data.data
-		            })
-					if(res.data.data.userid == this.state.currentUser){
+						isLoggedIn: true,
+						currentUser: res.data.user.email
+					});
+					let petUserId = this.state.pet_data.userid;
+					let currentUser = this.state.currentUser;
+					if( petUserId == currentUser){
 						this.setState({
 							sameUser: true
 						})
-					}
-			})
-	        .catch( (err) => {
-	            this.setState({isLoggedIn: false});
-	        })
+					};
 
-        })
+				}).catch( (err) => {
+		            this.setState({isLoggedIn: false});
+		        })
+	        })
     }
 
 	logOut(e) {
@@ -124,6 +124,8 @@ class PetInformation extends Component{
     	this.getUsers = this.getUsers.bind(this);
     	this.handleResultSelect = this.handleResultSelect.bind(this);
     	this.handleSearchChange = this.handleSearchChange.bind(this);
+		this.handleUser = this.handleUser.bind(this);
+		this.deleteData = this.deleteData.bind(this);
     }
 
 
@@ -140,6 +142,30 @@ class PetInformation extends Component{
             });
     	});
     }
+
+	handleUser(){
+		if(this.props.userMatch){
+			return(
+				<button onClick={this.deleteData} className="ui primary right floated button" role="button">Reconnected with Owner</button>
+			)
+		}
+	}
+
+	deleteData(){
+		let remove = confirm("Delete current post?");
+		if (remove){
+			axios.delete('/api/pets/' + this.props.data._id).then((res)=>{
+				console.log(res);
+			}).then(() => {
+				alert("Post deleted");
+				this.props.history.push('/search');
+			}).catch((err) =>{
+				console.log(err);
+			})
+		}
+
+	}
+
     handleResultSelect(e, { result }){
     	this.setState({ value: result.title })
     }
@@ -170,7 +196,6 @@ class PetInformation extends Component{
     }
 
 	render(){
-<<<<<<< HEAD
 		let data = this.props.data;
 		let img = data.img_url;
 		let name = data.name? data.name.charAt(0).toUpperCase() + data.name.slice(1): "No name";
@@ -180,8 +205,7 @@ class PetInformation extends Component{
 		let website = data.original_website;
 		let userIdWhoPosted = data.userid;
 
-		if(this.props.userMatch){
-			return(
+		return(
 			<Segment>
 				<div className="ui divided items">
 					<div className="item">
@@ -200,8 +224,7 @@ class PetInformation extends Component{
 					      	</div>
 					      		<a href={website}>Link to original website</a>
 					      	<div className="extra">
-
-								<button className="ui primary right floated button" role="button">Reconnected with Owner</button>
+								<div>{this.handleUser()}</div>
 								<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
 								    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
 								    <Modal.Content>
@@ -212,103 +235,11 @@ class PetInformation extends Component{
 					                            <Search
 					                            	id="userEmail"
 					                            	fluid
-					                            	value={value}
+					                            	value={this.state.value}
 					                            	onResultSelect={this.handleResultSelect}
 					                            	onSearchChange={this.handleSearchChange}
 					                            	results={this.state.users_view}/>
-					                            
-					                        </Form.Field>
-					                    </Form>
-								    </Modal.Content>
-								    <Modal.Actions>
-								    	<Button  onClick={this.handleSubmit}>
-	                                   		Submit
-	                              		</Button>
-								    </Modal.Actions>
-							    </Modal>
-							</div>
-=======
-		let users_view = this.state.users_view;
-		let value = this.state.value;
-		return(
-		<Segment>
-			<div className="ui divided items">
-				<div className="item">
-		    		<div className="image">
-		      			<img src={this.props.data.img_url} />
-		    		</div>
-			    	<div className="content">
-				      	<a className="header">{this.props.data.name}</a>
-			      		<div className="meta">
-			        		<p>{this.props.data.type}</p>
-			        		<p>{this.props.data.location}</p>
-			        		<p>{moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
-			      		</div>
-				      	<div className="description">
-				        	<p>{this.props.data.description}</p>
-				      	</div>
-				      		<a href={this.props.data.original_website}>Here</a>
-				      	<div className="extra">
 
-							<button className="ui primary right floated button" role="button">This is my Pet</button>
-							<Modal trigger={<Button className="ui primary right floated" onClick={this.getUsers}>Recommend</Button>} closeIcon>
-							    <Header icon='archive' content='Enter the username/e-mail of the user you want to notify about this post' />
-							    <Modal.Content>
-		    	                    <Form>
-				                        <Form.Field required>
-				                    		<Label pointing="below">{this.state.submitMessage}</Label>
-
-				                            <Search
-				                            	id="userEmail"
-				                            	fluid
-				                            	value={value}
-				                            	onResultSelect={this.handleResultSelect}
-				                            	onSearchChange={this.handleSearchChange}
-				                            	results={this.state.users_view}/>
-
-				                        </Form.Field>
-				                    </Form>
-							    </Modal.Content>
-							    <Modal.Actions>
-							    	<Button  onClick={this.handleSubmit}>
-                                   		Submit
-                              		</Button>
-							    </Modal.Actions>
-						    </Modal>
->>>>>>> 1198735e9e83a4a3f8e8727c15a40a8b3940c9a7
-						</div>
-					</div>
-				</div>
-			</Segment>
-			)
-		}
-		else{
-			return(
-			<Segment>
-				<div className="ui divided items">
-					<div className="item">
-			    		<div className="image">
-			      			<img src={img} />
-			    		</div>
-				    	<div className="content">
-					      	<a className="header">{name}</a>
-				      		<div className="meta">
-				        		<p>Type: {type}</p>
-				        		<p>Location: {location}</p>
-				        		<p>Date posted: {moment(this.props.data.datefound).format("MMMM Do YYYY, h:mm:ss a") }</p>
-				      		</div>
-					      	<div className="description">
-					        	<p>Description:{description}</p>
-					      	</div>
-					      		<a href={website}>Link to original website</a>
-					      	<div className="extra">
-
-								<Modal trigger={<Button className="ui primary right floated">Recommend</Button>} closeIcon>
-								    <Header icon='archive' content='Enter the e-mail of the user you want to notify about this post' />
-								    <Modal.Content>
-			    	                    <Form>
-					                        <Form.Field required>
-					                            <Input id="userEmail" placeholder='username@email.com' fluid />
 					                        </Form.Field>
 					                    </Form>
 								    </Modal.Content>
@@ -323,10 +254,9 @@ class PetInformation extends Component{
 					</div>
 				</div>
 			</Segment>
-			)
+				)
 		}
 
-	}
 }
 
 class CommentList extends Component{
